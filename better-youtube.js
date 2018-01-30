@@ -1,7 +1,7 @@
-// Square Candy Underscores - Custom Scripts associated with /inc/video.php
+// Square Better Youtube
 ( function( $ ) {
 	$(document).ready(function(){
-		// Apply fitvids across site
+		// Apply fitvids (responsive YouTube videos across site
 		$('.fitvids').fitVids();
 	});
 } )( jQuery );
