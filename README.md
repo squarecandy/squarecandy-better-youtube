@@ -1,5 +1,5 @@
 # squarecandy-better-youtube
-Improves the look and behavior of YouTube videos on WordPress.
+A WordPress plugin to improve the look and behavior of YouTube videos on WordPress.
 
 - hide title and text info
 - simplify controls
