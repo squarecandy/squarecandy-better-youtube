@@ -56,7 +56,11 @@ if ( !function_exists('squarecandy_custom_youtube_querystring') ) :
 		if ( strpos($html, 'youtube') || strpos($html, 'youtu.be') ) {
 			$html = better_youtube_iframe($html);
 		}
-		return '<div class="fitvids">' . $html . '</div>';
+		// apply fitvids responsive video to both youtube and vimeo
+		if ( strpos($html, 'youtube') || strpos($html, 'youtu.be') || strpos($html, 'vimeo') ) {
+			$html = '<div class="fitvids">' . $html . '</div>';
+		}
+		return $html;
 	}
+	add_filter('oembed_result', 'squarecandy_custom_youtube_querystring', 10, 3);
 endif;
-add_filter('oembed_result', 'squarecandy_custom_youtube_querystring', 10, 3);
