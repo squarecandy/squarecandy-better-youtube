@@ -42,9 +42,8 @@ if ( !function_exists('better_youtube_iframe') ) :
 		$new_src = add_query_arg($params, $src);
 		$iframe = str_replace($src, $new_src, $iframe);
 
-		// add extra attributes to iframe html
-		$attributes = 'frameborder="0"';
-		$iframe = str_replace('></iframe>', ' ' . $attributes . '></iframe>', $iframe);
+		$iframe = str_replace('allow="autoplay; encrypted-media"', '', $iframe);
+		$iframe = str_replace('frameborder="0"', '', $iframe);
 
 		return $iframe;
 	}
