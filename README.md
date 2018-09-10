@@ -2,7 +2,7 @@
 
 A WordPress plugin to improve the look and behavior of YouTube videos on WordPress.
 
-~Current Version:1.1.0~
+~Current Version:1.1.1~
 
 - hide title and text info
 - simplify controls

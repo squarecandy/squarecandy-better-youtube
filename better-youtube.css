@@ -1,5 +1,9 @@
 /* Custom YouTube Playlists */
 
+iframe {
+	border: 0;
+}
+
 body.videos .page-elements,
 body.videos .elements {
 	max-width: 1050px;
@@ -62,6 +66,7 @@ body.videos .elements {
 .playlist-list li a {
 	text-decoration: none;
 	outline: none;
+	color: #333;
 }
 .playlist-list li a:focus img {
 	outline: 2px solid rgba(0,0,0,0.5);
@@ -85,6 +90,7 @@ body.videos .elements {
 	float: left;
 	width: 50%;
 	width: calc( 100% - 110px );
+	font-size: 0.9em;
 }
 
 .mfp-bottom-bar {
