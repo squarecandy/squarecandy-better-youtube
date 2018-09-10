@@ -1,0 +1,110 @@
+/* Custom YouTube Playlists */
+
+body.videos .page-elements,
+body.videos .elements {
+	max-width: 1050px;
+}
+
+.custom-playlist {
+	width: 100%;
+	position: relative;
+}
+
+.playlist-thumb {
+	width: 100%;
+	background-position: center;
+	background-size: cover;
+	height: 0;
+	padding-top: 56%;
+}
+.playlist-preview-first {
+	width: 64%;
+	position: relative;
+}
+.playlist-preview-first svg {
+	position: absolute;
+	width: 70px;
+	top: 45%;
+	top: calc( 50% - 35px );
+	left: 45%;
+	left: calc( 50% - 35px );
+	opacity: 0.8;
+	transition: opacity 300ms, fill 300ms;
+	fill: #fff;
+}
+.playlist-preview-first svg:hover {
+	opacity: 1;
+	fill: #aa2222;
+}
+.playlist-list {
+	position:absolute;
+	right:0;
+	top:0;
+	width: 36%;
+	height:100%;
+	overflow-y:scroll;
+}
+.playlist-list ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.playlist-list li {
+	margin: 0;
+	padding: 0 10px 10px 10px;
+	list-style: none;
+	clear: both;
+	overflow: hidden;
+	font-size: 14px;
+	line-height: 1.4;
+	vertical-align: middle;
+}
+.playlist-list li a {
+	text-decoration: none;
+	outline: none;
+}
+.playlist-list li a:focus img {
+	outline: 2px solid rgba(0,0,0,0.5);
+}
+
+.playlist-small-thumb {
+	width: 70px;
+	float: left;
+}
+.playlist-num {
+	float: left;
+	padding: 0 10px 10px;
+	font-weight: bold;
+	font-size: 14px;
+	line-height: 1.4;
+	width: 40px;
+	box-sizing: border-box;
+	text-align: center;
+}
+.playlist-item-title {
+	float: left;
+	width: 50%;
+	width: calc( 100% - 110px );
+}
+
+.mfp-bottom-bar {
+	margin-top: 10px !important;
+}
+
+@media only screen and (max-width: 760px) {
+	.playlist-preview-first {
+		width: 100%;
+	}
+	.playlist-list {
+		position: relative;
+		right: auto;
+		top: auto;
+		width: 100%;
+		height: auto;
+		overflow-y: visible;
+		margin-top: 10px;
+	}
+	.playlist-list li {
+		padding: 0 0 10px 0;
+	}
+}
