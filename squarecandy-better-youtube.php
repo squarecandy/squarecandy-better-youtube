@@ -1,14 +1,16 @@
 <?php
 /*
 Plugin Name: Square Candy Better YouTube
-Plugin URI:  http://squarecandy.net
+Plugin URI: https://github.com/squarecandy/squarecandy-better-youtube
 Description: A plugin to improve the look and behavior of YouTube videos on WordPress
-Version:	 0.1
-Author:	  Peter Wise
-Author URI:  http://squarecandy.net
+Version: 1.1.0
+Author: Peter Wise
+Author URI: http://squarecandydesign.com
 Text Domain: squarecandy-better-youtube
 */
 
+// Allow updating from the github repository
+include_once('squarecandy-updater.php');
 
 // Enqueue scripts required
 if ( ! function_exists( 'squarecandy_video_scripts' ) ) :
