@@ -18,8 +18,8 @@ if ( ! function_exists( 'squarecandy_video_scripts' ) ) :
 		wp_enqueue_script( 'squarecandy-fitvids', plugins_url('/jquery.fitvids.js', __FILE__), array('jquery'), '20170517', true );
 		wp_enqueue_script( 'squarecandy-better-youtube', plugins_url('/better-youtube.js', __FILE__), array('jquery', 'squarecandy-fitvids'), '20170517', true );
 
-		wp_enqueue_script( 'squarecandy-magnific-popup', plugins_url('/dist/js/vendor/jquery.magnific-popup.min.js', __FILE__), array('jquery'), '20170517', true );
-		wp_enqueue_style( 'squarecandy-magnific-popup-style', plugins_url('/css/vendor/magnific-popup.css', __FILE__) );
+		wp_enqueue_script( 'squarecandy-magnific-popup', plugins_url('/vendor/jquery.magnific-popup.min.js', __FILE__), array('jquery'), '20170517', true );
+		wp_enqueue_style( 'squarecandy-magnific-popup-style', plugins_url('/vendor/magnific-popup.css', __FILE__) );
 
 		wp_enqueue_style( 'squarecandy-better-youtube-css', plugins_url('/better-youtube.css', __FILE__) );
 	}
