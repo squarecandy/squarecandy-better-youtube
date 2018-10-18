@@ -114,3 +114,12 @@ body.videos .elements {
 		padding: 0 0 10px 0;
 	}
 }
+
+/* FITVIDS */
+
+.fitvids {
+	margin: 1em 0;
+}
+.fitvids:first-child {
+	margin-top: 0;
+}

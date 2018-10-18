@@ -2,8 +2,6 @@
 
 A WordPress plugin to improve the look and behavior of YouTube videos on WordPress.
 
-~Current Version:1.1.1~
-
 - hide title and text info
 - simplify controls
 - don't show suggested videos on completion
@@ -21,6 +19,16 @@ To enable the nice visual playlist generator, you must [obtain a google API key]
 
 ## History
 
+### v1.1.2
+
+* Bugfix: correct the magnific popup urls
+* Depreciated features such as showinfo=0 and theme=dark finally stopped working. Bummer! Removed these from the code.
+* Added default spacing for fitvids div
+* Remove the updater script (use [GitHub Updater](https://github.com/afragen/github-updater) instead)
+
+### v1.1.1
+
+* [skip] was used for testing...
 
 ### v1.1.0
 

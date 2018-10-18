@@ -4,7 +4,7 @@ Plugin Name: Square Candy Better YouTube
 Plugin URI: https://github.com/squarecandy/squarecandy-better-youtube
 GitHub Plugin URI: https://github.com/squarecandy/squarecandy-better-youtube
 Description: A plugin to improve the look and behavior of YouTube videos on WordPress
-Version: 1.1.1
+Version: 1.1.2
 Author: Peter Wise
 Author URI: http://squarecandydesign.com
 Text Domain: squarecandy-better-youtube
@@ -73,8 +73,8 @@ if ( !function_exists('better_youtube_iframe') ) :
 
 				$link = 'https://www.youtube.com/embed/' .
 					$response->items[0]->snippet->resourceId->videoId .
-					'?feature=oembed&amp;color=white&amp;theme=dark&amp;rel=0&amp;' .
-					'autohide=1&amp;showinfo=0&amp;controls=1&amp;modestbranding=1&amp;' .
+					'?feature=oembed&amp;rel=0&amp;' .
+					'controls=1&amp;modestbranding=1&amp;' .
 					'hd=1&amp;autoplay=1';
 
 				$output = '<div class="custom-playlist">';
@@ -91,8 +91,8 @@ if ( !function_exists('better_youtube_iframe') ) :
 
 					$link = 'https://www.youtube.com/embed/' .
 						$item->snippet->resourceId->videoId .
-						'?feature=oembed&amp;color=white&amp;theme=dark&amp;rel=0&amp;' .
-						'autohide=1&amp;showinfo=0&amp;controls=1&amp;modestbranding=1&amp;' .
+						'?feature=oembed&amp;rel=0&amp;' .
+						'controls=1&amp;modestbranding=1&amp;' .
 						'hd=1&amp;autoplay=1';
 
 					if ( isset($item->snippet->thumbnails) ) {
@@ -140,11 +140,7 @@ if ( !function_exists('better_youtube_iframe') ) :
 
 			// add extra params to iframe src
 			$params = array(
-				'color' => 'white',
-				'theme' => 'dark',
 				'rel' => 0,
-				'autohide' => 1,
-				'showinfo' => 0,
 				'controls' => 1,
 				'modestbranding' => 1,
 				'hd' => 1
@@ -168,9 +164,9 @@ if ( !function_exists('squarecandy_custom_youtube_querystring') ) :
 			$html = better_youtube_iframe($html);
 		}
 		// apply fitvids responsive video to both youtube and vimeo
-		if ( strpos($html, 'youtube') || strpos($html, 'youtu.be') || strpos($html, 'vimeo') ) {
-			$html = '<div class="fitvids">' . $html . '</div>';
-		}
+		// if ( strpos($html, 'youtube') || strpos($html, 'youtu.be') || strpos($html, 'vimeo') ) {
+			// $html = '<div class="fitvids">' . $html . '</div>';
+		// }
 		return shortcode_unautop($html);
 	}
 	// add_filter('oembed_result', 'squarecandy_custom_youtube_querystring', 10, 3);
