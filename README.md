@@ -19,6 +19,11 @@ To enable the nice visual playlist generator, you must [obtain a google API key]
 
 ## History
 
+
+### v1.1.3
+
+* Fix missing fitvids wrapper issue
+
 ### v1.1.2
 
 * Bugfix: correct the magnific popup urls

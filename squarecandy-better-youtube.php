@@ -4,7 +4,7 @@ Plugin Name: Square Candy Better YouTube
 Plugin URI: https://github.com/squarecandy/squarecandy-better-youtube
 GitHub Plugin URI: https://github.com/squarecandy/squarecandy-better-youtube
 Description: A plugin to improve the look and behavior of YouTube videos on WordPress
-Version: 1.1.2
+Version: 1.1.3
 Author: Peter Wise
 Author URI: http://squarecandydesign.com
 Text Domain: squarecandy-better-youtube
@@ -41,7 +41,6 @@ if ( !function_exists('better_youtube_iframe') ) :
 			$playlist = explode('&',$playlist[1]);
 			$playlist = $playlist[0];
 		}
-
 
 		if ( isset($playlist) && !empty($playlist) && defined('YOUTUBE_API_KEY') ) {
 
@@ -130,14 +129,9 @@ if ( !function_exists('better_youtube_iframe') ) :
 				$error = json_decode($e->getMessage());
 				$output = '<div class="error">Error: <br>' .  $error->error->message . '</div>';
 			}
-
-
-
 			return shortcode_unautop($output);
-
 		}
 		else {
-
 			// add extra params to iframe src
 			$params = array(
 				'rel' => 0,
@@ -147,11 +141,11 @@ if ( !function_exists('better_youtube_iframe') ) :
 			);
 			$new_src = add_query_arg($params, $src);
 			$iframe = str_replace($src, $new_src, $iframe);
-
 			$iframe = str_replace('allow="autoplay; encrypted-media"', '', $iframe);
 			$iframe = str_replace('frameborder="0"', '', $iframe);
-
-			return shortcode_unautop($iframe);
+			$iframe = shortcode_unautop($iframe);
+			// $iframe = '<div class="fitvids">' . $iframe . '</div>';
+			return $iframe;
 		}
 	}
 
@@ -164,13 +158,13 @@ if ( !function_exists('squarecandy_custom_youtube_querystring') ) :
 			$html = better_youtube_iframe($html);
 		}
 		// apply fitvids responsive video to both youtube and vimeo
-		// if ( strpos($html, 'youtube') || strpos($html, 'youtu.be') || strpos($html, 'vimeo') ) {
-			// $html = '<div class="fitvids">' . $html . '</div>';
-		// }
-		return shortcode_unautop($html);
+		if ( strpos($html, 'youtube') || strpos($html, 'youtu.be') || strpos($html, 'vimeo') ) {
+			$html = '<div class="fitvids">' . $html . '</div>';
+		}
+		return $html;
 	}
-	// add_filter('oembed_result', 'squarecandy_custom_youtube_querystring', 10, 3);
-	add_filter('embed_oembed_html', 'squarecandy_custom_youtube_querystring', 10, 3);
+	add_filter('oembed_result', 'squarecandy_custom_youtube_querystring', 99, 3);
+	add_filter('embed_oembed_html', 'squarecandy_custom_youtube_querystring', 99, 3);
 endif;
 
 
