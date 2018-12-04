@@ -19,6 +19,9 @@ To enable the nice visual playlist generator, you must [obtain a google API key]
 
 ## History
 
+### v1.1.4
+
+* Fix css conflict with magnific popup image mode
 
 ### v1.1.3
 
