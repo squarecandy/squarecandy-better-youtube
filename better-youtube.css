@@ -93,8 +93,8 @@ body.videos .elements {
 	font-size: 0.9em;
 }
 
-.mfp-bottom-bar {
-	margin-top: 10px !important;
+.mfp-iframe-scaler .mfp-bottom-bar {
+	margin-top: 10px;
 }
 
 @media only screen and (max-width: 760px) {
