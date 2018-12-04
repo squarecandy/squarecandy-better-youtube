@@ -31,7 +31,7 @@ if ( !function_exists('better_youtube_iframe') ) :
 	function better_youtube_iframe($iframe) {
 		// use preg_match to find iframe src
 		preg_match('/src="(.+?)"/', $iframe, $matches);
-		$src = $matches[1];
+		$src = isset( $matches[1] ) ? $matches[1] : null;
 
 		$playlist = explode('list=',$src);
 		if ( !isset($playlist[1]) ) {
