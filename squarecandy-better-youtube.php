@@ -144,7 +144,9 @@ if ( !function_exists('better_youtube_iframe') ) :
 			$iframe = str_replace('allow="autoplay; encrypted-media"', '', $iframe);
 			$iframe = str_replace('frameborder="0"', '', $iframe);
 			$iframe = shortcode_unautop($iframe);
-			// $iframe = '<div class="fitvids">' . $iframe . '</div>';
+			if ( !strpos($iframe, 'fitvids') ) {
+				$iframe = '<div class="fitvids">' . $iframe . '</div>';
+			}
 			return $iframe;
 		}
 	}
@@ -157,8 +159,8 @@ if ( !function_exists('squarecandy_custom_youtube_querystring') ) :
 		if ( strpos($html, 'youtube') || strpos($html, 'youtu.be') ) {
 			$html = better_youtube_iframe($html);
 		}
-		// apply fitvids responsive video to both youtube and vimeo
-		if ( strpos($html, 'youtube') || strpos($html, 'youtu.be') || strpos($html, 'vimeo') ) {
+		// apply fitvids container to vimeo
+		if ( strpos($html, 'vimeo') && !strpos($html, 'fitvids') ) {
 			$html = '<div class="fitvids">' . $html . '</div>';
 		}
 		return $html;
