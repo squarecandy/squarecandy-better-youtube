@@ -15,58 +15,58 @@ if ( ! function_exists( 'squarecandy_video_scripts' ) ) :
 	function squarecandy_video_scripts() {
 		// apply fitvids
 		wp_enqueue_script( 'jquery' );
-		wp_enqueue_script( 'squarecandy-fitvids', plugins_url('/jquery.fitvids.js', __FILE__), array('jquery'), '20170517', true );
-		wp_enqueue_script( 'squarecandy-better-youtube', plugins_url('/better-youtube.js', __FILE__), array('jquery', 'squarecandy-fitvids'), '20170517', true );
+		wp_enqueue_script( 'squarecandy-fitvids', plugins_url( '/jquery.fitvids.js', __FILE__ ), array( 'jquery' ), '20170517', true );
+		wp_enqueue_script( 'squarecandy-better-youtube', plugins_url( '/better-youtube.js', __FILE__ ), array( 'jquery', 'squarecandy-fitvids' ), '20170517', true );
 
-		wp_enqueue_script( 'squarecandy-magnific-popup', plugins_url('/vendor/jquery.magnific-popup.min.js', __FILE__), array('jquery'), '20170517', true );
-		wp_enqueue_style( 'squarecandy-magnific-popup-style', plugins_url('/vendor/magnific-popup.css', __FILE__) );
+		wp_enqueue_script( 'squarecandy-magnific-popup', plugins_url( '/vendor/jquery.magnific-popup.min.js', __FILE__ ), array( 'jquery' ), '20170517', true );
+		wp_enqueue_style( 'squarecandy-magnific-popup-style', plugins_url( '/vendor/magnific-popup.css', __FILE__ ) );
 
-		wp_enqueue_style( 'squarecandy-better-youtube-css', plugins_url('/better-youtube.css', __FILE__) );
+		wp_enqueue_style( 'squarecandy-better-youtube-css', plugins_url( '/better-youtube.css', __FILE__ ) );
 	}
 endif;
 add_action( 'wp_enqueue_scripts', 'squarecandy_video_scripts' );
 
 // use to wrap youtube iframes anywhere in the code for nicer output
-if ( !function_exists('better_youtube_iframe') ) :
-	function better_youtube_iframe($iframe) {
+if ( ! function_exists( 'better_youtube_iframe' ) ) :
+	function better_youtube_iframe( $iframe ) {
 		// use preg_match to find iframe src
-		preg_match('/src="(.+?)"/', $iframe, $matches);
+		preg_match( '/src="(.+?)"/', $iframe, $matches );
 		$src = isset( $matches[1] ) ? $matches[1] : null;
 
-		$playlist = explode('list=',$src);
-		if ( !isset($playlist[1]) ) {
+		$playlist = explode( 'list=', $src );
+		if ( ! isset( $playlist[1] ) ) {
 			$playlist = false;
-		}
-		else {
-			$playlist = explode('&',$playlist[1]);
+		} else {
+			$playlist = explode( '&', $playlist[1] );
 			$playlist = $playlist[0];
 		}
 
-		if ( isset($playlist) && !empty($playlist) && defined('YOUTUBE_API_KEY') ) {
+		if ( isset( $playlist ) && ! empty( $playlist ) && defined( 'YOUTUBE_API_KEY' ) ) {
 
 			// Google API for building custom YouTube Playlists
-			require_once plugin_dir_path(__FILE__) . 'vendor/google-api-php-client/vendor/autoload.php';
+			require_once plugin_dir_path( __FILE__ ) . 'vendor/google-api-php-client/vendor/autoload.php';
 			try {
 				$client = new Google_Client();
-				$client->setDeveloperKey(YOUTUBE_API_KEY);
-				$client->setScopes('https://www.googleapis.com/auth/youtube');
-				$redirect = filter_var('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'], FILTER_SANITIZE_URL);
-				$client->setRedirectUri($redirect);
+				$client->setDeveloperKey( YOUTUBE_API_KEY );
+				$client->setScopes( 'https://www.googleapis.com/auth/youtube' );
+				$redirect = filter_var( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'], FILTER_SANITIZE_URL );
+				$client->setRedirectUri( $redirect );
 
 				// Define an object that will be used to make all API requests.
-				$service = new Google_Service_YouTube($client);
+				$service = new Google_Service_YouTube( $client );
 
-				$params = array('maxResults' => 49, 'playlistId' => $playlist);
-				$params = array_filter($params);
-				$response = $service->playlistItems->listPlaylistItems('snippet', $params);
+				$params   = array(
+					'maxResults' => 49,
+					'playlistId' => $playlist,
+				);
+				$params   = array_filter( $params );
+				$response = $service->playlistItems->listPlaylistItems( 'snippet', $params );
 
-				if (isset($response->items[0]->snippet->thumbnails->standard->url)) {
+				if ( isset( $response->items[0]->snippet->thumbnails->standard->url ) ) {
 					$large_thumb = $response->items[0]->snippet->thumbnails->standard->url;
-				}
-				elseif (isset($response->items[0]->snippet->thumbnails->high->url)) {
+				} elseif ( isset( $response->items[0]->snippet->thumbnails->high->url ) ) {
 					$large_thumb = $response->items[0]->snippet->thumbnails->high->url;
-				}
-				elseif (isset($response->items[0]->snippet->thumbnails->medium->url)) {
+				} elseif ( isset( $response->items[0]->snippet->thumbnails->medium->url ) ) {
 					$large_thumb = $response->items[0]->snippet->thumbnails->medium->url;
 				}
 
@@ -86,7 +86,7 @@ if ( !function_exists('better_youtube_iframe') ) :
 				$output .= '<div class="playlist-list"><ul>';
 
 				$i = 1;
-				foreach ($response->items as $item) {
+				foreach ( $response->items as $item ) {
 
 					$link = 'https://www.youtube.com/embed/' .
 						$item->snippet->resourceId->videoId .
@@ -94,16 +94,14 @@ if ( !function_exists('better_youtube_iframe') ) :
 						'controls=1&amp;modestbranding=1&amp;' .
 						'hd=1&amp;autoplay=1';
 
-					if ( isset($item->snippet->thumbnails) ) {
+					if ( isset( $item->snippet->thumbnails ) ) {
 						$small_thumb = $item->snippet->thumbnails->default->url;
 
-						if (isset($item->snippet->thumbnails->standard->url)) {
+						if ( isset( $item->snippet->thumbnails->standard->url ) ) {
 							$large_thumb = $item->snippet->thumbnails->standard->url;
-						}
-						elseif (isset($item->snippet->thumbnails->high->url)) {
+						} elseif ( isset( $item->snippet->thumbnails->high->url ) ) {
 							$large_thumb = $item->snippet->thumbnails->high->url;
-						}
-						elseif (isset($item->snippet->thumbnails->medium->url)) {
+						} elseif ( isset( $item->snippet->thumbnails->medium->url ) ) {
 							$large_thumb = $item->snippet->thumbnails->medium->url;
 						}
 					} else {
@@ -113,7 +111,7 @@ if ( !function_exists('better_youtube_iframe') ) :
 
 					$output .= '<li><a href="' . $link . '" ' .
 						'rel="videogroup_' . $playlist[1] . '" ' .
-						'title="' . esc_attr($item->snippet->title) . '" ' .
+						'title="' . esc_attr( $item->snippet->title ) . '" ' .
 						'data-large-thumb="' . $large_thumb . '">' .
 						'<div class="playlist-small-thumb"><div class="playlist-thumb" style="background-image:url(' .
 						$small_thumb . ')"></div></div>' .
@@ -125,26 +123,25 @@ if ( !function_exists('better_youtube_iframe') ) :
 				}
 				$output .= '</ul></div>';
 				$output .= '</div>';
-			} catch (Exception $e) {
-				$error = json_decode($e->getMessage());
-				$output = '<div class="error">Error: <br>' .  $error->error->message . '</div>';
+			} catch ( Exception $e ) {
+				$error  = json_decode( $e->getMessage() );
+				$output = '<div class="error">Error: <br>' . $error->error->message . '</div>';
 			}
-			return shortcode_unautop($output);
-		}
-		else {
+			return shortcode_unautop( $output );
+		} else {
 			// add extra params to iframe src
-			$params = array(
-				'rel' => 0,
-				'controls' => 1,
+			$params  = array(
+				'rel'            => 0,
+				'controls'       => 1,
 				'modestbranding' => 1,
-				'hd' => 1
+				'hd'             => 1,
 			);
-			$new_src = add_query_arg($params, $src);
-			$iframe = str_replace($src, $new_src, $iframe);
-			$iframe = str_replace('allow="autoplay; encrypted-media"', '', $iframe);
-			$iframe = str_replace('frameborder="0"', '', $iframe);
-			$iframe = shortcode_unautop($iframe);
-			if ( !strpos($iframe, 'fitvids') ) {
+			$new_src = add_query_arg( $params, $src );
+			$iframe  = str_replace( $src, $new_src, $iframe );
+			$iframe  = str_replace( 'allow="autoplay; encrypted-media"', '', $iframe );
+			$iframe  = str_replace( 'frameborder="0"', '', $iframe );
+			$iframe  = shortcode_unautop( $iframe );
+			if ( ! strpos( $iframe, 'fitvids' ) ) {
 				$iframe = '<div class="fitvids">' . $iframe . '</div>';
 			}
 			return $iframe;
@@ -154,25 +151,25 @@ if ( !function_exists('better_youtube_iframe') ) :
 endif;
 
 // apply the better_youtube_iframe improvements to the automatic WordPress oembed
-if ( !function_exists('squarecandy_custom_youtube_querystring') ) :
+if ( ! function_exists( 'squarecandy_custom_youtube_querystring' ) ) :
 	function squarecandy_custom_youtube_querystring( $html, $url, $args ) {
-		if ( strpos($html, 'youtube') || strpos($html, 'youtu.be') ) {
-			$html = better_youtube_iframe($html);
+		if ( strpos( $html, 'youtube' ) || strpos( $html, 'youtu.be' ) ) {
+			$html = better_youtube_iframe( $html );
 		}
 		// apply fitvids container to vimeo
-		if ( strpos($html, 'vimeo') && !strpos($html, 'fitvids') ) {
+		if ( strpos( $html, 'vimeo' ) && ! strpos( $html, 'fitvids' ) ) {
 			$html = '<div class="fitvids">' . $html . '</div>';
 		}
 		return $html;
 	}
-	add_filter('oembed_result', 'squarecandy_custom_youtube_querystring', 99, 3);
-	add_filter('embed_oembed_html', 'squarecandy_custom_youtube_querystring', 99, 3);
+	add_filter( 'oembed_result', 'squarecandy_custom_youtube_querystring', 99, 3 );
+	add_filter( 'embed_oembed_html', 'squarecandy_custom_youtube_querystring', 99, 3 );
 endif;
 
 
 // fix wpautop crap
 // https://wordpress.stackexchange.com/a/217304/41488
-add_filter('the_content','shortcode_fix',110);
-function shortcode_fix($content) {
-	return str_replace('<p></a></li>','</a></li>',$content);
+add_filter( 'the_content', 'shortcode_fix', 110 );
+function shortcode_fix( $content ) {
+	return str_replace( '<p></a></li>', '</a></li>', $content );
 }
