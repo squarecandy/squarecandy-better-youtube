@@ -26,6 +26,24 @@ if ( ! function_exists( 'squarecandy_video_scripts' ) ) :
 endif;
 add_action( 'wp_enqueue_scripts', 'squarecandy_video_scripts' );
 
+// Add styles to the TinyMCE editor window to make it look more like your site's front end
+function squarecandy_better_youtube_tinymce_styles() {
+	add_editor_style( plugins_url( '/better-youtube.css', __FILE__ ) );
+}
+add_action( 'admin_init', 'squarecandy_better_youtube_tinymce_styles' );
+
+// override default oEmbed size
+function your_own_embed_size() {
+	$width    = (int) get_option( 'sqcdy_theme_colwidth', 620 ) - 20;
+	$height   = 0.5625 * $width; // 16:9 aspect ratio
+	$settings = array(
+		'width'  => $width,
+		'height' => $height,
+	);
+	return $settings;
+}
+add_filter( 'embed_defaults', 'your_own_embed_size' );
+
 // use to wrap youtube iframes anywhere in the code for nicer output
 if ( ! function_exists( 'better_youtube_iframe' ) ) :
 	function better_youtube_iframe( $iframe ) {
