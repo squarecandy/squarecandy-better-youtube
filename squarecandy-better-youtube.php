@@ -184,6 +184,15 @@ if ( ! function_exists( 'squarecandy_custom_youtube_querystring' ) ) :
 	add_filter( 'embed_oembed_html', 'squarecandy_custom_youtube_querystring', 99, 3 );
 endif;
 
+// Apply fitvids to the_excerpt
+// Not sure why oembed_result is not being applied here already. Is there a better way to do this?
+// str_replace for iframe is a bit broad and could cause issues with non-video iframe content
+add_filter( 'get_the_excerpt', 'squarecandy_custom_youtube_excerpt', 999 );
+function squarecandy_custom_youtube_excerpt( $content ) {
+	$content = str_replace( '<iframe', '<div class="fitvids"><iframe', $content );
+	$content = str_replace( '</iframe>', '</iframe></div>', $content );
+	return $content;
+}
 
 // fix wpautop crap
 // https://wordpress.stackexchange.com/a/217304/41488
