@@ -19,6 +19,10 @@ To enable the nice visual playlist generator, you must [obtain a google API key]
 
 ## History
 
+### v1.1.7
+
+* fix: apply fitvids to the_excerpt
+
 ### v1.1.6
 
 * fix: improve youtube/vimeo fitvids display in TinyMCE
