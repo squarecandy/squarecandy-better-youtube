@@ -306,6 +306,8 @@ endif;
 // str_replace for iframe is a bit broad and could cause issues with non-video iframe content
 add_filter( 'get_the_excerpt', 'squarecandy_custom_youtube_excerpt', 999 );
 function squarecandy_custom_youtube_excerpt( $content ) {
+	$content = str_replace( '<p><iframe', '<iframe', $content );
+	$content = str_replace( '</iframe></p>', '</iframe>', $content );
 	$content = str_replace( '<iframe', '<div class="fitvids"><iframe', $content );
 	$content = str_replace( '</iframe>', '</iframe></div>', $content );
 	return $content;
