@@ -79,8 +79,8 @@ function better_youtube_get_large_youtube_thumbnail( $thumbnails ) {
 
 function better_youtube_url_parameters( $as_array = false ){
 	//previus parameters: '?feature=oembed&rel=0&controls=1&modestbranding=1&hd=1&autoplay=1'
-	//to enable js interaction, add: '&enablejsapi=1'
-	$parameters = '?autoplay=1&mute=0&controls=1&playsinline=1&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1';	
+	$parameters  = '?autoplay=1&mute=0&controls=1&playsinline=1&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1';	
+	$parameters .=  '&enablejsapi=1'; // enable js interaction
 
 	if ( $as_array ) {
 		$output = array();

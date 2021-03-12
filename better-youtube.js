@@ -12,7 +12,7 @@
 				iframe: {
 					markup: '<div class="mfp-iframe-scaler">'+
 						'<div class="mfp-close"></div>'+
-						'<iframe class="mfp-iframe" frameborder="0" allowfullscreen></iframe>'+
+						'<iframe id="player" class="mfp-iframe" frameborder="0" allowfullscreen></iframe>'+
 						'<div class="mfp-bottom-bar">'+
 							'<div class="mfp-title">...</div>'+
 						'</div>'+
