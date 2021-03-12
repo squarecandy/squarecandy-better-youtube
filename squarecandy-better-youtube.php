@@ -44,20 +44,70 @@ function your_own_embed_size() {
 }
 add_filter( 'embed_defaults', 'your_own_embed_size' );
 
+
+function better_youtube_get_youtube_iframe_from_embed( $embed ) {
+	// use preg_match to find iframe src
+	preg_match( '/src="(.+?)"/', $embed, $matches );
+	$src = isset( $matches[1] ) ? $matches[1] : null;
+	return $src;
+}
+
+
+function better_youtube_get_youtube_playlist_from_src( $src ) {
+	$playlist = explode( 'list=', $src );
+	if ( ! isset( $playlist[1] ) ) {
+		$playlist = false;
+	} else {
+		$playlist = explode( '&', $playlist[1] );
+		$playlist = $playlist[0];
+	}
+	return $playlist;
+}
+
+
+function better_youtube_get_large_youtube_thumbnail( $thumbnails ) {
+	if ( isset( $thumbnails->standard->url ) ) {
+		$large_thumb = $thumbnails->standard->url;
+	} elseif ( isset( $thumbnails->high->url ) ) {
+		$large_thumb = $thumbnails->high->url;
+	} elseif ( isset( $thumbnails->medium->url ) ) {
+		$large_thumb = $thumbnails->medium->url;
+	}
+	return $large_thumb;
+}
+
+
+function better_youtube_url_parameters( $as_array = false ){
+	//previus parameters: '?feature=oembed&rel=0&controls=1&modestbranding=1&hd=1&autoplay=1'
+	//to enable js interaction, add: '&enablejsapi=1'
+	$parameters = '?autoplay=1&mute=0&controls=1&playsinline=1&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1';	
+
+	if ( $as_array ) {
+		$output = array();
+		$parameters = trim( $parameters, '?' );
+		$parameters = explode('&', $parameters);
+		
+		foreach ( $parameters as $parameter ) {
+			$values = explode( '=', $parameter );
+			$output[ $values[0] ] = $values[1];
+		}
+		$parameters = $output;
+	} else {
+		$parameters = htmlspecialchars($parameters);
+	}
+
+	return $parameters;
+}
 // use to wrap youtube iframes anywhere in the code for nicer output
 if ( ! function_exists( 'better_youtube_iframe' ) ) :
 	function better_youtube_iframe( $iframe ) {
-		// use preg_match to find iframe src
-		preg_match( '/src="(.+?)"/', $iframe, $matches );
-		$src = isset( $matches[1] ) ? $matches[1] : null;
 
-		$playlist = explode( 'list=', $src );
-		if ( ! isset( $playlist[1] ) ) {
-			$playlist = false;
-		} else {
-			$playlist = explode( '&', $playlist[1] );
-			$playlist = $playlist[0];
+		if ( ! is_string( $iframe ) ) {
+			return;
 		}
+		//find iframe src
+		$src      = better_youtube_get_youtube_iframe_from_embed( $iframe );
+		$playlist = better_youtube_get_youtube_playlist_from_src( $src );
 
 		if ( isset( $playlist ) && ! empty( $playlist ) && defined( 'YOUTUBE_API_KEY' ) ) {
 
@@ -73,26 +123,18 @@ if ( ! function_exists( 'better_youtube_iframe' ) ) :
 				// Define an object that will be used to make all API requests.
 				$service = new Google_Service_YouTube( $client );
 
-				$params   = array(
+				//get all items in the playlist via API
+				$params      = array(
 					'maxResults' => 49,
 					'playlistId' => $playlist,
 				);
-				$params   = array_filter( $params );
-				$response = $service->playlistItems->listPlaylistItems( 'snippet', $params );
+				$params      = array_filter( $params );
+				$response    = $service->playlistItems->listPlaylistItems( 'snippet', $params );
+				$large_thumb = better_youtube_get_large_youtube_thumbnail( $response->items[0]->snippet->thumbnails );
 
-				if ( isset( $response->items[0]->snippet->thumbnails->standard->url ) ) {
-					$large_thumb = $response->items[0]->snippet->thumbnails->standard->url;
-				} elseif ( isset( $response->items[0]->snippet->thumbnails->high->url ) ) {
-					$large_thumb = $response->items[0]->snippet->thumbnails->high->url;
-				} elseif ( isset( $response->items[0]->snippet->thumbnails->medium->url ) ) {
-					$large_thumb = $response->items[0]->snippet->thumbnails->medium->url;
-				}
-
+				//set up the html for the first item (large display)
 				$link = 'https://www.youtube.com/embed/' .
-					$response->items[0]->snippet->resourceId->videoId .
-					'?feature=oembed&amp;rel=0&amp;' .
-					'controls=1&amp;modestbranding=1&amp;' .
-					'hd=1&amp;autoplay=1';
+					$response->items[0]->snippet->resourceId->videoId . better_youtube_url_parameters();
 
 				$output = '<div class="custom-playlist">';
 
@@ -101,34 +143,25 @@ if ( ! function_exists( 'better_youtube_iframe' ) ) :
 						$large_thumb . ')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg></div>
 					</a></div>';
 
+				//set up the html for all items (small display)
 				$output .= '<div class="playlist-list"><ul>';
 
 				$i = 1;
 				foreach ( $response->items as $item ) {
 
 					$link = 'https://www.youtube.com/embed/' .
-						$item->snippet->resourceId->videoId .
-						'?feature=oembed&amp;rel=0&amp;' .
-						'controls=1&amp;modestbranding=1&amp;' .
-						'hd=1&amp;autoplay=1';
+						$item->snippet->resourceId->videoId . better_youtube_url_parameters();
 
 					if ( isset( $item->snippet->thumbnails ) ) {
 						$small_thumb = $item->snippet->thumbnails->default->url;
-
-						if ( isset( $item->snippet->thumbnails->standard->url ) ) {
-							$large_thumb = $item->snippet->thumbnails->standard->url;
-						} elseif ( isset( $item->snippet->thumbnails->high->url ) ) {
-							$large_thumb = $item->snippet->thumbnails->high->url;
-						} elseif ( isset( $item->snippet->thumbnails->medium->url ) ) {
-							$large_thumb = $item->snippet->thumbnails->medium->url;
-						}
+						$large_thumb = better_youtube_get_large_youtube_thumbnail( $item->snippet->thumbnails );
 					} else {
 						$small_thumb = false;
 						$large_thumb = false;
 					}
 
 					$output .= '<li><a href="' . $link . '" ' .
-						'rel="videogroup_' . $playlist[1] . '" ' .
+						'rel="videogroup_' . $playlist . '" ' .
 						'title="' . esc_attr( $item->snippet->title ) . '" ' .
 						'data-large-thumb="' . $large_thumb . '">' .
 						'<div class="playlist-small-thumb"><div class="playlist-thumb" style="background-image:url(' .
@@ -148,12 +181,13 @@ if ( ! function_exists( 'better_youtube_iframe' ) ) :
 			return shortcode_unautop( $output );
 		} else {
 			// add extra params to iframe src
-			$params  = array(
+			/*$params  = array(
 				'rel'            => 0,
 				'controls'       => 1,
 				'modestbranding' => 1,
 				'hd'             => 1,
-			);
+			);*/
+			$params  = better_youtube_url_parameters(true);
 			$new_src = add_query_arg( $params, $src );
 			$iframe  = str_replace( $src, $new_src, $iframe );
 			$iframe  = str_replace( 'allow="autoplay; encrypted-media"', '', $iframe );
