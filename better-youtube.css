@@ -97,6 +97,159 @@ body.videos .elements {
 	margin-top: 10px;
 }
 
+/* new api player css */
+
+.custom-api-playlist {
+	text-align: left;
+
+	/* same as regular playlist */
+	position: relative;
+	width: 100%;
+}
+
+.mfp-content .nav-button {
+	position: absolute;
+	color: #fff;
+	cursor: pointer;
+}
+
+/* single popup layout */
+
+.single-popup.player-popup {
+	max-width: 900px;
+	margin: 0 auto;
+	text-align: center;
+}
+
+.single-popup .player-popup-inner {
+	position: relative;
+	display: inline-block;
+	width: 100%;
+	max-width: 900px;
+	line-height: 0;
+}
+
+.cover-popup.player-popup {
+	margin: 20px;
+}
+
+.cover-popup .player-popup-inner {
+	position: relative;
+	width: 71%;
+	padding-top: 40%;
+}
+
+.cover-popup .playlist-list {
+	width: 28%;
+	color: #fff;
+}
+
+.cover-popup iframe {
+	position: absolute;
+	top: 50%;
+	left: 0;
+	display: block;
+	width: 100%;
+	height: 100%;
+	background: #000;
+	box-shadow: 0 0 8px rgb(0 0 0 / 60%);
+	transform: translateY(-50%);
+}
+
+.custom-api-playlist.cover-popup .nav-buttons {
+	top: 55px;
+	width: 71%;
+}
+
+.cover-popup .nav-buttons .next.mfp-arrow-right {
+	right: 35px;
+}
+
+.cover-popup .nav-buttons .previous.mfp-arrow-left {
+	left: 35px;
+}
+
+.cover-popup .mfp-arrow-right::after,
+.cover-popup .mfp-arrow-right::before {
+	left: 60px;
+}
+
+.cover-popup .mfp-arrow-left::after,
+.cover-popup .mfp-arrow-left::before {
+	left: -60px;
+}
+
+.cover-popup .mfp-arrow::after,
+.cover-popup .mfp-arrow::before {
+	margin-top: 0;
+}
+
+.cover-popup .video-caption {
+    float: none;
+    text-align: center;
+}
+
+.player-popup button.mfp-close {
+	top: -44px;
+	right: -44px;
+	color: #fff;
+}
+
+.api-playlist-anchor {
+	position: relative;
+}
+
+.api-playlist-anchor .fa-youtube-play {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	font-size: 4em;
+	transform: translateX(-50%) translateY(-50%);
+}
+
+.custom-api-playlist iframe {
+	background: #000;
+}
+
+.custom-api-playlist .playlist-thumb {
+	padding-top: 75%;
+}
+
+.custom-api-playlist .nav-buttons {
+	position: relative;
+	width: 61%;	
+}
+
+.custom-api-playlist .nav-buttons .previous {
+	left: 0;
+}
+
+.custom-api-playlist .nav-buttons .next {
+	right: 0;
+	text-align: right;
+}
+
+.custom-api-playlist .nav-button {
+	display: none;
+}
+
+.custom-api-playlist.load-none .nav-buttons {
+	top: 55px;
+}
+
+.custom-api-playlist .playlist-preview,
+.load-none .nav-button {
+	cursor: pointer;
+}
+
+.load-none .mfp-arrow::after,
+.load-none .mfp-arrow::before {
+	content: unset;
+}
+
+/* end new api playlist */
+
+
 @media only screen and (max-width: 760px) {
 	.playlist-preview-first {
 		width: 100%;
