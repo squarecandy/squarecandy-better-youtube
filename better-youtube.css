@@ -199,6 +199,12 @@ body.videos .elements {
 	position: relative;
 }
 
+.api-playlist-anchor img {
+    min-width: 200px;
+    min-height: 200px;
+    background: #CCC;
+}
+
 .api-playlist-anchor .fa-youtube-play {
 	position: absolute;
 	top: 50%;
