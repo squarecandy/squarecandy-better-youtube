@@ -77,10 +77,15 @@ function better_youtube_get_large_youtube_thumbnail( $thumbnails ) {
 }
 
 
-function better_youtube_url_parameters( $as_array = false ){
+function better_youtube_url_parameters( $as_array = false, $autoplay = true ){
 	//previus parameters: '?feature=oembed&rel=0&controls=1&modestbranding=1&hd=1&autoplay=1'
-	$parameters  = '?autoplay=1&mute=0&controls=1&playsinline=1&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1';	
+	$parameters  = '?&mute=0&controls=1&playsinline=1&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1';	
 	$parameters .=  '&enablejsapi=1'; // enable js interaction
+	if ( $autoplay ) {
+		$parameters .= '&autoplay=1';
+	} else {
+		$parameters .= '&autoplay=0';
+	}
 
 	if ( $as_array ) {
 		$output = array();
@@ -270,7 +275,7 @@ if ( ! function_exists( 'better_youtube_iframe' ) ) :
 				'modestbranding' => 1,
 				'hd'             => 1,
 			);*/
-			$params  = better_youtube_url_parameters(true);
+			$params  = better_youtube_url_parameters( true, false );
 			$new_src = add_query_arg( $params, $src );
 			$iframe  = str_replace( $src, $new_src, $iframe );
 			$iframe  = str_replace( 'allow="autoplay; encrypted-media"', '', $iframe );
