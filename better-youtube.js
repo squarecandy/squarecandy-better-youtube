@@ -88,6 +88,9 @@
 			instantiated = false;
 			actionsBound = false;
 			loop = true;
+			singleVideo = false;
+			singleVideoUrl = '';
+			singleVideoTitle = '';
 
 			constructor( videoContainer, { autoplay = false, autoload = true, debug = true, popup = false, loop = true, layout = 'single-popup' } ) {
 				this.videoContainer = $(videoContainer);
@@ -109,8 +112,7 @@
 				this.postId = this.videoContainer.data('post-id');
 				this.videoContainer.addClass(layout);
 				this.getVideoIds();
-				this.singleVideo = false;
-				this.singleVideoUrl = '';
+
 				//if autoloading, instantiate player, otherwise bind action that will trigger player
 				if ( this.autoload ) {
 					this.init();
@@ -158,6 +160,7 @@
 				if (this.videoList.length == 0 && iframeSrc) {
 					this.singleVideo = true;
 					this.singleVideoUrl = iframeSrc;
+					this.singleVideoTitle = $('#' + this.playerId).data('video-title');
 				}
 
 				//unset id of player-preview-first since we won't use that as the player
@@ -258,6 +261,7 @@
 					if (this.singleVideo) {
 						//cue using url
 						this.player.cueVideoByUrl(this.singleVideoUrl);
+						this.setTitle(this.singleVideoTitle);
 					} else {
 						this.navButtons.show();
 						this.cueVideo(this.startVideo);
@@ -331,6 +335,9 @@
 
 			setTitle(title){
 				if ( this.popup == 'single' ) {
+					if ( ! title ) {
+						title = '';
+					}
 					let titleDiv = $('#player-popup-' + this.postId).find('.mfp-title');
 					titleDiv.html(title);
 				}
