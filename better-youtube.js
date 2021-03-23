@@ -30,7 +30,6 @@
 				callbacks: {
 					updateStatus: function(data) {
 						var current_title = $(this)[0].currItem.el[0].title;
-						// console.log('Status changed', data, current_video_title, $('.mfp-title').html() );
 						setTimeout(function(){
 							$('.mfp-title').html(current_title);
 						},200);
@@ -110,6 +109,8 @@
 				this.postId = this.videoContainer.data('post-id');
 				this.videoContainer.addClass(layout);
 				this.getVideoIds();
+				this.singleVideo = false;
+				this.singleVideoUrl = '';
 				//if autoloading, instantiate player, otherwise bind action that will trigger player
 				if ( this.autoload ) {
 					this.init();
@@ -151,6 +152,14 @@
 			}
 
 			addPlayerPopup() {
+				//to enable single videos, grab the url from the link used in that layout
+				//TODO: this should maybe go in an earlier function
+				let iframeSrc = $('#' + this.playerId).prop('href');
+				if (this.videoList.length == 0 && iframeSrc) {
+					this.singleVideo = true;
+					this.singleVideoUrl = iframeSrc;
+				}
+
 				//unset id of player-preview-first since we won't use that as the player
 				$('#' + this.playerId).prop('id','');
 
@@ -167,13 +176,12 @@
 				let scaler2 = $('<div/>',{
 					'class' : 'mfp-iframe-scaler'
 				});
+				//make this a div, not an iframe, so when we destroy() the player we're still left with the player div
 				let popupPlayer = $('<div/>',{
 					id: this.playerId,
-					//'class' : 'player-popup',
 					'data' : { 'video-index' : this.startVideo }
 				});
 
-				console.log(popupDiv);
 				popupDiv.append(scaler);
 				scaler.append(scaler2);
 				//set up nav arrows
@@ -188,9 +196,8 @@
 
 				//bind mfp open to all video previews
 				const _this = this;
-				this.previews.on('click', function() {
-					console.log('start: ' + $(this).data('video-index'))
-					console.log($(this));
+				this.previews.on('click', function(e) {
+					e.preventDefault();
 					_this.startVideo = $(this).data('video-index');
 					$.magnificPopup.open({
 				  		items: {
@@ -210,8 +217,8 @@
 			}
 
 			instantiatePlayer() {
-				console.log('instantiatePlayer');
-				console.log(this);
+				this.consoleDebug('instantiatePlayer');
+				this.consoleDebug(this);
 			  	this.player = new YT.Player( this.playerId, {
 					height: '390',
 					width: '640',
@@ -248,13 +255,18 @@
 				this.consoleDebug('onPlayerReady');
 				//onPlayerReady is also triggered when we hide a player, so filter for that to prevent zombie calls
 				if (this.instantiated) { 
-					this.navButtons.show();
-					this.cueVideo(this.startVideo);
+					if (this.singleVideo) {
+						//cue using url
+						this.player.cueVideoByUrl(this.singleVideoUrl);
+					} else {
+						this.navButtons.show();
+						this.cueVideo(this.startVideo);
+					}
 				}		    
 			}
 
 			onPlayerStateChange(event) {
-				console.log('event data: ' + event.data);
+				this.consoleDebug('event data: ' + event.data);
 				if (event.data == YT.PlayerState.PLAYING) {
 					this.consoleDebug('playing: ' + this.playerId);
 					//whenever a video plays, pause other videos on the page
@@ -263,7 +275,7 @@
 				if (event.data == YT.PlayerState.CUED) {
 					this.consoleDebug('cued: ' + this.playerId);
 					// start the player (like autoplay)
-					if ( ! this.firstPlay && this.isActivePlayer || this.firstPlay && this.autoplay ) {
+					if ( this.singleVideo || ! this.firstPlay && this.isActivePlayer || this.firstPlay && this.autoplay ) {
 						event.target.playVideo();
 					} else {
 						this.consoleDebug('blocked cue');
@@ -326,8 +338,8 @@
 
 			//play a video
 			cueVideo(index){
-				console.log('cueVideo');
-				console.log(this.player);
+				this.consoleDebug('cueVideo');
+				this.consoleDebug(this.player);
 				this.isActivePlayer = true;
 				this.firstPlay = false;
 				index = parseInt(index);
@@ -355,7 +367,7 @@
 				this.navButtons.on('click', function() {
 					let navIndex = parseInt($(this).data('video-index'));
 					_this.consoleDebug('clicked button index: ' + navIndex);
-					if (! isNaN(navIndex) ) {
+					if ( ! isNaN(navIndex) ) {
 						_this.cueVideo(navIndex);
 					} else {
 						_this.consoleDebug('no navButton index');
@@ -387,7 +399,7 @@
 			}
 
 			close(){
-				console.log('close popup');
+				this.consoleDebug('close popup');
 				this.player.destroy();
 				this.instantiated = false;
 			}

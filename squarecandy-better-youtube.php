@@ -45,6 +45,20 @@ function your_own_embed_size() {
 add_filter( 'embed_defaults', 'your_own_embed_size' );
 
 
+/*
+ * Uses regex turn a YT url into an embed url
+ * https://stackoverflow.com/questions/28894116/regex-youtube-url-for-embed-with-or-without-playlist
+*/
+function better_youtube_get_embed_url( $url ) {
+	$regex = '/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/)(?:embed\/|v\/|watch\?v=|watch\?.+&v=)((?:\w|-){11})(?:&(play)?list=(\S+))?$/';
+	preg_match( $regex, $url, $matches );
+	if ( $matches ) {
+		$new_url = 'https://www.youtube.com/embed/' . rawurlencode( $matches[1] );
+		return $new_url;
+	}
+}
+
+
 function better_youtube_get_youtube_iframe_from_embed( $embed ) {
 	// use preg_match to find iframe src
 	preg_match( '/src="(.+?)"/', $embed, $matches );
@@ -77,10 +91,10 @@ function better_youtube_get_large_youtube_thumbnail( $thumbnails ) {
 }
 
 
-function better_youtube_url_parameters( $as_array = false, $autoplay = true ){
+function better_youtube_url_parameters( $as_array = false, $autoplay = true ) {
 	//previus parameters: '?feature=oembed&rel=0&controls=1&modestbranding=1&hd=1&autoplay=1'
-	$parameters  = '?&mute=0&controls=1&playsinline=1&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1';	
-	$parameters .=  '&enablejsapi=1'; // enable js interaction
+	$parameters  = '?&mute=0&controls=1&playsinline=1&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1';
+	$parameters .= '&enablejsapi=1'; // enable js interaction
 	if ( $autoplay ) {
 		$parameters .= '&autoplay=1';
 	} else {
@@ -88,17 +102,17 @@ function better_youtube_url_parameters( $as_array = false, $autoplay = true ){
 	}
 
 	if ( $as_array ) {
-		$output = array();
+		$output     = array();
 		$parameters = trim( $parameters, '?' );
-		$parameters = explode('&', $parameters);
-		
+		$parameters = explode( '&', $parameters );
+
 		foreach ( $parameters as $parameter ) {
-			$values = explode( '=', $parameter );
+			$values               = explode( '=', $parameter );
 			$output[ $values[0] ] = $values[1];
 		}
 		$parameters = $output;
 	} else {
-		$parameters = htmlspecialchars($parameters);
+		$parameters = htmlspecialchars( $parameters );
 	}
 
 	return $parameters;
