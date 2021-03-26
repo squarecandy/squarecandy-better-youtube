@@ -92,7 +92,7 @@
 			singleVideoUrl = '';
 			singleVideoTitle = '';
 
-			constructor( videoContainer, { autoplay = false, autoload = true, debug = true, popup = false, loop = true, layout = 'single-popup' } ) {
+			constructor( videoContainer, { autoplay = false, autoload = true, debug = false, popup = false, loop = true, layout = 'single-popup' } ) {
 				this.videoContainer = $(videoContainer);
 				this.playlistId = this.videoContainer.data('playlist-id');
 				this.playerId = this.playlistId ? 'player-' + this.videoContainer.data('playlist-id') : 'player';
@@ -263,7 +263,6 @@
 						this.player.cueVideoByUrl(this.singleVideoUrl);
 						this.setTitle(this.singleVideoTitle);
 					} else {
-						this.navButtons.show();
 						this.cueVideo(this.startVideo);
 					}
 				}		    
@@ -275,6 +274,8 @@
 					this.consoleDebug('playing: ' + this.playerId);
 					//whenever a video plays, pause other videos on the page
 					SCPlaylistFactory.pauseOtherVideos(this.playerId);
+					this.navButtons.show();
+					this.firstPlay = false;
 				}
 				if (event.data == YT.PlayerState.CUED) {
 					this.consoleDebug('cued: ' + this.playerId);
@@ -284,7 +285,6 @@
 					} else {
 						this.consoleDebug('blocked cue');
 					}
-					this.firstPlay = false;
 				}
 				if (event.data == YT.PlayerState.ENDED) {
 					this.consoleDebug('ended: ' + this.playerId);
@@ -348,14 +348,12 @@
 				this.consoleDebug('cueVideo');
 				this.consoleDebug(this.player);
 				this.isActivePlayer = true;
-				this.firstPlay = false;
 				index = parseInt(index);
 				this.consoleDebug('cuevideo ' + index);
 				this.player.cueVideoById(this.videoList[index].id);
 				this.videoIframe.data('video-index', index);
 				this.updateNavIndex(index);
 				this.setTitle(this.videoList[index].title);
-
 			}
 
 			bindActions(){

@@ -239,17 +239,26 @@ body.videos .elements {
 	display: none;
 }
 
-.custom-api-playlist.load-none .nav-buttons {
+.load-none .nav-buttons,
+.load-first .nav-buttons,
+.load-all .nav-buttons
+ {
 	top: 55px;
 }
 
 .custom-api-playlist .playlist-preview,
-.load-none .nav-button {
+.load-none .nav-button,
+.load-first .nav-button,
+.load-all .nav-button {
 	cursor: pointer;
 }
 
 .load-none .mfp-arrow::after,
-.load-none .mfp-arrow::before {
+.load-none .mfp-arrow::before,
+.load-first .mfp-arrow::after,
+.load-first .mfp-arrow::before,
+.load-all .mfp-arrow::after,
+.load-all .mfp-arrow::before {
 	content: unset;
 }
 
