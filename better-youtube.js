@@ -279,6 +279,7 @@
 				}
 				if (event.data == YT.PlayerState.CUED) {
 					this.consoleDebug('cued: ' + this.playerId);
+					this.consoleDebug('firstPlay: ' + this.firstPlay + ' /isActivePlayer: ' + this.isActivePlayer + ' /autoplay: ' + this.autoplay);
 					// start the player (like autoplay)
 					if ( this.singleVideo || ! this.firstPlay && this.isActivePlayer || this.firstPlay && this.autoplay ) {
 						event.target.playVideo();
@@ -365,6 +366,7 @@
 					this.thumbnails.on('click', function(e) {
 						let index = parseInt( $(this).data('video-index') );
 						_this.consoleDebug('clicked thumbnail index: ' + index);
+						_this.firstPlay = false; //so it plays immediately
 						_this.cueVideo(index);
 					});
 				}
@@ -381,6 +383,7 @@
 				this.actionsBound = true;
 			}
 
+			//for non popup players that aren't autoloaded
 			lazyLoadInstantiate(event){
 				const _this = event.data.SCPlayer;
 				_this.consoleDebug('lazyLoadInstantiate');
@@ -389,7 +392,9 @@
 				if (! isNaN(index) ) {
 					_this.startVideo = index;
 					_this.bindActions();
+					_this.autoplay = true; //so the video plays immediately
 					_this.instantiatePlayer();
+					//unhook the initial trigger actions
 					_this.previews.off('click', _this.lazyLoadInstantiate );
 					_this.navButtons.off('click', _this.lazyLoadInstantiate );
 				} else {
