@@ -122,8 +122,6 @@
 				//setup popups
 				if ( this.popup == 'single' ) {
 					this.addPlayerPopup();
-				} else if ( this.popup == 'full' ) {
-					this.wrapCoverPopup();
 				}
 				//setup previous button
 				if (this.loop){
@@ -143,14 +141,6 @@
 				} else {
 					this.onPlayerReady();
 				}
-			}
-
-			wrapCoverPopup(){
-				//add player wrapper to allow iframe sizing
-				let scaler = $('<div/>',{
-					'class' : 'player-popup-inner'
-				});
-				this.videoIframe.wrap(scaler);
 			}
 
 			addPlayerPopup() {
@@ -223,8 +213,8 @@
 				this.consoleDebug('instantiatePlayer');
 				this.consoleDebug(this);
 			  	this.player = new YT.Player( this.playerId, {
-					height: '390',
-					width: '640',
+					height: '506.25',
+					width: '900',
 					events: {
 						'onReady': this.onPlayerReady.bind(this),
 						'onStateChange': this.onPlayerStateChange.bind(this)
@@ -241,6 +231,7 @@
 					}
 				});
 				this.instantiated = true;
+				$('.custom-api-playlist').fitVids();
 			}
 
 			getVideoIds(){

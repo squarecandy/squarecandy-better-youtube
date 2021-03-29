@@ -80,7 +80,9 @@ function better_youtube_get_youtube_playlist_from_src( $src ) {
 
 
 function better_youtube_get_large_youtube_thumbnail( $thumbnails ) {
-	if ( isset( $thumbnails->standard->url ) ) {
+	if ( isset( $thumbnails->maxres->url ) ) {
+		$large_thumb = $thumbnails->maxres->url;
+	} elseif ( isset( $thumbnails->standard->url ) ) {
 		$large_thumb = $thumbnails->standard->url;
 	} elseif ( isset( $thumbnails->high->url ) ) {
 		$large_thumb = $thumbnails->high->url;
@@ -156,10 +158,10 @@ function better_youtube_api_playlist( $input ) {
 
 			$output = '<div id="playlist-' . $playlist . '" class="custom-api-playlist" data-playlist-id="' . $playlist . '" data-post-id="' . $post_id . '">';
 
-			$output .= '<div id="player-' . $playlist . '" class="playlist-preview playlist-preview-first" data-video-index="0">
+			$output .= '<div class="playlist-preview-first"><div id="player-' . $playlist . '" class="playlist-preview" data-video-index="0">
 				<div class="playlist-thumb" style="background-image:url(' .
 					$large_thumb . ')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg></div>
-				</div>';
+				</div></div>';
 			$output .= '<div class="nav-buttons"><span class="nav-button previous mfp-arrow mfp-arrow-left mfp-prevent-close" data-video-index="">Previous</span><span class="nav-button next mfp-arrow mfp-arrow-right mfp-prevent-close" data-video-index="1">Next</span></div>';
 
 			//set up the html for all items (small display)

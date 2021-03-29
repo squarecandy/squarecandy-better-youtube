@@ -133,10 +133,8 @@ body.videos .elements {
 	margin: 20px;
 }
 
-.cover-popup .player-popup-inner {
-	position: relative;
+.cover-popup .preview-player-first {
 	width: 71%;
-	padding-top: 40%;
 }
 
 .cover-popup .playlist-list {
@@ -145,15 +143,9 @@ body.videos .elements {
 }
 
 .cover-popup iframe {
-	position: absolute;
-	top: 50%;
-	left: 0;
 	display: block;
-	width: 100%;
-	height: 100%;
 	background: #000;
 	box-shadow: 0 0 8px rgb(0 0 0 / 60%);
-	transform: translateY(-50%);
 }
 
 .custom-api-playlist.cover-popup .nav-buttons {
@@ -215,10 +207,6 @@ body.videos .elements {
 
 .custom-api-playlist iframe {
 	background: #000;
-}
-
-.custom-api-playlist .playlist-thumb {
-	padding-top: 75%;
 }
 
 .custom-api-playlist .nav-buttons {
