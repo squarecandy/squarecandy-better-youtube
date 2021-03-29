@@ -129,11 +129,13 @@ body.videos .elements {
 	line-height: 0;
 }
 
+/* cover popup layout */
+
 .cover-popup.player-popup {
 	margin: 20px;
 }
 
-.cover-popup .preview-player-first {
+.cover-popup .playlist-preview-first {
 	width: 71%;
 }
 
@@ -151,6 +153,10 @@ body.videos .elements {
 .custom-api-playlist.cover-popup .nav-buttons {
 	top: 55px;
 	width: 71%;
+}
+
+.custom-api-playlist.cover-popup .nav-buttons span {
+	padding-top: 5px;
 }
 
 .cover-popup .nav-buttons .next.mfp-arrow-right {
@@ -211,7 +217,7 @@ body.videos .elements {
 
 .custom-api-playlist .nav-buttons {
 	position: relative;
-	width: 61%;	
+	width: 64%;	
 }
 
 .custom-api-playlist .nav-buttons .previous {
@@ -226,6 +232,8 @@ body.videos .elements {
 .custom-api-playlist .nav-button {
 	display: none;
 }
+
+/* play in place layout */
 
 .load-none .nav-buttons,
 .load-first .nav-buttons,
@@ -248,6 +256,12 @@ body.videos .elements {
 .load-all .mfp-arrow::after,
 .load-all .mfp-arrow::before {
 	content: unset;
+}
+
+.load-none .media-section,
+.load-first .media-section,
+.load-all .media-section {
+	margin-bottom: 1em;
 }
 
 /* end new api playlist */
