@@ -110,7 +110,9 @@ function better_youtube_url_parameters( $as_array = false, $autoplay = true ) {
 
 		foreach ( $parameters as $parameter ) {
 			$values               = explode( '=', $parameter );
-			$output[ $values[0] ] = $values[1];
+			if ( isset( $values[0] ) && isset( $values[1] ) ) {
+				$output[ $values[0] ] = $values[1];
+			}
 		}
 		$parameters = $output;
 	} else {
