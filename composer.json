@@ -1,0 +1,11 @@
+{
+	"name": "squarecandy/squarecandy-better-youtube",
+	"description": "Square Candy's Custom Wordpress Theme for Red Poppy",
+	"require": {
+		"google/apiclient": "^2.7"
+	},
+	"require-dev": {
+		"dealerdirect/phpcodesniffer-composer-installer": "^0.6.2",
+		"wp-coding-standards/wpcs": "*"
+	}
+}

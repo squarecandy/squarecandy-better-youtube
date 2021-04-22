@@ -10,30 +10,33 @@ Author URI: http://squarecandydesign.com
 Text Domain: squarecandy-better-youtube
 */
 
+define( 'SQUARECANDY_BYT_PATH', plugin_dir_path( __FILE__ ) );
+define( 'SQUARECANDY_BYT_URL', plugin_dir_url( __FILE__ ) );
+
 // Enqueue scripts required
 if ( ! function_exists( 'squarecandy_video_scripts' ) ) :
 	function squarecandy_video_scripts() {
 		// apply fitvids
 		wp_enqueue_script( 'jquery' );
-		wp_enqueue_script( 'squarecandy-fitvids', plugins_url( '/jquery.fitvids.js', __FILE__ ), array( 'jquery' ), '20170517', true );
-		wp_enqueue_script( 'squarecandy-better-youtube', plugins_url( '/better-youtube.js', __FILE__ ), array( 'jquery', 'squarecandy-fitvids' ), '20170517', true );
+		wp_enqueue_script( 'squarecandy-fitvids', SQUARECANDY_BYT_URL . 'dist/js/vendor/fitvids.min.js', array( 'jquery' ), 'version-1.1.7', true );
+		wp_enqueue_script( 'squarecandy-better-youtube', SQUARECANDY_BYT_URL . 'dist/js/better-youtube.min.js', array( 'jquery', 'squarecandy-fitvids' ), 'version-1.1.7', true );
 
-		wp_enqueue_script( 'squarecandy-magnific-popup', plugins_url( '/vendor/jquery.magnific-popup.min.js', __FILE__ ), array( 'jquery' ), '20170517', true );
-		wp_enqueue_style( 'squarecandy-magnific-popup-style', plugins_url( '/vendor/magnific-popup.css', __FILE__ ) );
+		wp_enqueue_script( 'squarecandy-magnific-popup', SQUARECANDY_BYT_URL . 'dist/js/vendor/jquery.magnific-popup.min.js', array( 'jquery' ), 'version-1.1.7', true );
+		wp_enqueue_style( 'squarecandy-magnific-popup-style', SQUARECANDY_BYT_URL . 'dist/css/vendor/magnific-popup.css', array(), 'version-1.1.7' );
 
-		wp_enqueue_style( 'squarecandy-better-youtube-css', plugins_url( '/better-youtube.css', __FILE__ ) );
+		wp_enqueue_style( 'squarecandy-better-youtube-css', SQUARECANDY_BYT_URL . 'dist/css/better-youtube.min.css', array(), 'version-1.1.7' );
 	}
 endif;
 add_action( 'wp_enqueue_scripts', 'squarecandy_video_scripts' );
 
 // Add styles to the TinyMCE editor window to make it look more like your site's front end
 function squarecandy_better_youtube_tinymce_styles() {
-	add_editor_style( plugins_url( '/better-youtube.css', __FILE__ ) );
+	add_editor_style( SQUARECANDY_BYT_URL . 'dist/css/better-youtube.min.css' );
 }
 add_action( 'admin_init', 'squarecandy_better_youtube_tinymce_styles' );
 
 // override default oEmbed size
-function your_own_embed_size() {
+function squarecandy_own_embed_size() {
 	$width    = (int) get_option( 'sqcdy_theme_colwidth', 620 ) - 20;
 	$height   = 0.5625 * $width; // 16:9 aspect ratio
 	$settings = array(
@@ -42,7 +45,7 @@ function your_own_embed_size() {
 	);
 	return $settings;
 }
-add_filter( 'embed_defaults', 'your_own_embed_size' );
+add_filter( 'embed_defaults', 'squarecandy_own_embed_size' );
 
 
 /*
@@ -109,7 +112,7 @@ function better_youtube_url_parameters( $as_array = false, $autoplay = true ) {
 		$parameters = explode( '&', $parameters );
 
 		foreach ( $parameters as $parameter ) {
-			$values               = explode( '=', $parameter );
+			$values = explode( '=', $parameter );
 			if ( isset( $values[0] ) && isset( $values[1] ) ) {
 				$output[ $values[0] ] = $values[1];
 			}
@@ -122,7 +125,6 @@ function better_youtube_url_parameters( $as_array = false, $autoplay = true ) {
 	return $parameters;
 }
 
-
 function better_youtube_api_playlist( $input ) {
 
 	$playlist = better_youtube_get_youtube_playlist_from_src( $input );
@@ -132,7 +134,7 @@ function better_youtube_api_playlist( $input ) {
 		$post_id = get_the_id();
 
 		// Google API for building custom YouTube Playlists
-		require_once plugin_dir_path( __FILE__ ) . 'vendor/google-api-php-client/vendor/autoload.php';
+		require_once SQUARECANDY_BYT_PATH . 'vendor/autoload.php';
 		try {
 			$client = new Google_Client();
 			$client->setDeveloperKey( YOUTUBE_API_KEY );
@@ -218,7 +220,7 @@ if ( ! function_exists( 'better_youtube_iframe' ) ) :
 		if ( isset( $playlist ) && ! empty( $playlist ) && defined( 'YOUTUBE_API_KEY' ) ) {
 
 			// Google API for building custom YouTube Playlists
-			require_once plugin_dir_path( __FILE__ ) . 'vendor/google-api-php-client/vendor/autoload.php';
+			require_once SQUARECANDY_BYT_PATH . 'vendor/autoload.php';
 			try {
 				$client = new Google_Client();
 				$client->setDeveloperKey( YOUTUBE_API_KEY );
@@ -287,12 +289,6 @@ if ( ! function_exists( 'better_youtube_iframe' ) ) :
 			return shortcode_unautop( $output );
 		} else {
 			// add extra params to iframe src
-			/*$params  = array(
-				'rel'            => 0,
-				'controls'       => 1,
-				'modestbranding' => 1,
-				'hd'             => 1,
-			);*/
 			$params  = better_youtube_url_parameters( true, false );
 			$new_src = add_query_arg( $params, $src );
 			$iframe  = str_replace( $src, $new_src, $iframe );
