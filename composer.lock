@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "93f3e10304cd1a61b4df7f3d5eecc112",
+    "content-hash": "2c908f1f426740ef2305afbe11ff88b2",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -123,16 +123,16 @@
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.170.0",
+            "version": "v0.172.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-api-php-client-services.git",
-                "reference": "b45ddc3d82b2c8f328d869d55db88c1885d898ee"
+                "reference": "85e8a9f0062a9e1aba3cdc0f499968bc8de78b7d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/b45ddc3d82b2c8f328d869d55db88c1885d898ee",
-                "reference": "b45ddc3d82b2c8f328d869d55db88c1885d898ee",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/85e8a9f0062a9e1aba3cdc0f499968bc8de78b7d",
+                "reference": "85e8a9f0062a9e1aba3cdc0f499968bc8de78b7d",
                 "shasum": ""
             },
             "require": {
@@ -156,7 +156,7 @@
             "keywords": [
                 "google"
             ],
-            "time": "2021-04-20T20:34:12+00:00"
+            "time": "2021-04-27T16:21:24+00:00"
         },
         {
             "name": "google/auth",
@@ -344,16 +344,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "1.8.1",
+            "version": "1.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "35ea11d335fd638b5882ff1725228b3d35496ab1"
+                "reference": "dc960a912984efb74d0a90222870c72c87f10c91"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/35ea11d335fd638b5882ff1725228b3d35496ab1",
-                "reference": "35ea11d335fd638b5882ff1725228b3d35496ab1",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/dc960a912984efb74d0a90222870c72c87f10c91",
+                "reference": "dc960a912984efb74d0a90222870c72c87f10c91",
                 "shasum": ""
             },
             "require": {
@@ -411,7 +411,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2021-03-21T16:25:00+00:00"
+            "time": "2021-04-26T09:17:50+00:00"
         },
         {
             "name": "monolog/monolog",
