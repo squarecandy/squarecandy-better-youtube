@@ -26,14 +26,19 @@ if ( ! function_exists( 'squarecandy_video_scripts' ) ) :
 
 		wp_enqueue_style( 'squarecandy-better-youtube-css', SQUARECANDY_BYT_URL . 'dist/css/better-youtube.min.css', array(), 'version-1.1.7' );
 	}
+	add_action( 'wp_enqueue_scripts', 'squarecandy_video_scripts' );
 endif;
-add_action( 'wp_enqueue_scripts', 'squarecandy_video_scripts' );
 
 // Add styles to the TinyMCE editor window to make it look more like your site's front end
 function squarecandy_better_youtube_tinymce_styles() {
 	add_editor_style( SQUARECANDY_BYT_URL . 'dist/css/better-youtube.min.css' );
 }
 add_action( 'admin_init', 'squarecandy_better_youtube_tinymce_styles' );
+
+function squarecandy_video_admin_scripts() {
+	wp_enqueue_style( 'squarecandy-better-youtube-css', SQUARECANDY_BYT_URL . 'dist/css/better-youtube.min.css', array(), 'version-1.1.7' );
+}
+add_action( 'admin_enqueue_scripts', 'squarecandy_video_admin_scripts' );
 
 // override default oEmbed size
 function squarecandy_own_embed_size() {
@@ -129,79 +134,80 @@ function better_youtube_api_playlist( $input ) {
 
 	$playlist = better_youtube_get_youtube_playlist_from_src( $input );
 
-	if ( $playlist && defined( 'YOUTUBE_API_KEY' ) ) {
-
-		$post_id = get_the_id();
-
-		// Google API for building custom YouTube Playlists
-		require_once SQUARECANDY_BYT_PATH . 'vendor/autoload.php';
-		try {
-			$client = new Google_Client();
-			$client->setDeveloperKey( YOUTUBE_API_KEY );
-			$client->setScopes( 'https://www.googleapis.com/auth/youtube' );
-			$redirect = filter_var( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'], FILTER_SANITIZE_URL );
-			$client->setRedirectUri( $redirect );
-
-			// Define an object that will be used to make all API requests.
-			$service = new Google_Service_YouTube( $client );
-
-			//get all items in the playlist via API
-			$params = array(
-				'maxResults' => 49,
-				'playlistId' => $playlist,
-			);
-			$params = array_filter( $params );
-
-			// phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-			$response = $service->playlistItems->listPlaylistItems( 'snippet', $params );
-
-			$large_thumb = better_youtube_get_large_youtube_thumbnail( $response->items[0]->snippet->thumbnails );
-
-			//set up the html for the first item (large display)
-			$first_id = $response->items[0]->snippet->resourceId->videoId;
-
-			$output = '<div id="playlist-' . $playlist . '" class="custom-api-playlist" data-playlist-id="' . $playlist . '" data-post-id="' . $post_id . '">';
-
-			$output .= '<div class="playlist-preview-first"><div id="player-' . $playlist . '" class="playlist-preview" data-video-index="0">
-				<div class="playlist-thumb" style="background-image:url(' .
-					$large_thumb . ')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg></div>
-				</div></div>';
-			$output .= '<div class="nav-buttons"><span class="nav-button previous mfp-arrow mfp-arrow-left mfp-prevent-close" data-video-index="">Previous</span><span class="nav-button next mfp-arrow mfp-arrow-right mfp-prevent-close" data-video-index="1">Next</span></div>';
-
-			//set up the html for all items (small display)
-			$output .= '<div class="playlist-list"><ul>';
-
-			$i = 1;
-			foreach ( $response->items as $item ) {
-
-				$video_id = $item->snippet->resourceId->videoId;
-
-				if ( isset( $item->snippet->thumbnails ) ) {
-					$small_thumb = $item->snippet->thumbnails->default->url;
-					$large_thumb = better_youtube_get_large_youtube_thumbnail( $item->snippet->thumbnails );
-				} else {
-					$small_thumb = false;
-					$large_thumb = false;
-				}
-
-				$index   = $i - 1;
-				$output .= '<li class="playlist-preview" data-video-id="' . $video_id . '" data-video-index="' . $index . '">' .
-					'<div class="playlist-small-thumb"><div class="playlist-thumb" style="background-image:url(' .
-					$small_thumb . ')"></div></div>' .
-					'<div class="playlist-num">' . $i . '</div>' .
-					'<div class="playlist-item-title">' . $item->snippet->title . '</div>' .
-					'</li>';
-
-				$i++;
-			}
-			$output .= '</ul></div>';
-			$output .= '</div>';
-		} catch ( Exception $e ) {
-			$error  = json_decode( $e->getMessage() );
-			$output = '<div class="error">Error: <br>' . $error->error->message . '</div>';
-		}
-		return shortcode_unautop( $output );
+	if ( ! $playlist || ! defined( 'YOUTUBE_API_KEY' ) ) {
+		return false;
 	}
+
+	$post_id = get_the_id();
+
+	// Google API for building custom YouTube Playlists
+	require_once SQUARECANDY_BYT_PATH . 'vendor/autoload.php';
+	try {
+		$client = new Google_Client();
+		$client->setDeveloperKey( YOUTUBE_API_KEY );
+		$client->setScopes( 'https://www.googleapis.com/auth/youtube' );
+		$redirect = filter_var( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'], FILTER_SANITIZE_URL );
+		$client->setRedirectUri( $redirect );
+
+		// Define an object that will be used to make all API requests.
+		$service = new Google_Service_YouTube( $client );
+
+		//get all items in the playlist via API
+		$params = array(
+			'maxResults' => 49,
+			'playlistId' => $playlist,
+		);
+		$params = array_filter( $params );
+
+		// phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+		$response = $service->playlistItems->listPlaylistItems( 'snippet', $params );
+
+		$large_thumb = better_youtube_get_large_youtube_thumbnail( $response->items[0]->snippet->thumbnails );
+
+		//set up the html for the first item (large display)
+		$first_id = $response->items[0]->snippet->resourceId->videoId;
+
+		$output = '<div id="playlist-' . $playlist . '" class="custom-api-playlist" data-playlist-id="' . $playlist . '" data-post-id="' . $post_id . '">';
+
+		$output .= '<div class="playlist-preview-first"><div id="player-' . $playlist . '" class="playlist-preview" data-video-index="0">
+			<div class="playlist-thumb" style="background-image:url(' .
+				$large_thumb . ')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg></div>
+			</div></div>';
+		$output .= '<div class="nav-buttons"><span class="nav-button previous mfp-arrow mfp-arrow-left mfp-prevent-close" data-video-index="">Previous</span><span class="nav-button next mfp-arrow mfp-arrow-right mfp-prevent-close" data-video-index="1">Next</span></div>';
+
+		//set up the html for all items (small display)
+		$output .= '<div class="playlist-list"><ul>';
+
+		$i = 1;
+		foreach ( $response->items as $item ) {
+
+			$video_id = $item->snippet->resourceId->videoId;
+
+			if ( isset( $item->snippet->thumbnails ) ) {
+				$small_thumb = $item->snippet->thumbnails->default->url;
+				$large_thumb = better_youtube_get_large_youtube_thumbnail( $item->snippet->thumbnails );
+			} else {
+				$small_thumb = false;
+				$large_thumb = false;
+			}
+
+			$index   = $i - 1;
+			$output .= '<li class="playlist-preview" data-video-id="' . $video_id . '" data-video-index="' . $index . '">' .
+				'<div class="playlist-small-thumb"><div class="playlist-thumb" style="background-image:url(' .
+				$small_thumb . ')"></div></div>' .
+				'<div class="playlist-num">' . $i . '</div>' .
+				'<div class="playlist-item-title">' . $item->snippet->title . '</div>' .
+				'</li>';
+
+			$i++;
+		}
+		$output .= '</ul></div>';
+		$output .= '</div>';
+	} catch ( Exception $e ) {
+		$error  = json_decode( $e->getMessage() );
+		$output = '<div class="error">Error: <br>' . $error->error->message . '</div>';
+	}
+	return shortcode_unautop( $output );
 
 }
 
