@@ -47,10 +47,16 @@
 				type: 'inline',
 				callbacks: {
 					open() {
-						window.players[ this.content.data( 'post-id' ) ].init();
+						if ( window.players[ this.content.data( 'post-id' ) ] ) {
+							window.players[ this.content.data( 'post-id' ) ].init();
+						}
 					},
 					close() {
-						window.players[ this.content.data( 'post-id' ) ].close();
+						// eslint-disable-next-line no-console
+						console.log( this.content.data( 'post-id' ), window.players[ this.content.data( 'post-id' ) ] );
+						if ( window.players[ this.content.data( 'post-id' ) ] ) {
+							window.players[ this.content.data( 'post-id' ) ].close();
+						}
 					},
 				},
 			} );

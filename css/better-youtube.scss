@@ -142,7 +142,7 @@ body.videos .elements {
 /* cover popup layout */
 
 .cover-popup.player-popup {
-	margin: 20px;
+	margin: 20px 0;
 }
 
 .cover-popup .playlist-preview-first {
@@ -166,7 +166,7 @@ body.videos .elements {
 }
 
 .custom-api-playlist.cover-popup .nav-buttons span {
-	padding-top: 5px;
+	padding-top: 18px;
 }
 
 .cover-popup .nav-buttons .next.mfp-arrow-right {
@@ -179,7 +179,7 @@ body.videos .elements {
 
 .cover-popup .mfp-arrow-right::after,
 .cover-popup .mfp-arrow-right::before {
-	left: 60px;
+	left: 72px;
 }
 
 .cover-popup .mfp-arrow-left::after,
@@ -194,17 +194,49 @@ body.videos .elements {
 
 .cover-popup .video-caption {
 	float: none;
-	text-align: center;
 }
 
+
+.cover-popup .nav-buttons .mfp-arrow,
+.cover-popup .nav-buttons .nav-button {
+	color: #fff;
+	opacity: 1;
+
+	&:hover {
+		opacity: 0.8;
+	}
+}
+
+.cover-popup .mfp-arrow::after {
+	top: 25px;
+	border-top-width: 7px;
+	border-bottom-width: 7px;
+}
+
+.cover-popup .mfp-arrow-left::after {
+	margin-left: 25px;
+	border-right-width: 11px;
+}
+
+.cover-popup .mfp-arrow-right::after {
+	margin-right: 25px;
+	border-left-width: 11px;
+}
+
+.cover-popup .mfp-arrow::before {
+	display: none;
+}
+
+
 .player-popup button.mfp-close {
-	top: -44px;
-	right: -44px;
+	top: -20px;
+	right: -30px;
 	color: #fff;
 }
 
 .api-playlist-anchor {
 	position: relative;
+	display: block;
 }
 
 .api-playlist-anchor img {
@@ -219,6 +251,18 @@ body.videos .elements {
 	left: 50%;
 	font-size: 4em;
 	transform: translateX(-50%) translateY(-50%);
+
+	&::after {
+		position: absolute;
+		top: 0.3em;
+		left: 0.25em;
+		z-index: -1;
+		display: block;
+		width: 0.5em;
+		height: 0.4em;
+		background: #fff;
+		content: " ";
+	}
 }
 
 .custom-api-playlist iframe {
@@ -278,10 +322,13 @@ body.videos .elements {
 
 @media only screen and (max-width: 760px) {
 
-	.playlist-preview-first {
+	.cover-popup .playlist-preview-first,
+	.playlist-preview-first,
+	.custom-api-playlist.cover-popup .nav-buttons {
 		width: 100%;
 	}
 
+	.cover-popup .playlist-list,
 	.playlist-list {
 		position: relative;
 		top: auto;
@@ -290,6 +337,18 @@ body.videos .elements {
 		height: auto;
 		margin-top: 10px;
 		overflow-y: visible;
+	}
+
+	.cover-popup .playlist-list {
+		margin-top: 60px;
+	}
+
+	.custom-api-playlist.cover-popup .nav-buttons span {
+		padding-top: 10px;
+	}
+
+	.cover-popup .mfp-arrow::after {
+		top: 17px;
 	}
 
 	.playlist-list li {
