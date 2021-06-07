@@ -250,6 +250,7 @@
 					},
 				} );
 				this.instantiated = true;
+				this.navButtons.show();
 				fitvids( '.custom-api-playlist' );
 			}
 
