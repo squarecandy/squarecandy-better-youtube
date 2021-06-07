@@ -96,6 +96,8 @@ function better_youtube_get_large_youtube_thumbnail( $thumbnails ) {
 		$large_thumb = $thumbnails->high->url;
 	} elseif ( isset( $thumbnails->medium->url ) ) {
 		$large_thumb = $thumbnails->medium->url;
+	} else {
+		$large_thumb = false;
 	}
 	return $large_thumb;
 }
@@ -184,7 +186,11 @@ function better_youtube_api_playlist( $input ) {
 			$video_id = $item->snippet->resourceId->videoId;
 
 			if ( isset( $item->snippet->thumbnails ) ) {
-				$small_thumb = $item->snippet->thumbnails->default->url;
+				if ( isset( $item->snippet->thumbnails->default->url ) ) {
+					$small_thumb = $item->snippet->thumbnails->default->url;
+				} else {
+					$small_thumb = better_youtube_get_large_youtube_thumbnail( $item->snippet->thumbnails );
+				}
 				$large_thumb = better_youtube_get_large_youtube_thumbnail( $item->snippet->thumbnails );
 			} else {
 				$small_thumb = false;
