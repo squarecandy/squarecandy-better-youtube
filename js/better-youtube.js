@@ -226,6 +226,20 @@
 						},
 					} );
 				} );
+
+				// accessibility for playlist nav
+				this.previews.on( 'keydown', function( e ) {
+					if (
+						e.code === 'Enter' ||
+						e.code === 'Space' ||
+						e.keyCode === 13 ||
+						e.keyCode === 32 ||
+						e.which === 13 ||
+						e.which === 32
+					) {
+						$( this ).trigger( 'click' );
+					}
+				} );
 			}
 
 			instantiatePlayer() {

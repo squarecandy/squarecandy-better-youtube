@@ -200,7 +200,7 @@ function better_youtube_api_playlist( $input ) {
 			}
 
 			$index   = $i - 1;
-			$output .= '<li class="playlist-preview" data-video-id="' . $video_id . '" data-video-index="' . $index . '">' .
+			$output .= '<li class="playlist-preview" data-video-id="' . $video_id . '" data-video-index="' . $index . '" tabindex="0" role="button">' .
 				'<div class="playlist-small-thumb"><div class="playlist-thumb" style="background-image:url(' .
 				$small_thumb . ')"></div></div>' .
 				'<div class="playlist-num">' . $i . '</div>' .
