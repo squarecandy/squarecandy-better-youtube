@@ -58,11 +58,13 @@ add_filter( 'embed_defaults', 'squarecandy_own_embed_size' );
  * https://stackoverflow.com/questions/28894116/regex-youtube-url-for-embed-with-or-without-playlist
 */
 function better_youtube_get_embed_url( $url ) {
-	$regex = '/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/)(?:embed\/|v\/|watch\?v=|watch\?.+&v=)((?:\w|-){11})(?:&(play)?list=(\S+))?$/';
+	$regex = '~^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((?:\w|-){11})(?:&list=(\S+))?$~';
 	preg_match( $regex, $url, $matches );
 	if ( $matches ) {
 		$new_url = 'https://www.youtube.com/embed/' . rawurlencode( $matches[1] );
 		return $new_url;
+	} else {
+		return false;
 	}
 }
 
