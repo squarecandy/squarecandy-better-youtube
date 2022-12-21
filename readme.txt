@@ -3,7 +3,7 @@ Contributors: squarecandy
 Requires at least: 4.0
 Tested up to: 5.5
 Requires PHP: 7.4
-Stable tag: 1.1.7
+Stable tag: 1.1.8-dev.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
