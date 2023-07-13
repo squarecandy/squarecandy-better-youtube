@@ -129,7 +129,7 @@ function better_youtube_url_parameters( $as_array = false, $autoplay = true ) {
 		$parameters = $output;
 	}
 
-	return esc_html( $parameters );
+	return $parameters;
 }
 
 function better_youtube_api_playlist( $input ) {
@@ -303,6 +303,7 @@ if ( ! function_exists( 'better_youtube_iframe' ) ) :
 			// add extra params to iframe src
 			$params  = better_youtube_url_parameters( true, false );
 			$new_src = add_query_arg( $params, $src );
+			$new_src = esc_url( $new_src );
 			$iframe  = str_replace( $src, $new_src, $iframe );
 			$iframe  = str_replace( 'allow="autoplay; encrypted-media"', '', $iframe );
 			$iframe  = str_replace( 'frameborder="0"', '', $iframe );
