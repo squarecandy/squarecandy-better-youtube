@@ -35,7 +35,7 @@ module.exports = function( grunt ) {
 			},
 		},
 		copy: {
-			js: {
+			preflight: {
 				files: [
 					{
 						expand: true,
@@ -49,10 +49,6 @@ module.exports = function( grunt ) {
 						src: 'fitvids.min.js',
 						dest: 'dist/js/vendor',
 					},
-				],
-			},
-			css: {
-				files: [
 					{
 						expand: true,
 						cwd: 'node_modules/magnific-popup/dist',
@@ -90,14 +86,6 @@ module.exports = function( grunt ) {
 		stylelint: {
 			src: [ 'css/*.scss', 'css/**/*.scss', 'css/*.css' ],
 		},
-		eslint: {
-			gruntfile: {
-				src: [ 'Gruntfile.js' ],
-			},
-			src: {
-				src: [ 'js' ],
-			},
-		},
 		run: {
 			stylelintfix: {
 				cmd: 'npx',
@@ -107,15 +95,48 @@ module.exports = function( grunt ) {
 				cmd: 'eslint',
 				args: [ 'js/*.js', '--fix' ],
 			},
+			bump: {
+				cmd: 'npm',
+				args: [ 'run', 'release', '--', '--prerelease', 'dev', '--skip.tag', '--skip.changelog' ],
+			},
+		},
+		eslint: {
+			gruntfile: {
+				src: [ 'Gruntfile.js' ],
+			},
+			src: {
+				src: [ 'js' ],
+			},
 		},
 		watch: {
 			css: {
 				files: [ 'css/*.scss' ],
-				tasks: [ 'run:stylelintfix', 'sass', 'postcss' ],
+				tasks: [ 'run:stylelintfix', 'sass', 'postcss', 'string-replace' ],
 			},
 			js: {
 				files: [ 'js/*.js' ],
 				tasks: [ 'run:eslintfix', 'terser' ],
+			},
+		},
+		'string-replace': {
+			dist: {
+				files: [
+					{
+						expand: true,
+						cwd: 'dist/css/',
+						src: '*.min.css.map',
+						dest: 'dist/css/',
+					},
+				],
+				options: {
+					replacements: [
+						// crazy workaround to remediate map files with absolute localhost paths
+						{
+							pattern: /(file:\/\/\/([^,]*)\/wp-content)+/g,
+							replacement: '/wp-content',
+						},
+					],
+				},
 			},
 		},
 	} );
@@ -126,10 +147,15 @@ module.exports = function( grunt ) {
 	grunt.loadNpmTasks( 'grunt-phpcs' );
 	grunt.loadNpmTasks( 'grunt-stylelint' );
 	grunt.loadNpmTasks( 'grunt-eslint' );
-	grunt.loadNpmTasks( 'grunt-postcss' );
+	grunt.loadNpmTasks( '@lodder/grunt-postcss' );
 	grunt.loadNpmTasks( 'grunt-contrib-copy' );
 	grunt.loadNpmTasks( 'grunt-run' );
-	grunt.registerTask( 'init', [ 'sass', 'postcss', 'copy', 'terser' ] );
-	grunt.registerTask( 'default', [ 'run', 'sass', 'postcss', 'terser', 'watch' ] );
-	grunt.registerTask( 'preflight', [ 'sass', 'postcss', 'copy', 'terser', 'phpcs', 'stylelint', 'eslint' ] );
+	grunt.loadNpmTasks( 'grunt-string-replace' );
+
+	grunt.registerTask( 'init', [ 'sass', 'postcss', 'copy', 'terser', 'string-replace' ] );
+	grunt.registerTask( 'default', [ 'run:stylelintfix', 'run:eslintfix', 'sass', 'postcss', 'terser', 'string-replace', 'watch' ] );
+	grunt.registerTask( 'compile', [ 'sass', 'postcss', 'copy:preflight', 'terser', 'string-replace' ] );
+	grunt.registerTask( 'lint', [ 'stylelint', 'eslint', 'phpcs' ] );
+	grunt.registerTask( 'bump', [ 'run:bump' ] );
+	grunt.registerTask( 'preflight', [ 'compile', 'lint', 'bump' ] );
 };
