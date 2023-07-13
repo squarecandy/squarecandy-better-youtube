@@ -127,11 +127,9 @@ function better_youtube_url_parameters( $as_array = false, $autoplay = true ) {
 			}
 		}
 		$parameters = $output;
-	} else {
-		$parameters = htmlspecialchars( $parameters );
 	}
 
-	return $parameters;
+	return esc_html( $parameters );
 }
 
 function better_youtube_api_playlist( $input ) {
