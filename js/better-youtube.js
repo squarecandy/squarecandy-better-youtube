@@ -103,14 +103,7 @@
 
 			constructor(
 				videoContainer,
-				{
-					autoplay = false,
-					autoload = true,
-					debug = false,
-					popup = false,
-					loop = true,
-					layout = 'single-popup',
-				}
+				{ autoplay = false, autoload = true, debug = false, popup = false, loop = true, layout = 'single-popup' }
 			) {
 				this.videoContainer = $( videoContainer );
 				this.playlistId = this.videoContainer.data( 'playlist-id' );
@@ -307,19 +300,10 @@
 				if ( event.data === YT.PlayerState.CUED ) {
 					this.consoleDebug( 'cued: ' + this.playerId );
 					this.consoleDebug(
-						'firstPlay: ' +
-							this.firstPlay +
-							' /isActivePlayer: ' +
-							this.isActivePlayer +
-							' /autoplay: ' +
-							this.autoplay
+						'firstPlay: ' + this.firstPlay + ' /isActivePlayer: ' + this.isActivePlayer + ' /autoplay: ' + this.autoplay
 					);
 					// start the player (like autoplay)
-					if (
-						this.singleVideo ||
-						( ! this.firstPlay && this.isActivePlayer ) ||
-						( this.firstPlay && this.autoplay )
-					) {
+					if ( this.singleVideo || ( ! this.firstPlay && this.isActivePlayer ) || ( this.firstPlay && this.autoplay ) ) {
 						event.target.playVideo();
 					} else {
 						this.consoleDebug( 'blocked cue' );
