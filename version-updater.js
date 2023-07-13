@@ -1,6 +1,6 @@
 // version-updater.js
 module.exports.readVersion = function( contents ) {
-	// handle style.css
+	// handle style.css or plugin.php
 	const regex = /^Version:.*/gim;
 	const found = contents.match( regex );
 	if ( found ) {
@@ -22,7 +22,7 @@ module.exports.readVersion = function( contents ) {
 };
 
 module.exports.writeVersion = function( contents, version ) {
-	// handle style.css
+	// handle style.css or plugin.php
 	const regex = /^Version:.*/gim;
 	const found = contents.match( regex );
 	if ( found ) {
@@ -40,5 +40,5 @@ module.exports.writeVersion = function( contents, version ) {
 	if ( found3 ) {
 		return contents.replace( regex3, 'version-' + version );
 	}
-	return null;
+	return contents;
 };

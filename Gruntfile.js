@@ -37,6 +37,14 @@ module.exports = function( grunt ) {
 		copy: {
 			preflight: {
 				files: [
+					// common
+					{
+						expand: true,
+						cwd: 'node_modules/squarecandy-common/common',
+						src: '**/*',
+						dest: '',
+						dot: true,
+					},
 					{
 						expand: true,
 						cwd: 'node_modules/magnific-popup/dist',
