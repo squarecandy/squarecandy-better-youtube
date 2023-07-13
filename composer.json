@@ -1,6 +1,4 @@
 {
-	"name": "squarecandy/squarecandy-better-youtube",
-	"description": "Square Candy's Custom Wordpress Theme for Red Poppy",
 	"require": {
 		"google/apiclient": "^2.7"
 	},
