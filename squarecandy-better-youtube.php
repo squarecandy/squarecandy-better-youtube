@@ -307,7 +307,10 @@ if ( ! function_exists( 'better_youtube_iframe' ) ) :
 			$iframe  = str_replace( $src, $new_src, $iframe );
 			$iframe  = str_replace( 'allow="autoplay; encrypted-media"', '', $iframe );
 			$iframe  = str_replace( 'frameborder="0"', '', $iframe );
-			$iframe  = shortcode_unautop( $iframe );
+			if ( ! strpos( $iframe, 'loading=' ) ) {
+				$iframe = str_replace( '<iframe ', '<iframe loading="lazy" ', $iframe );
+			}
+			$iframe = shortcode_unautop( $iframe );
 			if ( ! strpos( $iframe, 'fitvids' ) ) {
 				$iframe = '<div class="fitvids">' . $iframe . '</div>';
 			}
