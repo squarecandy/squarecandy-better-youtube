@@ -10,6 +10,18 @@ A WordPress plugin to improve the look and behavior of YouTube videos on WordPre
 - use HD if available
 - apply responsive iframe via fitvids.js
 
+We filter `oembed_result` & `embed_oembed_html` to: 
+- replace any youtube playlist iframes with our own playlist code or 
+- wrap youtube iframes in fitvid divs & add extra parameters or 
+- wrap vimeo iframes in .fitvid divs
+
+We also filter `get_the_excerpt` to wrap all iframes in fitvid divs.
+
+Then we have js to:
+- run fitvids (responsive size) on .fitvid divs
+- make .custom-playlist a magnific popup
+- control display/interaction of playlists
+
 ## Playlist Option
 
 To enable the nice visual playlist generator, you must [obtain a google API key](https://console.cloud.google.com/cloud-resource-manager) that has the YouTube Data API v3 enabled and place it in your wp-config.php file:
