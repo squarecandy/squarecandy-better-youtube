@@ -273,7 +273,7 @@ if ( ! function_exists( 'better_youtube_iframe' ) ) :
 						$item->snippet->resourceId->videoId . better_youtube_url_parameters();
 
 					if ( isset( $item->snippet->thumbnails ) ) {
-						$small_thumb = $item->snippet->thumbnails->default->url;
+						$small_thumb = isset( $item->snippet->thumbnails->default->url ) ? $item->snippet->thumbnails->default->url : false;
 						$large_thumb = better_youtube_get_large_youtube_thumbnail( $item->snippet->thumbnails );
 					} else {
 						$small_thumb = false;
