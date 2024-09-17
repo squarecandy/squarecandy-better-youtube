@@ -41,7 +41,8 @@ module.exports = function( grunt ) {
 					{
 						expand: true,
 						cwd: 'node_modules/squarecandy-common/common',
-						src: '**/*',
+						//src: '**/*',
+						src: ['**/*', '!gitignore'], // !! skip gitignore bc we don't want to ignore /vendor						
 						dest: '',
 						dot: true,
 						rename( dest, matchedSrcPath ) {
