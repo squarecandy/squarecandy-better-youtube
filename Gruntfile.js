@@ -42,7 +42,7 @@ module.exports = function( grunt ) {
 						expand: true,
 						cwd: 'node_modules/squarecandy-common/common',
 						//src: '**/*',
-						src: ['**/*', '!gitignore'], // !! skip gitignore bc we don't want to ignore /vendor						
+						src: [ '**/*', '!gitignore' ], // !! skip gitignore bc we don't want to ignore /vendor
 						dest: '',
 						dot: true,
 						rename( dest, matchedSrcPath ) {
@@ -102,7 +102,7 @@ module.exports = function( grunt ) {
 		},
 		phpcs: {
 			application: {
-				src: [ '*.php' ],
+				src: [ '*.php', 'inc/*.php' ],
 			},
 			options: {
 				bin: './vendor/squizlabs/php_codesniffer/bin/phpcs',
