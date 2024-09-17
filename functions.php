@@ -2,7 +2,7 @@
 
 define( 'SQUARECANDY_BYT_PATH', plugin_dir_path( __FILE__ ) );
 define( 'SQUARECANDY_BYT_URL', plugin_dir_url( __FILE__ ) );
-define( 'SQUARECANDY_BYT_VERSION', 'version-1.2.0-dev.2' );
+define( 'SQUARECANDY_BYT_VERSION', 'version-1.3.0-dev.0' );
 
 // Enqueue scripts required
 if ( ! function_exists( 'squarecandy_video_scripts' ) ) :
