@@ -49,7 +49,7 @@ class RemovedFunctionsSniff extends Sniff
      *              but that sniff is no longer being extended.
      * @since 7.0.8 Property renamed from `$forbiddenFunctions` to `$removedFunctions`.
      *
-     * @var array(string => array(string => bool|string|null))
+     * @var array<string, array<string, bool|string|null>>
      */
     protected $removedFunctions = [
         'crack_check' => [
@@ -1162,13 +1162,16 @@ class RemovedFunctionsSniff extends Sniff
             'extension' => 'oracle',
         ],
         'mysqli_embedded_connect' => [
-            '5.1' => true,
+            '5.1'       => true,
+            'extension' => 'mysqli',
         ],
         'mysqli_server_end' => [
-            '5.1' => true,
+            '5.1'       => true,
+            'extension' => 'mysqli',
         ],
         'mysqli_server_init' => [
-            '5.1' => true,
+            '5.1'       => true,
+            'extension' => 'mysqli',
         ],
 
         'msession_connect' => [
@@ -1257,7 +1260,8 @@ class RemovedFunctionsSniff extends Sniff
         ],
 
         'mysqli_resource' => [
-            '5.1.4' => true,
+            '5.1.4'     => true,
+            'extension' => 'mysqli',
         ],
 
         'mysql_createdb' => [
@@ -2724,28 +2728,36 @@ class RemovedFunctionsSniff extends Sniff
             'extension' => 'msql',
         ],
         'mysqli_disable_reads_from_master' => [
-            '5.3' => true,
+            '5.3'       => true,
+            'extension' => 'mysqli',
         ],
         'mysqli_disable_rpl_parse' => [
-            '5.3' => true,
+            '5.3'       => true,
+            'extension' => 'mysqli',
         ],
         'mysqli_enable_reads_from_master' => [
-            '5.3' => true,
+            '5.3'       => true,
+            'extension' => 'mysqli',
         ],
         'mysqli_enable_rpl_parse' => [
-            '5.3' => true,
+            '5.3'       => true,
+            'extension' => 'mysqli',
         ],
         'mysqli_master_query' => [
-            '5.3' => true,
+            '5.3'       => true,
+            'extension' => 'mysqli',
         ],
         'mysqli_rpl_parse_enabled' => [
-            '5.3' => true,
+            '5.3'       => true,
+            'extension' => 'mysqli',
         ],
         'mysqli_rpl_probe' => [
-            '5.3' => true,
+            '5.3'       => true,
+            'extension' => 'mysqli',
         ],
         'mysqli_slave_query' => [
-            '5.3' => true,
+            '5.3'       => true,
+            'extension' => 'mysqli',
         ],
 
         'call_user_method' => [
@@ -2790,33 +2802,41 @@ class RemovedFunctionsSniff extends Sniff
             'extension'   => 'ereg',
         ],
         'imagepsbbox' => [
-            '7.0' => true,
+            '7.0'       => true,
+            'extension' => 'gd',
         ],
         'imagepsencodefont' => [
-            '7.0' => true,
+            '7.0'       => true,
+            'extension' => 'gd',
         ],
         'imagepsextendfont' => [
-            '7.0' => true,
+            '7.0'       => true,
+            'extension' => 'gd',
         ],
         'imagepsfreefont' => [
-            '7.0' => true,
+            '7.0'       => true,
+            'extension' => 'gd',
         ],
         'imagepsloadfont' => [
-            '7.0' => true,
+            '7.0'       => true,
+            'extension' => 'gd',
         ],
         'imagepsslantfont' => [
-            '7.0' => true,
+            '7.0'       => true,
+            'extension' => 'gd',
         ],
         'imagepstext' => [
-            '7.0' => true,
+            '7.0'       => true,
+            'extension' => 'gd',
         ],
         'import_request_variables' => [
             '5.3' => false,
             '5.4' => true,
         ],
         'ldap_sort' => [
-            '7.0' => false,
-            '8.0' => true,
+            '7.0'       => false,
+            '8.0'       => true,
+            'extension' => 'ldap',
         ],
         'mcrypt_generic_end' => [
             '5.3'         => false,
@@ -2850,36 +2870,43 @@ class RemovedFunctionsSniff extends Sniff
             '5.3'         => false,
             '5.4'         => true,
             'alternative' => 'mysqli_stmt::bind_param()',
+            'extension'   => 'mysqli',
         ],
         'mysqli_bind_result' => [
             '5.3'         => false,
             '5.4'         => true,
             'alternative' => 'mysqli_stmt::bind_result()',
+            'extension'   => 'mysqli',
         ],
         'mysqli_client_encoding' => [
             '5.3'         => false,
             '5.4'         => true,
             'alternative' => 'mysqli::character_set_name()',
+            'extension'   => 'mysqli',
         ],
         'mysqli_fetch' => [
             '5.3'         => false,
             '5.4'         => true,
             'alternative' => 'mysqli_stmt::fetch()',
+            'extension'   => 'mysqli',
         ],
         'mysqli_param_count' => [
             '5.3'         => false,
             '5.4'         => true,
             'alternative' => 'mysqli_stmt_param_count()',
+            'extension'   => 'mysqli',
         ],
         'mysqli_get_metadata' => [
             '5.3'         => false,
             '5.4'         => true,
             'alternative' => 'mysqli_stmt::result_metadata()',
+            'extension'   => 'mysqli',
         ],
         'mysqli_send_long_data' => [
             '5.3'         => false,
             '5.4'         => true,
             'alternative' => 'mysqli_stmt::send_long_data()',
+            'extension'   => 'mysqli',
         ],
         'magic_quotes_runtime' => [
             '5.3' => false,
@@ -2969,203 +2996,253 @@ class RemovedFunctionsSniff extends Sniff
             'extension'   => 'mcrypt',
         ],
         'ocibindbyname' => [
-            '5.4'         => false,
-            'alternative' => 'oci_bind_by_name()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocicancel' => [
-            '5.4'         => false,
-            'alternative' => 'oci_cancel()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocicloselob' => [
-            '5.4'         => false,
-            'alternative' => 'OCI-Lob::close() / OCILob::close() (PHP 8+)',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocicollappend' => [
-            '5.4'         => false,
-            'alternative' => 'OCI-Collection::append() / OCICollection::append() (PHP 8+)',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocicollassign' => [
-            '5.4'         => false,
-            'alternative' => 'OCI-Collection::assign() / OCICollection::assign() (PHP 8+)',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocicollassignelem' => [
-            '5.4'         => false,
-            'alternative' => 'OCI-Collection::assignElem() / OCICollection::assignElem() (PHP 8+)',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocicollgetelem' => [
-            '5.4'         => false,
-            'alternative' => 'OCI-Collection::getElem() / OCICollection::getElem() (PHP 8+)',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocicollmax' => [
-            '5.4'         => false,
-            'alternative' => 'OCI-Collection::max() / OCICollection::max() (PHP 8+)',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocicollsize' => [
-            '5.4'         => false,
-            'alternative' => 'OCI-Collection::size() / OCICollection::size() (PHP 8+)',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocicolltrim' => [
-            '5.4'         => false,
-            'alternative' => 'OCI-Collection::trim() / OCICollection::trim() (PHP 8+)',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocicolumnisnull' => [
-            '5.4'         => false,
-            'alternative' => 'oci_field_is_null()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocicolumnname' => [
-            '5.4'         => false,
-            'alternative' => 'oci_field_name()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocicolumnprecision' => [
-            '5.4'         => false,
-            'alternative' => 'oci_field_precision()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocicolumnscale' => [
-            '5.4'         => false,
-            'alternative' => 'oci_field_scale()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocicolumnsize' => [
-            '5.4'         => false,
-            'alternative' => 'oci_field_size()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocicolumntype' => [
-            '5.4'         => false,
-            'alternative' => 'oci_field_type()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocicolumntyperaw' => [
-            '5.4'         => false,
-            'alternative' => 'oci_field_type_raw()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocicommit' => [
-            '5.4'         => false,
-            'alternative' => 'oci_commit()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocidefinebyname' => [
-            '5.4'         => false,
-            'alternative' => 'oci_define_by_name()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocierror' => [
-            '5.4'         => false,
-            'alternative' => 'oci_error()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ociexecute' => [
-            '5.4'         => false,
-            'alternative' => 'oci_execute()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocifetch' => [
-            '5.4'         => false,
-            'alternative' => 'oci_fetch()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocifetchinto' => [
-            '5.4' => false,
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocifetchstatement' => [
-            '5.4'         => false,
-            'alternative' => 'oci_fetch_all()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocifreecollection' => [
-            '5.4'         => false,
-            'alternative' => 'OCI-Collection::free() / OCICollection::free() (PHP 8+)',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocifreecursor' => [
-            '5.4'         => false,
-            'alternative' => 'oci_free_statement()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocifreedesc' => [
-            '5.4'         => false,
-            'alternative' => 'OCI-Lob::free() / OCILob::free() (PHP 8+)',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocifreestatement' => [
-            '5.4'         => false,
-            'alternative' => 'oci_free_statement()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ociinternaldebug' => [
-            '5.4'         => false,
-            '8.0'         => true,
-            'alternative' => 'oci_internal_debug() (PHP < 8.0)',
+            '5.4'       => false,
+            '8.0'       => true,
+            'extension' => 'oci8',
         ],
         'ociloadlob' => [
-            '5.4'         => false,
-            'alternative' => 'OCI-Lob::load() / OCILob::load() (PHP 8+)',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocilogoff' => [
-            '5.4'         => false,
-            'alternative' => 'oci_close()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocilogon' => [
-            '5.4'         => false,
-            'alternative' => 'oci_connect()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocinewcollection' => [
-            '5.4'         => false,
-            'alternative' => 'oci_new_collection()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocinewcursor' => [
-            '5.4'         => false,
-            'alternative' => 'oci_new_cursor()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocinewdescriptor' => [
-            '5.4'         => false,
-            'alternative' => 'oci_new_descriptor()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocinlogon' => [
-            '5.4'         => false,
-            'alternative' => 'oci_new_connect()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocinumcols' => [
-            '5.4'         => false,
-            'alternative' => 'oci_num_fields()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ociparse' => [
-            '5.4'         => false,
-            'alternative' => 'oci_parse()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ociplogon' => [
-            '5.4'         => false,
-            'alternative' => 'oci_pconnect()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ociresult' => [
-            '5.4'         => false,
-            'alternative' => 'oci_result()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocirollback' => [
-            '5.4'         => false,
-            'alternative' => 'oci_rollback()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocirowcount' => [
-            '5.4'         => false,
-            'alternative' => 'oci_num_rows()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocisavelob' => [
-            '5.4'         => false,
-            'alternative' => 'OCI-Lob::save() / OCILob::save() (PHP 8+)',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocisavelobfile' => [
-            '5.4'         => false,
-            'alternative' => 'OCI-Lob::import() / OCILob::import() (PHP 8+)',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ociserverversion' => [
-            '5.4'         => false,
-            'alternative' => 'oci_server_version()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocisetprefetch' => [
-            '5.4'         => false,
-            'alternative' => 'oci_set_prefetch()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ocistatementtype' => [
-            '5.4'         => false,
-            'alternative' => 'oci_statement_type()',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ociwritelobtofile' => [
-            '5.4'         => false,
-            'alternative' => 'OCI-Lob::export() / OCILob::export() (PHP 8+)',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'ociwritetemporarylob' => [
-            '5.4'         => false,
-            'alternative' => 'OCI-Lob::writeTemporary() / OCILob::writeTemporary() (PHP 8+)',
+            '5.4'       => false,
+            '8.4'       => true,
+            'extension' => 'oci8',
         ],
         'mysqli_get_cache_stats' => [
-            '5.4' => true,
+            '5.4'       => true,
+            'extension' => 'mysqli',
         ],
         'sqlite_array_query' => [
             '5.4'       => true,
@@ -4035,15 +4112,18 @@ class RemovedFunctionsSniff extends Sniff
             '7.2'         => false,
             '8.0'         => true,
             'alternative' => 'imagecreatefromjpeg() and imagewbmp()',
+            'extension'   => 'gd',
         ],
         'png2wbmp' => [
             '7.2'         => false,
             '8.0'         => true,
             'alternative' => 'imagecreatefrompng() or imagewbmp()',
+            'extension'   => 'gd',
         ],
         '__autoload' => [
             '7.2'         => false,
-            'alternative' => 'SPL autoload',
+            '8.0'         => true,
+            'alternative' => 'spl_autoload_register()',
         ],
         'create_function' => [
             '7.2'         => false,
@@ -4059,87 +4139,104 @@ class RemovedFunctionsSniff extends Sniff
             '7.2'         => false,
             '8.0'         => true,
             'alternative' => 'gmp_random_bits() or gmp_random_range()',
+            'extension'   => 'gmp',
         ],
         'read_exif_data' => [
             '7.2'         => false,
             '8.0'         => true,
             'alternative' => 'exif_read_data()',
+            'extension'   => 'exif',
         ],
 
         'image2wbmp' => [
             '7.3'         => false,
             '8.0'         => true,
             'alternative' => 'imagewbmp()',
+            'extension'   => 'gd',
         ],
         'mbregex_encoding' => [
             '7.3'         => false,
             '8.0'         => true,
             'alternative' => 'mb_regex_encoding()',
+            'extension'   => 'mbstring',
         ],
         'mbereg' => [
             '7.3'         => false,
             '8.0'         => true,
             'alternative' => 'mb_ereg()',
+            'extension'   => 'mbstring',
         ],
         'mberegi' => [
             '7.3'         => false,
             '8.0'         => true,
             'alternative' => 'mb_eregi()',
+            'extension'   => 'mbstring',
         ],
         'mbereg_replace' => [
             '7.3'         => false,
             '8.0'         => true,
             'alternative' => 'mb_ereg_replace()',
+            'extension'   => 'mbstring',
         ],
         'mberegi_replace' => [
             '7.3'         => false,
             '8.0'         => true,
             'alternative' => 'mb_eregi_replace()',
+            'extension'   => 'mbstring',
         ],
         'mbsplit' => [
             '7.3'         => false,
             '8.0'         => true,
             'alternative' => 'mb_split()',
+            'extension'   => 'mbstring',
         ],
         'mbereg_match' => [
             '7.3'         => false,
             '8.0'         => true,
             'alternative' => 'mb_ereg_match()',
+            'extension'   => 'mbstring',
         ],
         'mbereg_search' => [
             '7.3'         => false,
             '8.0'         => true,
             'alternative' => 'mb_ereg_search()',
+            'extension'   => 'mbstring',
         ],
         'mbereg_search_pos' => [
             '7.3'         => false,
             '8.0'         => true,
             'alternative' => 'mb_ereg_search_pos()',
+            'extension'   => 'mbstring',
         ],
         'mbereg_search_regs' => [
             '7.3'         => false,
             '8.0'         => true,
             'alternative' => 'mb_ereg_search_regs()',
+            'extension'   => 'mbstring',
         ],
         'mbereg_search_init' => [
             '7.3'         => false,
             '8.0'         => true,
             'alternative' => 'mb_ereg_search_init()',
+            'extension'   => 'mbstring',
         ],
         'mbereg_search_getregs' => [
             '7.3'         => false,
             '8.0'         => true,
             'alternative' => 'mb_ereg_search_getregs()',
+            'extension'   => 'mbstring',
         ],
         'mbereg_search_getpos' => [
             '7.3'         => false,
             '8.0'         => true,
             'alternative' => 'mb_ereg_search_getpos()',
+            'extension'   => 'mbstring',
         ],
         'mbereg_search_setpos' => [
             '7.3'         => false,
             '8.0'         => true,
             'alternative' => 'mb_ereg_search_setpos()',
+            'extension'   => 'mbstring',
         ],
         'fgetss' => [
             '7.3' => false,
@@ -4173,6 +4270,7 @@ class RemovedFunctionsSniff extends Sniff
         ],
         'is_real' => [
             '7.4'         => false,
+            '8.0'         => true,
             'alternative' => 'is_float()',
         ],
         'money_format' => [
@@ -4574,11 +4672,13 @@ class RemovedFunctionsSniff extends Sniff
             '7.4'         => false,
             '8.0'         => true,
             'alternative' => 'ldap_search()',
+            'extension'   => 'ldap',
         ],
         'ldap_control_paged_result' => [
             '7.4'         => false,
             '8.0'         => true,
             'alternative' => 'ldap_search()',
+            'extension'   => 'ldap',
         ],
         'recode_file' => [
             '7.4'         => true,
@@ -4620,151 +4720,190 @@ class RemovedFunctionsSniff extends Sniff
             'extension' => 'wddx',
         ],
         'mysqli_embedded_server_end' => [
-            '7.4' => true,
+            '7.4'       => true,
+            'extension' => 'mysqli',
         ],
         'mysqli_embedded_server_start' => [
-            '7.4' => true,
+            '7.4'       => true,
+            'extension' => 'mysqli',
         ],
 
         'enchant_broker_get_dict_path' => [
-            '8.0' => false,
+            '8.0'       => false,
+            'extension' => 'enchant',
         ],
         'enchant_broker_set_dict_path' => [
-            '8.0' => false,
+            '8.0'       => false,
+            'extension' => 'enchant',
         ],
         'enchant_broker_free' => [
             '8.0'         => false,
             'alternative' => 'unset the object',
+            'extension'   => 'enchant',
         ],
         'enchant_broker_free_dict' => [
             '8.0'         => false,
             'alternative' => 'unset the object',
+            'extension'   => 'enchant',
         ],
         'enchant_dict_add_to_personal' => [
             '8.0'         => false,
             'alternative' => 'enchant_dict_add()',
+            'extension'   => 'enchant',
         ],
         'enchant_dict_is_in_session' => [
             '8.0'         => false,
             'alternative' => 'enchant_dict_is_added()',
+            'extension'   => 'enchant',
         ],
         'imap_header' => [
             '8.0'         => true,
             'alternative' => 'imap_headerinfo()',
+            'extension'   => 'imap',
         ],
         'libxml_disable_entity_loader' => [
-            '8.0' => false,
+            '8.0'       => false,
+            'extension' => 'libxml',
         ],
         'oci_internal_debug' => [
-            '8.0' => true,
+            '8.0'       => true,
+            'extension' => 'oci8',
         ],
         'openssl_x509_free' => [
-            '8.0' => false,
+            '8.0'       => false,
+            'extension' => 'openssl',
         ],
         'openssl_pkey_free' => [
-            '8.0' => false,
+            '8.0'       => false,
+            'extension' => 'openssl',
         ],
         'openssl_free_key' => [
-            '8.0' => false,
+            '8.0'       => false,
+            'extension' => 'openssl',
         ],
         'pg_clientencoding' => [
             '8.0'         => false,
             'alternative' => 'pg_client_encoding()',
+            'extension'   => 'pgsql',
         ],
         'pg_cmdtuples' => [
             '8.0'         => false,
             'alternative' => 'pg_affected_rows()',
+            'extension'   => 'pgsql',
         ],
         'pg_errormessage' => [
             '8.0'         => false,
             'alternative' => 'pg_last_error()',
+            'extension'   => 'pgsql',
         ],
         'pg_fieldname' => [
             '8.0'         => false,
             'alternative' => 'pg_field_name()',
+            'extension'   => 'pgsql',
         ],
         'pg_fieldnum' => [
             '8.0'         => false,
             'alternative' => 'pg_field_num()',
+            'extension'   => 'pgsql',
         ],
         'pg_fieldisnull' => [
             '8.0'         => false,
             'alternative' => 'pg_field_is_null()',
+            'extension'   => 'pgsql',
         ],
         'pg_fieldprtlen' => [
             '8.0'         => false,
             'alternative' => 'pg_field_prtlen()',
+            'extension'   => 'pgsql',
         ],
         'pg_fieldsize' => [
             '8.0'         => false,
             'alternative' => 'pg_field_size()',
+            'extension'   => 'pgsql',
         ],
         'pg_fieldtype' => [
             '8.0'         => false,
             'alternative' => 'pg_field_type()',
+            'extension'   => 'pgsql',
         ],
         'pg_freeresult' => [
             '8.0'         => false,
             'alternative' => 'pg_free_result()',
+            'extension'   => 'pgsql',
         ],
         'pg_getlastoid' => [
             '8.0'         => false,
             'alternative' => 'pg_last_oid()',
+            'extension'   => 'pgsql',
         ],
         'pg_loclose' => [
             '8.0'         => false,
             'alternative' => 'pg_lo_close()',
+            'extension'   => 'pgsql',
         ],
         'pg_locreate' => [
             '8.0'         => false,
             'alternative' => 'pg_lo_create()',
+            'extension'   => 'pgsql',
         ],
         'pg_loexport' => [
             '8.0'         => false,
             'alternative' => 'pg_lo_export()',
+            'extension'   => 'pgsql',
         ],
         'pg_loimport' => [
             '8.0'         => false,
             'alternative' => 'pg_lo_import()',
+            'extension'   => 'pgsql',
         ],
         'pg_loopen' => [
             '8.0'         => false,
             'alternative' => 'pg_lo_open()',
+            'extension'   => 'pgsql',
         ],
         'pg_loread' => [
             '8.0'         => false,
             'alternative' => 'pg_lo_read()',
+            'extension'   => 'pgsql',
         ],
         'pg_loreadall' => [
             '8.0'         => false,
             'alternative' => 'pg_lo_read_all()',
+            'extension'   => 'pgsql',
         ],
         'pg_lounlink' => [
             '8.0'         => false,
             'alternative' => 'pg_lo_unlink()',
+            'extension'   => 'pgsql',
         ],
         'pg_lowrite' => [
             '8.0'         => false,
             'alternative' => 'pg_lo_write()',
+            'extension'   => 'pgsql',
         ],
         'pg_numfields' => [
             '8.0'         => false,
             'alternative' => 'pg_num_fields()',
+            'extension'   => 'pgsql',
         ],
         'pg_numrows' => [
             '8.0'         => false,
             'alternative' => 'pg_num_rows()',
+            'extension'   => 'pgsql',
         ],
         'pg_result' => [
             '8.0'         => false,
             'alternative' => 'pg_fetch_result()',
+            'extension'   => 'pgsql',
         ],
         'pg_setclientencoding' => [
             '8.0'         => false,
             'alternative' => 'pg_set_client_encoding()',
+            'extension'   => 'pgsql',
         ],
         'shmop_close' => [
-            '8.0' => false,
+            '8.0'       => false,
+            'extension' => 'shmop',
         ],
         'xmlrpc_decode_request' => [
             '8.0'       => true,
@@ -4825,42 +4964,52 @@ class RemovedFunctionsSniff extends Sniff
         'zip_close' => [
             '8.0'         => false,
             'alternative' => 'ZipArchive::close()',
+            'extension'   => 'zip',
         ],
         'zip_entry_close' => [
             '8.0'         => false,
             'alternative' => 'ZipArchive',
+            'extension'   => 'zip',
         ],
         'zip_entry_compressedsize' => [
             '8.0'         => false,
             'alternative' => 'ZipArchive',
+            'extension'   => 'zip',
         ],
         'zip_entry_compressionmethod' => [
             '8.0'         => false,
             'alternative' => 'ZipArchive',
+            'extension'   => 'zip',
         ],
         'zip_entry_filesize' => [
             '8.0'         => false,
             'alternative' => 'ZipArchive',
+            'extension'   => 'zip',
         ],
         'zip_entry_name' => [
             '8.0'         => false,
             'alternative' => 'ZipArchive',
+            'extension'   => 'zip',
         ],
         'zip_entry_open' => [
             '8.0'         => false,
             'alternative' => 'ZipArchive',
+            'extension'   => 'zip',
         ],
         'zip_entry_read' => [
             '8.0'         => false,
             'alternative' => 'ZipArchive',
+            'extension'   => 'zip',
         ],
         'zip_open' => [
             '8.0'         => false,
             'alternative' => 'ZipArchive::open()',
+            'extension'   => 'zip',
         ],
         'zip_read' => [
             '8.0'         => false,
             'alternative' => 'ZipArchive',
+            'extension'   => 'zip',
         ],
 
         'date_sunrise' => [
@@ -4886,25 +5035,644 @@ class RemovedFunctionsSniff extends Sniff
         'mhash_count' => [
             '8.1'         => false,
             'alternative' => 'the hash_*() functions',
+            'extension'   => 'hash',
         ],
         'mhash_get_block_size' => [
             '8.1'         => false,
             'alternative' => 'the hash_*() functions',
+            'extension'   => 'hash',
         ],
         'mhash_get_hash_name' => [
             '8.1'         => false,
             'alternative' => 'the hash_*() functions',
+            'extension'   => 'hash',
         ],
         'mhash_keygen_s2k' => [
             '8.1'         => false,
             'alternative' => 'the hash_*() functions',
+            'extension'   => 'hash',
         ],
         'mhash' => [
             '8.1'         => false,
             'alternative' => 'the hash_*() functions',
+            'extension'   => 'hash',
         ],
         'odbc_result_all' => [
-            '8.1' => false,
+            '8.1'       => false,
+            'extension' => 'odbc',
+        ],
+
+        'utf8_encode' => [
+            '8.2'         => false,
+            'alternative' => 'mb_convert_encoding(), UConverter::transcode() or iconv',
+        ],
+        'utf8_decode' => [
+            '8.2'         => false,
+            'alternative' => 'mb_convert_encoding(), UConverter::transcode() or iconv',
+        ],
+
+        'assert_options' => [
+            '8.3' => false,
+        ],
+
+        'imap_8bit' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_alerts' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_append' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_base64' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_binary' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_body' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_bodystruct' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_check' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_clearflag_full' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_close' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_create' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_createmailbox' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_delete' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_deletemailbox' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_errors' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_expunge' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_fetch_overview' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_fetchbody' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_fetchheader' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_fetchmime' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_fetchstructure' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_fetchtext' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_gc' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_get_quota' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_get_quotaroot' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_getacl' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_getmailboxes' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_getsubscribed' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_headerinfo' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_headers' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_is_open' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_last_error' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_list' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_listmailbox' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_listscan' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_listsubscribed' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_lsub' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_mail' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_mail_compose' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_mail_copy' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_mail_move' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_mailboxmsginfo' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_mime_header_decode' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_msgno' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_mutf7_to_utf8' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_num_msg' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_num_recent' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_open' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_ping' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_qprint' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_rename' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_renamemailbox' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_reopen' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_rfc822_parse_adrlist' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_rfc822_parse_headers' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_rfc822_write_address' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_savebody' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_scan' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_scanmailbox' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_search' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_set_quota' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_setacl' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_setflag_full' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_sort' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_status' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_subscribe' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_thread' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_timeout' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_uid' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_undelete' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_unsubscribe' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_utf7_decode' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_utf7_encode' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_utf8' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'imap_utf8_to_mutf7' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'intlcal_set' => [
+            '8.4'         => false,
+            'alternative' => 'IntlCalendar::setDate() or IntlCalendar::setDateTime()',
+            'extension'   => 'intl',
+        ],
+        'intlgregcal_create_instance' => [
+            '8.4'         => false,
+            'alternative' => 'IntlGregorianCalendar::createFromDate() or IntlGregorianCalendar::createFromDateTime()',
+            'extension'   => 'intl',
+        ],
+        'oci_bind_array_by_name' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_bind_by_name' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_cancel' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_client_version' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_close' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_commit' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_connect' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_define_by_name' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_error' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_execute' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_fetch' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_fetch_all' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_fetch_array' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_fetch_assoc' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_fetch_object' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_fetch_row' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_field_is_null' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_field_name' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_field_precision' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_field_scale' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_field_size' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_field_type' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_field_type_raw' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_free_descriptor' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_free_statement' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_get_implicit_resultset' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_lob_copy' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_lob_is_equal' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_new_collection' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_new_connect' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_new_cursor' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_new_descriptor' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_num_fields' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_num_rows' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_parse' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_password_change' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_pconnect' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_register_taf_callback' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_result' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_rollback' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_server_version' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_set_action' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_set_call_timeout' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_set_client_identifier' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_set_client_info' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_set_db_operation' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_set_edition' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_set_module_name' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_set_prefetch' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_set_prefetch_lob' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_statement_type' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci_unregister_taf_callback' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'pspell_add_to_personal' => [
+            '8.4'       => true,
+            'extension' => 'pspell',
+        ],
+        'pspell_add_to_session' => [
+            '8.4'       => true,
+            'extension' => 'pspell',
+        ],
+        'pspell_check' => [
+            '8.4'       => true,
+            'extension' => 'pspell',
+        ],
+        'pspell_clear_session' => [
+            '8.4'       => true,
+            'extension' => 'pspell',
+        ],
+        'pspell_config_create' => [
+            '8.4'       => true,
+            'extension' => 'pspell',
+        ],
+        'pspell_config_data_dir' => [
+            '8.4'       => true,
+            'extension' => 'pspell',
+        ],
+        'pspell_config_dict_dir' => [
+            '8.4'       => true,
+            'extension' => 'pspell',
+        ],
+        'pspell_config_ignore' => [
+            '8.4'       => true,
+            'extension' => 'pspell',
+        ],
+        'pspell_config_mode' => [
+            '8.4'       => true,
+            'extension' => 'pspell',
+        ],
+        'pspell_config_personal' => [
+            '8.4'       => true,
+            'extension' => 'pspell',
+        ],
+        'pspell_config_repl' => [
+            '8.4'       => true,
+            'extension' => 'pspell',
+        ],
+        'pspell_config_runtogether' => [
+            '8.4'       => true,
+            'extension' => 'pspell',
+        ],
+        'pspell_config_save_repl' => [
+            '8.4'       => true,
+            'extension' => 'pspell',
+        ],
+        'pspell_new' => [
+            '8.4'       => true,
+            'extension' => 'pspell',
+        ],
+        'pspell_new_config' => [
+            '8.4'       => true,
+            'extension' => 'pspell',
+        ],
+        'pspell_new_personal' => [
+            '8.4'       => true,
+            'extension' => 'pspell',
+        ],
+        'pspell_save_wordlist' => [
+            '8.4'       => true,
+            'extension' => 'pspell',
+        ],
+        'pspell_store_replacement' => [
+            '8.4'       => true,
+            'extension' => 'pspell',
+        ],
+        'pspell_suggest' => [
+            '8.4'       => true,
+            'extension' => 'pspell',
+        ],
+        'xml_set_object' => [
+            '8.4'         => false,
+            'alternative' => 'a fully formed callback in a xml_set_*_handler() function',
+            'extension'   => 'xml',
         ],
     ];
 
@@ -4914,7 +5682,7 @@ class RemovedFunctionsSniff extends Sniff
      *
      * @since 5.6
      *
-     * @return array
+     * @return array<int|string>
      */
     public function register()
     {

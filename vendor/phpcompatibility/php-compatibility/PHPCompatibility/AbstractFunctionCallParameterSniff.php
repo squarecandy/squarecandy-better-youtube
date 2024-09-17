@@ -14,6 +14,7 @@ use PHPCompatibility\Sniff;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Tokens\Collections;
+use PHPCSUtils\Utils\Context;
 use PHPCSUtils\Utils\PassedParameters;
 
 /**
@@ -43,10 +44,10 @@ abstract class AbstractFunctionCallParameterSniff extends Sniff
      *
      * @since 8.2.0
      *
-     * @var array The only requirement for this array is that the top level
-     *            array keys are the names of the functions you're looking for.
-     *            Other than that, the array can have arbitrary content
-     *            depending on your needs.
+     * @var array<string, mixed> The only requirement for this array is that the top level
+     *                           array keys are the names of the functions you're looking for.
+     *                           Other than that, the array can have arbitrary content
+     *                           depending on your needs.
      */
     protected $targetFunctions = [];
 
@@ -58,7 +59,7 @@ abstract class AbstractFunctionCallParameterSniff extends Sniff
      *
      * @since 8.2.0
      *
-     * @var array
+     * @var array<int|string, true>
      */
     private $ignoreTokens = [
         \T_NEW => true,
@@ -70,7 +71,7 @@ abstract class AbstractFunctionCallParameterSniff extends Sniff
      *
      * @since 8.2.0
      *
-     * @return array
+     * @return array<int|string>
      */
     public function register()
     {
@@ -114,6 +115,11 @@ abstract class AbstractFunctionCallParameterSniff extends Sniff
             || $tokens[$nextToken]['code'] !== \T_OPEN_PARENTHESIS
             || isset($tokens[$nextToken]['parenthesis_owner']) === true
         ) {
+            return;
+        }
+
+        if (Context::inAttribute($phpcsFile, $stackPtr) === true) {
+            // Class instantiation or constant in attribute, not function call.
             return;
         }
 

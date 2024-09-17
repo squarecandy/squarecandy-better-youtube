@@ -47,7 +47,7 @@ class NewIniDirectivesSniff extends AbstractFunctionCallParameterSniff
      * @since 10.0.0 Moved from the base `Sniff` class to this sniff and renamed from
      *               `$iniFunctions` to `$targetFunctions`.
      *
-     * @var array
+     * @var array<string, array<string, int|string>>
      */
     protected $targetFunctions = [
         'ini_get' => [
@@ -69,7 +69,7 @@ class NewIniDirectivesSniff extends AbstractFunctionCallParameterSniff
      * @since 5.5
      * @since 7.0.3 Support for 'alternative' has been added.
      *
-     * @var array(string)
+     * @var array<string, array<string, bool|string>>
      */
     protected $newIniDirectives = [
         'auto_globals_jit' => [
@@ -97,12 +97,14 @@ class NewIniDirectivesSniff extends AbstractFunctionCallParameterSniff
             '5.0' => true,
         ],
         'ibase.default_charset' => [
-            '4.4' => false,
-            '5.0' => true,
+            '4.4'       => false,
+            '5.0'       => true,
+            'extension' => 'ibase',
         ],
         'ibase.default_db' => [
-            '4.4' => false,
-            '5.0' => true,
+            '4.4'       => false,
+            '5.0'       => true,
+            'extension' => 'ibase',
         ],
         'mail.force_extra_parameters' => [
             '4.4' => false,
@@ -152,12 +154,14 @@ class NewIniDirectivesSniff extends AbstractFunctionCallParameterSniff
             '5.0' => true,
         ],
         'session.hash_bits_per_character' => [
-            '4.4' => false,
-            '5.0' => true,
+            '4.4'       => false,
+            '5.0'       => true,
+            'extension' => 'session',
         ],
         'session.hash_function' => [
-            '4.4' => false,
-            '5.0' => true,
+            '4.4'       => false,
+            '5.0'       => true,
+            'extension' => 'session',
         ],
         'soap.wsdl_cache_dir' => [
             '4.4'       => false,
@@ -175,8 +179,9 @@ class NewIniDirectivesSniff extends AbstractFunctionCallParameterSniff
             'extension' => 'soap',
         ],
         'sqlite.assoc_case' => [
-            '4.4' => false,
-            '5.0' => true,
+            '4.4'       => false,
+            '5.0'       => true,
+            'extension' => 'sqlite',
         ],
         'tidy.clean_output' => [
             '4.4'       => false,
@@ -227,50 +232,61 @@ class NewIniDirectivesSniff extends AbstractFunctionCallParameterSniff
         ],
 
         'mbstring.strict_detection' => [
-            '5.1.1' => false,
-            '5.1.2' => true,
+            '5.1.1'     => false,
+            '5.1.2'     => true,
+            'extension' => 'mbstring',
         ],
         'mssql.charset' => [
-            '5.1.1' => false,
-            '5.1.2' => true,
+            '5.1.1'     => false,
+            '5.1.2'     => true,
+            'extension' => 'mssql',
         ],
         'oci8.default_prefetch' => [
-            '5.1.1' => false,
-            '5.1.2' => true,
+            '5.1.1'     => false,
+            '5.1.2'     => true,
+            'extension' => 'oci8',
         ],
         'oci8.max_persistent' => [
-            '5.1.1' => false,
-            '5.1.2' => true,
+            '5.1.1'     => false,
+            '5.1.2'     => true,
+            'extension' => 'oci8',
         ],
         'oci8.old_oci_close_semantics' => [
-            '5.1.1' => false,
-            '5.1.2' => true,
+            '5.1.1'     => false,
+            '5.1.2'     => true,
+            'extension' => 'oci8',
         ],
         'oci8.persistent_timeout' => [
-            '5.1.1' => false,
-            '5.1.2' => true,
+            '5.1.1'     => false,
+            '5.1.2'     => true,
+            'extension' => 'oci8',
         ],
         'oci8.ping_interval' => [
-            '5.1.1' => false,
-            '5.1.2' => true,
+            '5.1.1'     => false,
+            '5.1.2'     => true,
+            'extension' => 'oci8',
         ],
         'oci8.privileged_connect' => [
-            '5.1.1' => false,
-            '5.1.2' => true,
+            '5.1.1'     => false,
+            '5.1.2'     => true,
+            'extension' => 'oci8',
         ],
         'oci8.statement_cache_size' => [
-            '5.1.1' => false,
-            '5.1.2' => true,
+            '5.1.1'     => false,
+            '5.1.2'     => true,
+            'extension' => 'oci8',
         ],
 
         'gd.jpeg_ignore_warning' => [
-            '5.1.2' => false,
-            '5.1.3' => true,
+            '5.1.2'     => false,
+            '5.1.3'     => true,
+            'extension' => 'gd',
         ],
 
         'fbsql.show_timestamp_decimals' => [
-            '5.1.4' => false,
-            '5.1.5' => true,
+            '5.1.4'     => false,
+            '5.1.5'     => true,
+            'extension' => 'fbsql',
         ],
         'soap.wsdl_cache' => [
             '5.1.4'     => false,
@@ -306,8 +322,9 @@ class NewIniDirectivesSniff extends AbstractFunctionCallParameterSniff
             '5.2' => true,
         ],
         'session.cookie_httponly' => [
-            '5.1' => false,
-            '5.2' => true,
+            '5.1'       => false,
+            '5.2'       => true,
+            'extension' => 'session',
         ],
 
         'cgi.check_shebang_line' => [
@@ -358,8 +375,9 @@ class NewIniDirectivesSniff extends AbstractFunctionCallParameterSniff
             '5.3' => true,
         ],
         'mbstring.http_output_conv_mimetype' => [
-            '5.2' => false,
-            '5.3' => true,
+            '5.2'       => false,
+            '5.3'       => true,
+            'extension' => 'mbstring',
         ],
         'mysqli.allow_persistent' => [
             '5.2'       => false,
@@ -407,8 +425,9 @@ class NewIniDirectivesSniff extends AbstractFunctionCallParameterSniff
             'extension' => 'mysqlnd',
         ],
         'odbc.default_cursortype' => [
-            '5.2' => false,
-            '5.3' => true,
+            '5.2'       => false,
+            '5.3'       => true,
+            'extension' => 'odbc',
         ],
         'phar.readonly' => [
             '5.2'       => false,
@@ -442,12 +461,14 @@ class NewIniDirectivesSniff extends AbstractFunctionCallParameterSniff
             '5.3' => true,
         ],
         'oci8.connection_class' => [
-            '5.2' => false,
-            '5.3' => true,
+            '5.2'       => false,
+            '5.3'       => true,
+            'extension' => 'oci8',
         ],
         'oci8.events' => [
-            '5.2' => false,
-            '5.3' => true,
+            '5.2'       => false,
+            '5.3'       => true,
+            'extension' => 'oci8',
         ],
 
         'mysqlnd.mempool_default_size' => [
@@ -457,8 +478,9 @@ class NewIniDirectivesSniff extends AbstractFunctionCallParameterSniff
         ],
 
         'curl.cainfo' => [
-            '5.3.6' => false,
-            '5.3.7' => true,
+            '5.3.6'     => false,
+            '5.3.7'     => true,
+            'extension' => 'curl',
         ],
 
         'max_input_vars' => [
@@ -494,28 +516,34 @@ class NewIniDirectivesSniff extends AbstractFunctionCallParameterSniff
             'extension' => 'phar',
         ],
         'session.upload_progress.enabled' => [
-            '5.3' => false,
-            '5.4' => true,
+            '5.3'       => false,
+            '5.4'       => true,
+            'extension' => 'session',
         ],
         'session.upload_progress.cleanup' => [
-            '5.3' => false,
-            '5.4' => true,
+            '5.3'       => false,
+            '5.4'       => true,
+            'extension' => 'session',
         ],
         'session.upload_progress.name' => [
-            '5.3' => false,
-            '5.4' => true,
+            '5.3'       => false,
+            '5.4'       => true,
+            'extension' => 'session',
         ],
         'session.upload_progress.freq' => [
-            '5.3' => false,
-            '5.4' => true,
+            '5.3'       => false,
+            '5.4'       => true,
+            'extension' => 'session',
         ],
         'session.upload_progress.min_freq' => [
-            '5.3' => false,
-            '5.4' => true,
+            '5.3'       => false,
+            '5.4'       => true,
+            'extension' => 'session',
         ],
         'session.upload_progress.prefix' => [
-            '5.3' => false,
-            '5.4' => true,
+            '5.3'       => false,
+            '5.4'       => true,
+            'extension' => 'session',
         ],
         'windows_show_crt_warning' => [
             '5.3' => false,
@@ -559,8 +587,9 @@ class NewIniDirectivesSniff extends AbstractFunctionCallParameterSniff
             '5.5' => true,
         ],
         'xsl.security_prefs' => [
-            '5.4' => false,
-            '5.5' => true,
+            '5.4'       => false,
+            '5.5'       => true,
+            'extension' => 'xsl',
         ],
         'opcache.enable' => [
             '5.4'       => false,
@@ -730,12 +759,14 @@ class NewIniDirectivesSniff extends AbstractFunctionCallParameterSniff
             'extension' => 'mysqli',
         ],
         'openssl.cafile' => [
-            '5.5' => false,
-            '5.6' => true,
+            '5.5'       => false,
+            '5.6'       => true,
+            'extension' => 'openssl',
         ],
         'openssl.capath' => [
-            '5.5' => false,
-            '5.6' => true,
+            '5.5'       => false,
+            '5.6'       => true,
+            'extension' => 'openssl',
         ],
         'mysqlnd.fetch_data_copy' => [
             '5.5'       => false,
@@ -757,8 +788,9 @@ class NewIniDirectivesSniff extends AbstractFunctionCallParameterSniff
             'extension' => 'phpdbg',
         ],
         'session.lazy_write' => [
-            '5.6' => false,
-            '7.0' => true,
+            '5.6'       => false,
+            '7.0'       => true,
+            'extension' => 'session',
         ],
         'zend.assertions' => [
             '5.6' => false,
@@ -806,20 +838,24 @@ class NewIniDirectivesSniff extends AbstractFunctionCallParameterSniff
             'extension' => 'opcache',
         ],
         'session.sid_length' => [
-            '7.0' => false,
-            '7.1' => true,
+            '7.0'       => false,
+            '7.1'       => true,
+            'extension' => 'session',
         ],
         'session.sid_bits_per_character' => [
-            '7.0' => false,
-            '7.1' => true,
+            '7.0'       => false,
+            '7.1'       => true,
+            'extension' => 'session',
         ],
         'session.trans_sid_hosts' => [
-            '7.0' => false,
-            '7.1' => true,
+            '7.0'       => false,
+            '7.1'       => true,
+            'extension' => 'session',
         ],
         'session.trans_sid_tags' => [
-            '7.0' => false,
-            '7.1' => true,
+            '7.0'       => false,
+            '7.1'       => true,
+            'extension' => 'session',
         ],
         'url_rewriter.hosts' => [
             '7.0' => false,
@@ -828,8 +864,9 @@ class NewIniDirectivesSniff extends AbstractFunctionCallParameterSniff
 
         // Introduced in PHP 7.1.25, 7.2.13, 7.3.0.
         'imap.enable_insecure_rsh' => [
-            '7.1.24' => false,
-            '7.1.25' => true,
+            '7.1.24'    => false,
+            '7.1.25'    => true,
+            'extension' => 'imap',
         ],
 
         // Introduced in PHP 7.2.17, 7.3.4.
@@ -852,8 +889,9 @@ class NewIniDirectivesSniff extends AbstractFunctionCallParameterSniff
             '7.3' => true,
         ],
         'session.cookie_samesite' => [
-            '7.2' => false,
-            '7.3' => true,
+            '7.2'       => false,
+            '7.3'       => true,
+            'extension' => 'session',
         ],
 
         'ffi.enable' => [
@@ -865,6 +903,11 @@ class NewIniDirectivesSniff extends AbstractFunctionCallParameterSniff
             '7.3'       => false,
             '7.4'       => true,
             'extension' => 'ffi',
+        ],
+        'mbstring.regex_retry_limit' => [
+            '7.3'       => false,
+            '7.4'       => true,
+            'extension' => 'mbstring',
         ],
         'opcache.cache_id' => [
             '7.3'       => false,
@@ -880,6 +923,10 @@ class NewIniDirectivesSniff extends AbstractFunctionCallParameterSniff
             '7.3'       => false,
             '7.4'       => true,
             'extension' => 'opcache',
+        ],
+        'unserialize_max_depth' => [
+            '7.3' => false,
+            '7.4' => true,
         ],
         'zend.exception_ignore_args' => [
             '7.3' => false,
@@ -898,10 +945,101 @@ class NewIniDirectivesSniff extends AbstractFunctionCallParameterSniff
             '7.4' => false,
             '8.0' => true,
         ],
+        'opcache.jit' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'opcache',
+        ],
+        'opcache.jit_buffer_size' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'opcache',
+        ],
+        'opcache.jit_debug' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'opcache',
+        ],
+        'opcache.jit_bisect_limit' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'opcache',
+        ],
+        'opcache.jit_prof_threshold' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'opcache',
+        ],
+        'opcache.jit_hot_loop' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'opcache',
+        ],
+        'opcache.jit_hot_func' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'opcache',
+        ],
+        'opcache.jit_hot_return' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'opcache',
+        ],
+        'opcache.jit_hot_side_exit' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'opcache',
+        ],
+        'opcache.jit_blacklist_root_trace' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'opcache',
+        ],
+        'opcache.jit_blacklist_side_trace' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'opcache',
+        ],
+        'opcache.jit_max_loop_unrolls' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'opcache',
+        ],
+        'opcache.jit_max_exit_counters' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'opcache',
+        ],
+        'opcache.jit_max_root_traces' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'opcache',
+        ],
+        'opcache.jit_max_side_traces' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'opcache',
+        ],
+        'opcache.jit_max_recursive_calls' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'opcache',
+        ],
+        'opcache.jit_max_recursive_returns' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'opcache',
+        ],
+        'opcache.jit_max_polymorphic_calls' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'opcache',
+        ],
 
         'fiber.stack_size' => [
-            '8.0' => false,
-            '8.1' => true,
+            '8.0'       => false,
+            '8.1'       => true,
+            'extension' => 'fibers',
         ],
         'mysqli.local_infile_directory' => [
             '8.0'       => false,
@@ -909,8 +1047,33 @@ class NewIniDirectivesSniff extends AbstractFunctionCallParameterSniff
             'extension' => 'mysqli',
         ],
         'pm.max_spawn_rate' => [
-            '8.0' => false,
-            '8.1' => true,
+            '8.0'       => false,
+            '8.1'       => true,
+            'extension' => 'fpm',
+        ],
+
+        'error_log_mode' => [
+            '8.1' => false,
+            '8.2' => true,
+        ],
+        'oci8.prefetch_lob_size' => [
+            '8.1'       => false,
+            '8.2'       => true,
+            'extension' => 'oci8',
+        ],
+
+        'zend.max_allowed_stack_size' => [
+            '8.2' => false,
+            '8.3' => true,
+        ],
+        'zend.reserved_stack_size' => [
+            '8.2' => false,
+            '8.3' => true,
+        ],
+        'opcache.jit_max_trace_length' => [
+            '8.2'       => false,
+            '8.3'       => true,
+            'extension' => 'opcache',
         ],
     ];
 

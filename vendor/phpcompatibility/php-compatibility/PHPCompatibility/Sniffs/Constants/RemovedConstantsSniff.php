@@ -33,7 +33,7 @@ class RemovedConstantsSniff extends Sniff
      * A list of removed PHP Constants.
      *
      * The array lists : version number with false (deprecated) or true (removed).
-     * If's sufficient to list the first version where the constant was deprecated/removed.
+     * It's sufficient to list the first version where the constant was deprecated/removed.
      *
      * Optional, the array can contain an `alternative` key listing an alternative constant
      * to be used instead.
@@ -42,7 +42,7 @@ class RemovedConstantsSniff extends Sniff
      *
      * @since 8.1.0
      *
-     * @var array(string => array(string => bool|string))
+     * @var array<string, array<string, bool|string>>
      */
     protected $removedConstants = [
         'F_DUPFD' => [
@@ -905,7 +905,8 @@ class RemovedConstantsSniff extends Sniff
 
         // Disabled since PHP 5.3.0 due to thread safety issues.
         'FILEINFO_COMPRESS' => [
-            '5.3' => true,
+            '5.3'       => true,
+            'extension' => 'fileinfo',
         ],
 
         'NCURSES_COLOR_BLACK' => [
@@ -1864,22 +1865,28 @@ class RemovedConstantsSniff extends Sniff
         ],
 
         'CURLOPT_CLOSEPOLICY' => [
-            '5.6' => true,
+            '5.6'       => true,
+            'extension' => 'curl',
         ],
         'CURLCLOSEPOLICY_LEAST_RECENTLY_USED' => [
-            '5.6' => true,
+            '5.6'       => true,
+            'extension' => 'curl',
         ],
         'CURLCLOSEPOLICY_LEAST_TRAFFIC' => [
-            '5.6' => true,
+            '5.6'       => true,
+            'extension' => 'curl',
         ],
         'CURLCLOSEPOLICY_SLOWEST' => [
-            '5.6' => true,
+            '5.6'       => true,
+            'extension' => 'curl',
         ],
         'CURLCLOSEPOLICY_CALLBACK' => [
-            '5.6' => true,
+            '5.6'       => true,
+            'extension' => 'curl',
         ],
         'CURLCLOSEPOLICY_OLDEST' => [
-            '5.6' => true,
+            '5.6'       => true,
+            'extension' => 'curl',
         ],
 
         'MYSQL_CLIENT_COMPRESS' => [
@@ -1918,13 +1925,17 @@ class RemovedConstantsSniff extends Sniff
             'extension' => 'mysql',
         ],
         'PGSQL_ATTR_DISABLE_NATIVE_PREPARED_STATEMENT' => [
-            '7.0' => true,
+            '7.0'       => true,
+            'extension' => 'pgsql',
         ],
         'T_CHARACTER' => [
-            '7.0' => true,
+            '7.0'       => true,
+            'extension' => 'tokenizer',
         ],
+        // Note: this constant has special casing in the handleFeature() method as it is also present in PHP >= 7.4.
         'T_BAD_CHARACTER' => [
-            '7.0' => true,
+            '7.0'       => true,
+            'extension' => 'tokenizer',
         ],
         'MSSQL_ASSOC' => [
             '7.0'       => true,
@@ -1976,8 +1987,9 @@ class RemovedConstantsSniff extends Sniff
         ],
 
         'INTL_IDNA_VARIANT_2003' => [
-            '7.2' => false,
-            '8.0' => true,
+            '7.2'       => false,
+            '8.0'       => true,
+            'extension' => 'intl',
         ],
 
         'MCRYPT_MODE_ECB' => [
@@ -2254,19 +2266,25 @@ class RemovedConstantsSniff extends Sniff
             '7.3' => true,
         ],
         'FILTER_FLAG_SCHEME_REQUIRED' => [
-            '7.3' => false,
+            '7.3'       => false,
+            '8.0'       => true,
+            'extension' => 'filter',
         ],
         'FILTER_FLAG_HOST_REQUIRED' => [
-            '7.3' => false,
+            '7.3'       => false,
+            '8.0'       => true,
+            'extension' => 'filter',
         ],
 
         'CURLPIPE_HTTP1' => [
-            '7.4' => false,
+            '7.4'       => false,
+            'extension' => 'curl',
         ],
         'FILTER_SANITIZE_MAGIC_QUOTES' => [
             '7.4'         => false,
             '8.0'         => true,
             'alternative' => 'FILTER_SANITIZE_ADD_SLASHES',
+            'extension'   => 'filter',
         ],
         'IBASE_BKP_CONVERT' => [
             '7.4'       => true,
@@ -2521,23 +2539,37 @@ class RemovedConstantsSniff extends Sniff
             '8.0' => true,
         ],
         'ENCHANT_MYSPELL' => [
-            '8.0' => false,
+            '8.0'       => false,
+            'extension' => 'enchant',
         ],
         'ENCHANT_ISPELL' => [
-            '8.0' => false,
+            '8.0'       => false,
+            'extension' => 'enchant',
+        ],
+        'INPUT_REQUEST' => [
+            '8.0'       => true,
+            'extension' => 'filter',
+        ],
+        'INPUT_SESSION' => [
+            '8.0'       => true,
+            'extension' => 'filter',
         ],
         'MB_OVERLOAD_MAIL' => [
-            '8.0' => true,
+            '8.0'       => true,
+            'extension' => 'mbstring',
         ],
         'MB_OVERLOAD_STRING' => [
-            '8.0' => true,
+            '8.0'       => true,
+            'extension' => 'mbstring',
         ],
         'MB_OVERLOAD_REGEX' => [
-            '8.0' => true,
+            '8.0'       => true,
+            'extension' => 'mbstring',
         ],
         'PG_VERSION_STR' => [
             '8.0'         => false,
             'alternative' => 'PG_VERSION',
+            'extension'   => 'pgsql',
         ],
 
         'FILE_BINARY' => [
@@ -2556,6 +2588,7 @@ class RemovedConstantsSniff extends Sniff
         ],
         'NIL' => [
             '8.1'         => false,
+            '8.4'         => true,
             'alternative' => 'integer 0',
             'extension'   => 'imap',
         ],
@@ -2591,6 +2624,617 @@ class RemovedConstantsSniff extends Sniff
             '8.1'       => false,
             'extension' => 'mysqli',
         ],
+
+        'MYSQLI_IS_MARIADB' => [
+            '8.2'       => false,
+            'extension' => 'mysqli',
+        ],
+
+        'ASSERT_ACTIVE' => [
+            '8.3' => false,
+        ],
+        'ASSERT_BAIL' => [
+            '8.3' => false,
+        ],
+        'ASSERT_CALLBACK' => [
+            '8.3' => false,
+        ],
+        'ASSERT_EXCEPTION' => [
+            '8.3' => false,
+        ],
+        'ASSERT_WARNING' => [
+            '8.3' => false,
+        ],
+        'U_MULTIPLE_DECIMAL_SEPERATORS' => [
+            '8.3'         => false,
+            'alternative' => 'U_MULTIPLE_DECIMAL_SEPARATORS',
+            'extension'   => 'intl',
+        ],
+        'MT_RAND_PHP' => [
+            '8.3'       => false,
+            'extension' => 'random',
+        ],
+
+        'DOM_PHP_ERR' => [
+            '8.4'       => false,
+            'extension' => 'dom',
+        ],
+        'OP_DEBUG' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'OP_READONLY' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'OP_ANONYMOUS' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'OP_SHORTCACHE' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'OP_SILENT' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'OP_PROTOTYPE' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'OP_HALFOPEN' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'OP_EXPUNGE' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'OP_SECURE' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'CL_EXPUNGE' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'FT_UID' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'FT_PEEK' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'FT_NOT' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'FT_INTERNAL' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'FT_PREFETCHTEXT' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'ST_UID' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'ST_SILENT' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'ST_SET' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'CP_UID' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'CP_MOVE' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'SE_UID' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'SE_FREE' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'SE_NOPREFETCH' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'SO_FREE' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'SO_NOSERVER' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'SA_MESSAGES' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'SA_RECENT' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'SA_UNSEEN' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'SA_UIDNEXT' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'SA_UIDVALIDITY' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'SA_ALL' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'LATT_NOINFERIORS' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'LATT_NOSELECT' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'LATT_MARKED' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'LATT_UNMARKED' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'LATT_REFERRAL' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'LATT_HASCHILDREN' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'LATT_HASNOCHILDREN' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'SORTDATE' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'SORTARRIVAL' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'SORTFROM' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'SORTSUBJECT' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'SORTTO' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'SORTCC' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'SORTSIZE' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'TYPETEXT' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'TYPEMULTIPART' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'TYPEMESSAGE' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'TYPEAPPLICATION' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'TYPEAUDIO' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'TYPEIMAGE' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'TYPEVIDEO' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'TYPEMODEL' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'TYPEOTHER' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'ENC7BIT' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'ENC8BIT' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'ENCBINARY' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'ENCBASE64' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'ENCQUOTEDPRINTABLE' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'ENCOTHER' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'IMAP_OPENTIMEOUT' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'IMAP_READTIMEOUT' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'IMAP_WRITETIMEOUT' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'IMAP_CLOSETIMEOUT' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'IMAP_GC_ELT' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'IMAP_GC_ENV' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'IMAP_GC_TEXTS' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'OCI_ASSOC' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_BOTH' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_COMMIT_ON_SUCCESS' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_CRED_EXT' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_DEFAULT' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_DESCRIBE_ONLY' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_EXACT_FETCH' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_FETCHSTATEMENT_BY_COLUMN' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_FETCHSTATEMENT_BY_ROW' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_LOB_BUFFER_FREE' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_NO_AUTO_COMMIT' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_NUM' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_RETURN_LOBS' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_RETURN_NULLS' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_SEEK_CUR' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_SEEK_END' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_SEEK_SET' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_SYSDATE' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_SYSDBA' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_SYSOPER' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_TEMP_BLOB' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_TEMP_CLOB' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_B_BFILE' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_B_BIN' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_B_BLOB' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_B_BOL' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_B_CFILEE' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_B_CLOB' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_B_CURSOR' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_B_INT' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_B_NTY' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_B_NUM' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_B_ROWID' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'SQLT_AFC' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'SQLT_AVC' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'SQLT_BDOUBLE' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'SQLT_BFILEE' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'SQLT_BFLOAT' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'SQLT_BIN' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'SQLT_BLOB' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'SQLT_BOL' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'SQLT_CFILEE' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'SQLT_CHR' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'SQLT_CLOB' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'SQLT_FLT' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'SQLT_INT' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'SQLT_LBI' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'SQLT_LNG' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'SQLT_LVC' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'SQLT_NTY' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'SQLT_NUM' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'SQLT_ODT' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'SQLT_RDD' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'SQLT_RSET' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'SQLT_STR' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'SQLT_UIN' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'SQLT_VCS' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_DTYPE_FILE' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_DTYPE_LOB' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_DTYPE_ROWID' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_D_FILE' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_D_LOB' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_D_ROWID' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_FO_ABORT' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_FO_BEGIN' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_FO_END' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_FO_ERROR' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_FO_NONE' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_FO_REAUTH' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_FO_RETRY' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_FO_SELECT' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_FO_SESSION' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'OCI_FO_TXNAL' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'PSPELL_FAST' => [
+            '8.4'       => true,
+            'extension' => 'pspell',
+        ],
+        'PSPELL_NORMAL' => [
+            '8.4'       => true,
+            'extension' => 'pspell',
+        ],
+        'PSPELL_BAD_SPELLERS' => [
+            '8.4'       => true,
+            'extension' => 'pspell',
+        ],
+        'PSPELL_RUN_TOGETHER' => [
+            '8.4'       => true,
+            'extension' => 'pspell',
+        ],
     ];
 
 
@@ -2599,7 +3243,7 @@ class RemovedConstantsSniff extends Sniff
      *
      * @since 8.1.0
      *
-     * @return array
+     * @return array<int|string>
      */
     public function register()
     {
@@ -2671,6 +3315,19 @@ class RemovedConstantsSniff extends Sniff
         }
 
         if (isset($isError) === false) {
+            return;
+        }
+
+        if ($itemInfo['name'] === 'T_BAD_CHARACTER') {
+            // T_BAD_CHARACTER is a special case. It was removed in 7.0.0 and re-added in 7.4.0
+            // See also PHPCompatibility.Constants.NewConstants
+            if (ScannedCode::shouldRunOnOrBelow('7.3')) {
+                $message = 'The constant "T_BAD_CHARACTER" is not present in PHP versions 7.0 through 7.3';
+                $msgInfo = $this->getMessageInfo($itemInfo['name'], $itemInfo['name'], $versionInfo);
+
+                $phpcsFile->addError($message, $stackPtr, $msgInfo['errorcode'], $msgInfo['data']);
+            }
+
             return;
         }
 

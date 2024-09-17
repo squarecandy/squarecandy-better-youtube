@@ -18,6 +18,10 @@ use PHP_CodeSniffer\Files\File;
 /**
  * Detect extending of PHP native classes which became final at some point.
  *
+ * Note: classes which were final on their introduction are not included in this sniff
+ * as, in that case, there is no behavioural change across PHP versions
+ * (other than the class being available, which is for the `NewClasses` sniff to detect).
+ *
  * PHP version 8.0+
  *
  * @since 10.0.0
@@ -30,11 +34,12 @@ class ForbiddenExtendingFinalPHPClassSniff extends Sniff
      *
      * @since 10.0.0
      *
-     * @var array(string => int) Key is the fully qualified classname.
-     *                           Value the PHP version in which the class became final.
+     * @var array<string, string> Key is the fully qualified classname.
+     *                            Value the PHP version in which the class became final.
      */
     protected $finalClasses = [
         '\__PHP_Incomplete_Class' => '8.0',
+        '\GMP'                    => '8.4',
     ];
 
     /**
@@ -42,7 +47,7 @@ class ForbiddenExtendingFinalPHPClassSniff extends Sniff
      *
      * @since 10.0.0
      *
-     * @return array
+     * @return array<int|string>
      */
     public function register()
     {

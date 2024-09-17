@@ -58,7 +58,7 @@ class NewKeywordsSniff extends Sniff
      *               parent class. This index has been renamed to `callback` and now expect
      *               one of the PHP accepted callback formats.
      *
-     * @var array(string => array(string => bool|string))
+     * @var array<string, array<string, bool|string|callable>>
      */
     protected $newKeywords = [
         'T_HALT_COMPILER' => [
@@ -148,6 +148,21 @@ class NewKeywordsSniff extends Sniff
             '5.5'         => true,
             'description' => '"finally" keyword (in exception handling)',
         ],
+        'T_FN' => [
+            '7.3'         => false,
+            '7.4'         => true,
+            'description' => 'The "fn" keyword for arrow functions',
+        ],
+        'T_MATCH' => [
+            '7.4'         => false,
+            '8.0'         => true,
+            'description' => 'The "match" keyword',
+        ],
+        'T_ENUM' => [
+            '8.0'         => false,
+            '8.1'         => true,
+            'description' => 'The "enum" keyword',
+        ],
     ];
 
     /**
@@ -157,7 +172,7 @@ class NewKeywordsSniff extends Sniff
      *
      * @since 7.0.5
      *
-     * @var array(string => string)
+     * @var array<string, string>
      */
     protected $translateContentToToken = [];
 
@@ -167,7 +182,7 @@ class NewKeywordsSniff extends Sniff
      *
      * @since 5.5
      *
-     * @return array
+     * @return array<int|string>
      */
     public function register()
     {
@@ -270,6 +285,8 @@ class NewKeywordsSniff extends Sniff
         // of PHP where the name was not reserved, unless we explicitly check for
         // them.
         if (($nextToken === false
+                || $tokenType === 'T_FN' // Open parenthesis is expected after "fn" keyword.
+                || $tokenType === 'T_MATCH' // ... and after the "match" keyword.
                 || $tokens[$nextToken]['type'] !== 'T_OPEN_PARENTHESIS')
             && ($prevToken === false
                 || $tokens[$prevToken]['type'] !== 'T_CLASS'

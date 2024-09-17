@@ -10,14 +10,18 @@
 
 namespace PHPCSUtils\TestUtils;
 
+use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Exceptions\TokenizerException;
+use PHP_CodeSniffer\Files\DummyFile;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Ruleset;
 use PHPCSUtils\BackCompat\Helper;
 use PHPCSUtils\Exceptions\TestFileNotFound;
 use PHPCSUtils\Exceptions\TestMarkerNotFound;
 use PHPCSUtils\Exceptions\TestTargetNotFound;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use ReflectionProperty;
 
 /**
  * Base class for use when testing utility methods for PHP_CodeSniffer.
@@ -80,7 +84,7 @@ use ReflectionClass;
  *      *
  *      * @return array
  *      * /
- *     public function dataMyMethod()
+ *     public static function dataMyMethod()
  *     {
  *         return array(
  *             array('/* testTestCaseDescription * /', false),
@@ -154,7 +158,7 @@ abstract class UtilityMethodTestCase extends TestCase
      *
      * @since 1.0.0
      *
-     * @var \PHP_CodeSniffer\Files\File
+     * @var \PHP_CodeSniffer\Files\File|null
      */
     protected static $phpcsFile;
 
@@ -168,7 +172,7 @@ abstract class UtilityMethodTestCase extends TestCase
      *
      * @since 1.0.0
      *
-     * @var array
+     * @var array<string>
      */
     protected static $selectedSniff = ['Dummy.Dummy.Dummy'];
 
@@ -208,9 +212,22 @@ abstract class UtilityMethodTestCase extends TestCase
 
         $contents = \file_get_contents($caseFile);
 
-        $config = new \PHP_CodeSniffer\Config();
+        /*
+         * Set the static properties in the Config class to specific values for performance
+         * and to clear out values from other tests.
+         */
+        self::setStaticConfigProperty('executablePaths', []);
+
+        // Set to values which prevent the test-runner user's `CodeSniffer.conf` file
+        // from being read and influencing the tests. Also prevent an `exec()` call to stty.
+        self::setStaticConfigProperty('configData', ['report_width' => 80]);
+        self::setStaticConfigProperty('configDataFile', '');
+
+        $config = new Config();
 
         /*
+         * Set to a usable value to circumvent Config trying to find a phpcs.xml config file.
+         *
          * We just need to provide a standard so PHPCS will tokenize the file.
          * The standard itself doesn't actually matter for testing utility methods,
          * so use the smallest one to get the fastest results.
@@ -229,12 +246,12 @@ abstract class UtilityMethodTestCase extends TestCase
         // Also set a tab-width to enable testing tab-replaced vs `orig_content`.
         $config->tabWidth = static::$tabWidth;
 
-        $ruleset = new \PHP_CodeSniffer\Ruleset($config);
+        $ruleset = new Ruleset($config);
 
         // Make sure the file gets parsed correctly based on the file type.
         $contents = 'phpcs_input_file: ' . $caseFile . \PHP_EOL . $contents;
 
-        self::$phpcsFile = new \PHP_CodeSniffer\Files\DummyFile($contents, $ruleset, $config);
+        self::$phpcsFile = new DummyFile($contents, $ruleset, $config);
 
         // Only tokenize the file, do not process it.
         try {
@@ -298,6 +315,29 @@ abstract class UtilityMethodTestCase extends TestCase
         self::$tabWidth      = 4;
         self::$phpcsFile     = null;
         self::$selectedSniff = ['Dummy.Dummy.Dummy'];
+
+        // Reset the static properties in the Config class to their defaults to prevent tests influencing each other.
+        self::setStaticConfigProperty('executablePaths', []);
+        self::setStaticConfigProperty('configData', null);
+        self::setStaticConfigProperty('configDataFile', null);
+    }
+
+    /**
+     * Helper function to set the value of a private static property on the PHPCS Config class.
+     *
+     * @since 1.0.9
+     *
+     * @param string $name  The name of the property to set.
+     * @param mixed  $value The value to set the property to.
+     *
+     * @return void
+     */
+    public static function setStaticConfigProperty($name, $value)
+    {
+        $property = new ReflectionProperty('PHP_CodeSniffer\Config', $name);
+        $property->setAccessible(true);
+        $property->setValue(null, $value);
+        $property->setAccessible(false);
     }
 
     /**
@@ -329,10 +369,10 @@ abstract class UtilityMethodTestCase extends TestCase
      *
      * @since 1.0.0
      *
-     * @param string           $commentString The complete delimiter comment to look for as a string.
-     *                                        This string should include the comment opener and closer.
-     * @param int|string|array $tokenType     The type of token(s) to look for.
-     * @param string           $tokenContent  Optional. The token content for the target token.
+     * @param string                       $commentString The complete delimiter comment to look for as a string.
+     *                                                    This string should include the comment opener and closer.
+     * @param int|string|array<int|string> $tokenType     The type of token(s) to look for.
+     * @param string|null                  $tokenContent  Optional. The token content for the target token.
      *
      * @return int
      *

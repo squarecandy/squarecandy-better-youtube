@@ -48,7 +48,7 @@ class OptionalToRequiredFunctionParametersSniff extends AbstractFunctionCallPara
      *                 compatibility with the `AbstractFunctionCallParameterSniff` class.
      *               - The parameter offsets were changed from 0-based to 1-based.
      *
-     * @var array
+     * @var array<string, array<int, array<string, bool|string>>>
      */
     protected $targetFunctions = [
         'crypt' => [
@@ -94,6 +94,46 @@ class OptionalToRequiredFunctionParametersSniff extends AbstractFunctionCallPara
                 'name' => 'result',
                 '7.2'  => false,
                 '8.0'  => true,
+            ],
+        ],
+        'pg_fetch_result' => [
+            2 => [
+                'name' => 'row',
+                '8.4'  => false,
+            ],
+            3 => [
+                'name' => 'field',
+                '8.4'  => false,
+            ],
+        ],
+        'pg_field_prtlen' => [
+            2 => [
+                'name' => 'row',
+                '8.4'  => false,
+            ],
+            3 => [
+                'name' => 'field',
+                '8.4'  => false,
+            ],
+        ],
+        'pg_field_is_null' => [
+            2 => [
+                'name' => 'row',
+                '8.4'  => false,
+            ],
+            3 => [
+                'name' => 'field',
+                '8.4'  => false,
+            ],
+        ],
+        'stream_context_set_option' => [
+            3 => [
+                'name' => 'option_name',
+                '8.4'  => false,
+            ],
+            4 => [
+                'name' => 'value',
+                '8.4'  => false,
             ],
         ],
     ];

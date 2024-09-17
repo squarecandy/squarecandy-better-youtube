@@ -13,7 +13,6 @@ namespace PHPCompatibility\Sniffs\Generators;
 use PHPCompatibility\Helpers\ScannedCode;
 use PHPCompatibility\Sniff;
 use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Tokens\Collections;
 use PHPCSUtils\Utils\Conditions;
 
@@ -36,7 +35,7 @@ class NewGeneratorReturnSniff extends Sniff
      *
      * @since 9.0.0
      *
-     * @var array
+     * @var array<int|string, int|string>
      */
     private $validConditions = [
         \T_FUNCTION => \T_FUNCTION,
@@ -49,7 +48,7 @@ class NewGeneratorReturnSniff extends Sniff
      *
      * @since 8.2.0
      *
-     * @return array
+     * @return array<int|string>
      */
     public function register()
     {

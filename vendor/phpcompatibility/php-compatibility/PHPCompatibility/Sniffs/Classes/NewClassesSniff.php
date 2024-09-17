@@ -20,6 +20,7 @@ use PHPCSUtils\Tokens\Collections;
 use PHPCSUtils\Utils\ControlStructures;
 use PHPCSUtils\Utils\FunctionDeclarations;
 use PHPCSUtils\Utils\Scopes;
+use PHPCSUtils\Utils\UseStatements;
 use PHPCSUtils\Utils\Variables;
 
 /**
@@ -53,7 +54,7 @@ class NewClassesSniff extends Sniff
      *
      * @since 5.5
      *
-     * @var array(string => array(string => bool))
+     * @var array<string, array<string, bool|string>>
      */
     protected $newClasses = [
         'ArrayObject' => [
@@ -452,8 +453,9 @@ class NewClassesSniff extends Sniff
             'extension' => 'reflection',
         ],
         'ZipArchive' => [
-            '5.1' => false,
-            '5.2' => true,
+            '5.1'       => false,
+            '5.2'       => true,
+            'extension' => 'zip',
         ],
 
         'Closure' => [
@@ -620,8 +622,9 @@ class NewClassesSniff extends Sniff
             '5.4' => true,
         ],
         'SNMP' => [
-            '5.3' => false,
-            '5.4' => true,
+            '5.3'       => false,
+            '5.4'       => true,
+            'extension' => 'snmp',
         ],
         'Transliterator' => [
             '5.3'       => false,
@@ -639,8 +642,9 @@ class NewClassesSniff extends Sniff
             '5.5' => true,
         ],
         'CURLFile' => [
-            '5.4' => false,
-            '5.5' => true,
+            '5.4'       => false,
+            '5.5'       => true,
+            'extension' => 'curl',
         ],
         'DateTimeImmutable' => [
             '5.4' => false,
@@ -693,8 +697,9 @@ class NewClassesSniff extends Sniff
         ],
 
         'GMP' => [
-            '5.5' => false,
-            '5.6' => true,
+            '5.5'       => false,
+            '5.6'       => true,
+            'extension' => 'gmp',
         ],
 
         'IntlChar' => [
@@ -760,35 +765,151 @@ class NewClassesSniff extends Sniff
             '8.0' => true,
         ],
         'PhpToken' => [
-            '7.4' => false,
-            '8.0' => true,
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'tokenizer',
         ],
         'ReflectionUnionType' => [
-            '7.4' => false,
-            '8.0' => true,
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'reflection',
         ],
         'WeakMap' => [
             '7.4' => false,
             '8.0' => true,
         ],
         'OCICollection' => [
-            '7.4' => false,
-            '8.0' => true,
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'oci8',
         ],
         'OCILob' => [
-            '7.4' => false,
-            '8.0' => true,
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'oci8',
+        ],
+        'CurlHandle' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'curl',
+        ],
+        'CurlMultiHandle' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'curl',
+        ],
+        'CurlShareHandle' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'curl',
+        ],
+        'EnchantBroker' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'enchant',
+        ],
+        'EnchantDictionary' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'enchant',
+        ],
+        'GdImage' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'gd',
+        ],
+        'OpenSSLCertificate' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'openssl',
+        ],
+        'OpenSSLCertificateSigningRequest' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'openssl',
+        ],
+        'OpenSSLAsymmetricKey' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'openssl',
+        ],
+        'Shmop' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'shmop',
+        ],
+        'AddressInfo' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'sockets',
+        ],
+        'Socket' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'sockets',
+        ],
+        'SysvMessageQueue' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'sem',
+        ],
+        'SysvSemaphore' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'sem',
+        ],
+        'SysvSharedMemory' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'sem',
+        ],
+        'XMLParser' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'xml',
+        ],
+        'DeflateContext' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'zlib',
+        ],
+        'InflateContext' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'zlib',
         ],
 
         'IntlDatePatternGenerator' => [
-            '8.0' => false,
-            '8.1' => true,
+            '8.0'       => false,
+            '8.1'       => true,
+            'extension' => 'intl',
         ],
         'Fiber' => [
-            '8.0' => false,
-            '8.1' => true,
+            '8.0'       => false,
+            '8.1'       => true,
+            'extension' => 'fibers',
+        ],
+        'ReflectionEnum' => [
+            '8.0'       => false,
+            '8.1'       => true,
+            'extension' => 'reflection',
+        ],
+        'ReflectionEnumBackedCase' => [
+            '8.0'       => false,
+            '8.1'       => true,
+            'extension' => 'reflection',
+        ],
+        'ReflectionEnumUnitCase' => [
+            '8.0'       => false,
+            '8.1'       => true,
+            'extension' => 'reflection',
         ],
         'ReflectionFiber' => [
+            '8.0'       => false,
+            '8.1'       => true,
+            'extension' => 'reflection',
+        ],
+        'ReflectionIntersectionType' => [
             '8.0'       => false,
             '8.1'       => true,
             'extension' => 'reflection',
@@ -797,6 +918,148 @@ class NewClassesSniff extends Sniff
             '8.0'       => false,
             '8.1'       => true,
             'extension' => 'curl',
+        ],
+        'FTP\Connection' => [
+            '8.0'       => false,
+            '8.1'       => true,
+            'extension' => 'ftp',
+        ],
+        'GdFont' => [
+            '8.0'       => false,
+            '8.1'       => true,
+            'extension' => 'gd',
+        ],
+        'IMAP\Connection' => [
+            '8.0'       => false,
+            '8.1'       => true,
+            'extension' => 'imap',
+        ],
+        'LDAP\Connection' => [
+            '8.0'       => false,
+            '8.1'       => true,
+            'extension' => 'ldap',
+        ],
+        'LDAP\Result' => [
+            '8.0'       => false,
+            '8.1'       => true,
+            'extension' => 'ldap',
+        ],
+        'LDAP\ResultEntry' => [
+            '8.0'       => false,
+            '8.1'       => true,
+            'extension' => 'ldap',
+        ],
+        'PgSql\Connection' => [
+            '8.0'       => false,
+            '8.1'       => true,
+            'extension' => 'pgsql',
+        ],
+        'PgSql\Lob' => [
+            '8.0'       => false,
+            '8.1'       => true,
+            'extension' => 'pgsql',
+        ],
+        'PgSql\Result' => [
+            '8.0'       => false,
+            '8.1'       => true,
+            'extension' => 'pgsql',
+        ],
+        'PSpell\Config' => [
+            '8.0'       => false,
+            '8.1'       => true,
+            'extension' => 'pspell',
+        ],
+        'PSpell\Dictionary' => [
+            '8.0'       => false,
+            '8.1'       => true,
+            'extension' => 'pspell',
+        ],
+
+        'Random\Randomizer' => [
+            '8.1'       => false,
+            '8.2'       => true,
+            'extension' => 'random',
+        ],
+        'Random\Engine\Secure' => [
+            '8.1'       => false,
+            '8.2'       => true,
+            'extension' => 'random',
+        ],
+        'Random\Engine\Mt19937' => [
+            '8.1'       => false,
+            '8.2'       => true,
+            'extension' => 'random',
+        ],
+        'Random\Engine\PcgOneseq128XslRr64' => [
+            '8.1'       => false,
+            '8.2'       => true,
+            'extension' => 'random',
+        ],
+        'Random\Engine\Xoshiro256StarStar' => [
+            '8.1'       => false,
+            '8.2'       => true,
+            'extension' => 'random',
+        ],
+
+        'Dba\Connection' => [
+            '8.3'       => false,
+            '8.4'       => true,
+            'extension' => 'dba',
+        ],
+        'Odbc\Connection' => [
+            '8.3'       => false,
+            '8.4'       => true,
+            'extension' => 'odbc',
+        ],
+        'Odbc\Result' => [
+            '8.3'       => false,
+            '8.4'       => true,
+            'extension' => 'odbc',
+        ],
+        'Pdo\DbLib' => [
+            '8.3'       => false,
+            '8.4'       => true,
+            'extension' => 'pdo',
+        ],
+        'Pdo\Firebird' => [
+            '8.3'       => false,
+            '8.4'       => true,
+            'extension' => 'pdo',
+        ],
+        'Pdo\Mysql' => [
+            '8.3'       => false,
+            '8.4'       => true,
+            'extension' => 'pdo',
+        ],
+        'Pdo\Odbc' => [
+            '8.3'       => false,
+            '8.4'       => true,
+            'extension' => 'pdo',
+        ],
+        'Pdo\Pgsql' => [
+            '8.3'       => false,
+            '8.4'       => true,
+            'extension' => 'pdo',
+        ],
+        'Pdo\Sqlite' => [
+            '8.3'       => false,
+            '8.4'       => true,
+            'extension' => 'pdo',
+        ],
+        'Soap\Sdl' => [
+            '8.3'       => false,
+            '8.4'       => true,
+            'extension' => 'soap',
+        ],
+        'Soap\Url' => [
+            '8.3'       => false,
+            '8.4'       => true,
+            'extension' => 'soap',
+        ],
+        'StreamBucket' => [
+            '8.3'       => false,
+            '8.4'       => true,
+            'extension' => 'streams',
         ],
     ];
 
@@ -815,7 +1078,7 @@ class NewClassesSniff extends Sniff
      *
      * @since 7.1.4
      *
-     * @var array(string => array(string => bool))
+     * @var array<string, array<string, bool|string>>
      */
     protected $newExceptions = [
         'com_exception' => [
@@ -844,8 +1107,9 @@ class NewClassesSniff extends Sniff
             'extension' => 'soap',
         ],
         'SQLiteException' => [
-            '4.4' => false,
-            '5.0' => true,
+            '4.4'       => false,
+            '5.0'       => true,
+            'extension' => 'sqlite',
         ],
         'mysqli_sql_exception' => [
             '4.4'       => false,
@@ -935,8 +1199,9 @@ class NewClassesSniff extends Sniff
         ],
 
         'SNMPException' => [
-            '5.3' => false,
-            '5.4' => true,
+            '5.3'       => false,
+            '5.4'       => true,
+            'extension' => 'snmp',
         ],
 
         'IntlException' => [
@@ -1015,11 +1280,56 @@ class NewClassesSniff extends Sniff
         ],
 
         'FiberError' => [
-            '8.0' => false,
-            '8.1' => true,
+            '8.0'       => false,
+            '8.1'       => true,
+            'extension' => 'fibers',
+        ],
+
+        'Random\RandomError' => [
+            '8.1'       => false,
+            '8.2'       => true,
+            'extension' => 'random',
+        ],
+        'Random\BrokenRandomEngineError' => [
+            '8.1'       => false,
+            '8.2'       => true,
+            'extension' => 'random',
+        ],
+        'Random\RandomException' => [
+            '8.1'       => false,
+            '8.2'       => true,
+            'extension' => 'random',
+        ],
+
+        'RequestParseBodyException' => [
+            '8.3' => false,
+            '8.4' => true,
         ],
     ];
 
+    /**
+     * Current file being scanned.
+     *
+     * @since 10.0.0
+     *
+     * @var string
+     */
+    private $currentFile = '';
+
+    /**
+     * Stores information about imported, namespaced classes with names which are also in use by PHP.
+     *
+     * When those classes are used, they do not point to the PHP classes, but to the
+     * namespaced, imported class and those usages should be ignored by the sniff.
+     *
+     * The array is indexed by unqualified class names in lower case. The value is always true.
+     * It is structured this way to utilize the isset() function for faster lookups.
+     *
+     * @since 10.0.0
+     *
+     * @var array<string,true>
+     */
+    private $importedClasses = [];
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -1036,7 +1346,7 @@ class NewClassesSniff extends Sniff
      *               as return type declarations.
      * @since 10.0.0 `T_RETURN_TYPE` token removed after PHPCS < 3.7.1 version drop.
      *
-     * @return array
+     * @return array<int|string>
      */
     public function register()
     {
@@ -1048,6 +1358,7 @@ class NewClassesSniff extends Sniff
         $this->newClasses = \array_merge($this->newClasses, $this->newExceptions);
 
         $targets = [
+            \T_USE,
             \T_NEW,
             \T_CLASS,
             \T_ANON_CLASS,
@@ -1075,9 +1386,20 @@ class NewClassesSniff extends Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
+        $fileName = $phpcsFile->getFilename();
+        if ($this->currentFile !== $fileName) {
+            // Reset the properties for each new file.
+            $this->currentFile     = $fileName;
+            $this->importedClasses = [];
+        }
+
         $tokens = $phpcsFile->getTokens();
 
         switch ($tokens[$stackPtr]['code']) {
+            case \T_USE:
+                $this->processUseToken($phpcsFile, $stackPtr);
+                break;
+
             case \T_VARIABLE:
                 $this->processVariableToken($phpcsFile, $stackPtr);
                 break;
@@ -1229,7 +1551,7 @@ class NewClassesSniff extends Sniff
     {
         // Strip off potential nullable indication.
         $typeString = \ltrim($typeString, '?');
-        $types      = \preg_split('`[|&]`', $typeString, -1, \PREG_SPLIT_NO_EMPTY);
+        $types      = \preg_split('`[|&()]`', $typeString, -1, \PREG_SPLIT_NO_EMPTY);
 
         if (empty($types) === true) {
             return;
@@ -1240,12 +1562,12 @@ class NewClassesSniff extends Sniff
             $type = \ltrim($type, '\\');
 
             if ($type === '') {
-                return;
+                continue;
             }
 
             $typeLc = \strtolower($type);
             if (isset($this->newClasses[$typeLc]) === false) {
-                return;
+                continue;
             }
 
             $itemInfo = [
@@ -1298,6 +1620,38 @@ class NewClassesSniff extends Sniff
         }
     }
 
+    /**
+     * Processes this test for when a use token is encountered.
+     *
+     * - Save imported classes for later use.
+     *
+     * @since 10.0.0
+     *
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param int                         $stackPtr  The position of the current token in
+     *                                               the stack passed in $tokens.
+     *
+     * @return void
+     */
+    private function processUseToken(File $phpcsFile, $stackPtr)
+    {
+        if (!UseStatements::isImportUse($phpcsFile, $stackPtr)) {
+            return;
+        }
+
+        $splitUseStatement = UseStatements::splitImportUseStatement($phpcsFile, $stackPtr);
+
+        foreach ($splitUseStatement['name'] as $name => $fullyQualifiedName) {
+            $lowerFullyQualifiedName = \strtolower($fullyQualifiedName);
+
+            if (isset($this->newClasses[$lowerFullyQualifiedName])) {
+                continue;
+            }
+
+            $this->importedClasses[\strtolower($name)] = true;
+        }
+    }
+
 
     /**
      * Handle the retrieval of relevant information and - if necessary - throwing of an
@@ -1314,6 +1668,10 @@ class NewClassesSniff extends Sniff
      */
     protected function handleFeature(File $phpcsFile, $stackPtr, array $itemInfo)
     {
+        if (isset($this->importedClasses[$itemInfo['nameLc']])) {
+            return;
+        }
+
         $itemArray   = $this->newClasses[$itemInfo['nameLc']];
         $versionInfo = $this->getVersionInfo($itemArray);
 

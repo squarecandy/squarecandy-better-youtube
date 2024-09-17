@@ -199,7 +199,8 @@ final class ControlStructures
      * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the token we are checking.
      *
-     * @return array Array with information about the caught Exception(s).
+     * @return array<int, array<string, string|int>>
+     *               Array with information about the caught Exception(s).
      *               The returned array will contain the following information for
      *               each caught exception:
      *               ```php
@@ -213,8 +214,6 @@ final class ControlStructures
      *
      * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If the specified `$stackPtr` is not of
      *                                                      type `T_CATCH` or doesn't exist.
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If no parenthesis opener or closer can be
-     *                                                      determined (parse error).
      */
     public static function getCaughtExceptions(File $phpcsFile, $stackPtr)
     {
@@ -227,7 +226,7 @@ final class ControlStructures
         }
 
         if (isset($tokens[$stackPtr]['parenthesis_opener'], $tokens[$stackPtr]['parenthesis_closer']) === false) {
-            throw new RuntimeException('Parentheses opener/closer of the T_CATCH could not be determined');
+            return [];
         }
 
         $opener     = $tokens[$stackPtr]['parenthesis_opener'];

@@ -36,6 +36,7 @@ use PHPCSUtils\Utils\Scopes;
  * - Since PHP 8.1, intersection types are supported for class/interface names.
  * - Since PHP 8.2, `false` and `null` can be used as stand-alone types.
  * - Since PHP 8.2, the `true` sub-type is available.
+ * - Since PHP 8.2, disjunctive normal form types are available.
  *
  * Additionally, this sniff does a cursory check for typical invalid type declarations,
  * such as:
@@ -55,6 +56,7 @@ use PHPCSUtils\Utils\Scopes;
  * @link https://wiki.php.net/rfc/pure-intersection-types
  * @link https://wiki.php.net/rfc/null-false-standalone-types
  * @link https://wiki.php.net/rfc/true-type
+ * @link https://wiki.php.net/rfc/dnf_types
  *
  * @since 7.0.0
  * @since 7.1.0  Now extends the `AbstractNewFeatureSniff` instead of the base `Sniff` class.
@@ -74,7 +76,7 @@ class NewParamTypeDeclarationsSniff extends Sniff
      * @since 7.0.0
      * @since 7.0.3 Now lists all param type declarations, not just the PHP 7+ scalar ones.
      *
-     * @var array(string => array(string => bool))
+     * @var array<string, array<string, bool>>
      */
     protected $newTypes = [
         'array' => [
@@ -138,16 +140,28 @@ class NewParamTypeDeclarationsSniff extends Sniff
     ];
 
     /**
-     * Invalid types
+     * Invalid types. These will throw an error.
      *
      * The array lists : the invalid type hint => what was probably intended/alternative.
      *
      * @since 7.0.3
      *
-     * @var array(string => string)
+     * @var array<string, string>
      */
     protected $invalidTypes = [
-        'static'  => 'self',
+        'static' => 'self',
+    ];
+
+    /**
+     * Invalid "long" types which are likely typos. These will throw a warning.
+     *
+     * The array lists : the invalid type hint => what was probably intended/alternative.
+     *
+     * @since 10.0.0 Split off from the `$invalidTypes` property.
+     *
+     * @var array<string, string>
+     */
+    protected $invalidLongTypes = [
         'boolean' => 'bool',
         'integer' => 'int',
     ];
@@ -157,7 +171,7 @@ class NewParamTypeDeclarationsSniff extends Sniff
      *
      * @since 10.0.0
      *
-     * @var array
+     * @var array<string, true>
      */
     protected $unionOnlyTypes = [
         'false' => true,
@@ -172,7 +186,7 @@ class NewParamTypeDeclarationsSniff extends Sniff
      * @since 7.1.3  Now also checks closures.
      * @since 10.0.0 Now also checks PHP 7.4+ arrow functions.
      *
-     * @return array
+     * @return array<int|string>
      */
     public function register()
     {
@@ -232,9 +246,10 @@ class NewParamTypeDeclarationsSniff extends Sniff
             // Strip off potential nullable indication.
             $typeHint           = \ltrim($param['type_hint'], '?');
             $typeHint           = \strtolower($typeHint);
-            $types              = \preg_split('`[|&]`', $typeHint, -1, \PREG_SPLIT_NO_EMPTY);
-            $isUnionType        = (\strpos($typeHint, '|') !== false);
-            $isIntersectionType = (\strpos($typeHint, '&') !== false);
+            $types              = \preg_split('`[|&()]`', $typeHint, -1, \PREG_SPLIT_NO_EMPTY);
+            $isUnionType        = (\strpos($typeHint, '|') !== false && \strpos($typeHint, '(') === false);
+            $isIntersectionType = (\strpos($typeHint, '&') !== false && \strpos($typeHint, '(') === false);
+            $isDNFType          = \strpos($typeHint, '(') !== false;
 
             if ($supportsPHP7 === true && $isUnionType === true) {
                 $phpcsFile->addError(
@@ -250,6 +265,15 @@ class NewParamTypeDeclarationsSniff extends Sniff
                     'Intersection types are not present in PHP version 8.0 or earlier. Found: %s',
                     $param['token'],
                     'IntersectionTypeFound',
+                    [$param['type_hint']]
+                );
+            }
+
+            if ($supportsPHP81 === true && $isDNFType === true) {
+                $phpcsFile->addError(
+                    'Disjunctive Normal Form types are not present in PHP version 8.1 or earlier. Found: %s',
+                    $param['token'],
+                    'DNFTypeFound',
                     [$param['type_hint']]
                 );
             }
@@ -309,13 +333,24 @@ class NewParamTypeDeclarationsSniff extends Sniff
                 }
 
                 if (isset($this->invalidTypes[$type])) {
-                    $error = "'%s' is not a valid type declaration. Did you mean %s ?";
+                    $error = "'%s' is not a valid parameter type declaration. Did you mean %s ?";
                     $data  = [
                         $type,
                         $this->invalidTypes[$type],
                     ];
 
                     $phpcsFile->addError($error, $param['token'], 'InvalidTypeHintFound', $data);
+                    continue;
+                }
+
+                if (isset($this->invalidLongTypes[$type])) {
+                    $error = "'%s' is not a valid parameter type declaration. Did you mean %s ?";
+                    $data  = [
+                        $type,
+                        $this->invalidLongTypes[$type],
+                    ];
+
+                    $phpcsFile->addWarning($error, $param['token'], 'InvalidLongTypeFound', $data);
                 }
             }
         }

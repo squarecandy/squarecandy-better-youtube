@@ -11,7 +11,6 @@
 namespace PHPCompatibility\Sniffs\Classes;
 
 use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Exceptions\RuntimeException;
 use PHPCompatibility\Helpers\ScannedCode;
 use PHPCompatibility\Sniff;
 use PHPCSUtils\Utils\FunctionDeclarations;
@@ -36,7 +35,7 @@ final class NewReadonlyPropertiesSniff extends Sniff
      *
      * @since 10.0.0
      *
-     * @return array
+     * @return array<int|string>
      */
     public function register()
     {

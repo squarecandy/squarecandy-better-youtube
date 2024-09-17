@@ -60,7 +60,7 @@ class ForbiddenThisUseContextsSniff extends Sniff
      *
      * @since 9.1.0
      *
-     * @var array
+     * @var array<int|string, true>
      */
     private $skipOverScopes = [
         \T_FUNCTION => true,
@@ -72,7 +72,7 @@ class ForbiddenThisUseContextsSniff extends Sniff
      *
      * @since 9.1.0
      *
-     * @var array
+     * @var array<int|string, true>
      */
     private $validUseOutsideObject = [
         \T_ISSET => true,
@@ -84,7 +84,7 @@ class ForbiddenThisUseContextsSniff extends Sniff
      *
      * @since 9.1.0
      *
-     * @return array
+     * @return array<int|string>
      */
     public function register()
     {
@@ -243,6 +243,12 @@ class ForbiddenThisUseContextsSniff extends Sniff
                 }
 
                 for ($i = ($openParenthesis + 1); $i < $tokens[$openParenthesis]['parenthesis_closer']; $i++) {
+                    // Ignore anything within square brackets (array access keys).
+                    if (isset($tokens[$i]['bracket_closer'])) {
+                        $i = $tokens[$i]['bracket_closer'];
+                        continue;
+                    }
+
                     if ($tokens[$i]['code'] !== \T_VARIABLE || $tokens[$i]['content'] !== '$this') {
                         continue;
                     }

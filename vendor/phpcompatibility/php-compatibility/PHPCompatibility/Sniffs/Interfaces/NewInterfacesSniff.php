@@ -21,6 +21,7 @@ use PHPCSUtils\Utils\FunctionDeclarations;
 use PHPCSUtils\Utils\MessageHelper;
 use PHPCSUtils\Utils\ObjectDeclarations;
 use PHPCSUtils\Utils\Scopes;
+use PHPCSUtils\Utils\UseStatements;
 use PHPCSUtils\Utils\Variables;
 
 /**
@@ -46,7 +47,7 @@ class NewInterfacesSniff extends Sniff
      *
      * @since 7.0.3
      *
-     * @var array(string => array(string => bool))
+     * @var array<string, array<string, bool|string>>
      */
     protected $newInterfaces = [
         'Traversable' => [
@@ -127,6 +128,36 @@ class NewInterfacesSniff extends Sniff
             '7.4' => false,
             '8.0' => true,
         ],
+        'DOMChildNode' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'dom',
+        ],
+        'DOMParentNode' => [
+            '7.4'       => false,
+            '8.0'       => true,
+            'extension' => 'dom',
+        ],
+
+        'UnitEnum' => [
+            '8.0' => false,
+            '8.1' => true,
+        ],
+        'BackedEnum' => [
+            '8.0' => false,
+            '8.1' => true,
+        ],
+
+        'Random\Engine' => [
+            '8.1'       => false,
+            '8.2'       => true,
+            'extension' => 'random',
+        ],
+        'Random\CryptoSafeEngine' => [
+            '8.1'       => false,
+            '8.2'       => true,
+            'extension' => 'random',
+        ],
     ];
 
     /**
@@ -134,7 +165,7 @@ class NewInterfacesSniff extends Sniff
      *
      * @since 7.0.3
      *
-     * @var array(string => array(string => string))
+     * @var array<string, array<string, string>>
      */
     protected $unsupportedMethods = [
         'Serializable' => [
@@ -144,11 +175,35 @@ class NewInterfacesSniff extends Sniff
     ];
 
     /**
+     * Current file being scanned.
+     *
+     * @since 10.0.0
+     *
+     * @var string
+     */
+    private $currentFile = '';
+
+    /**
+     * Stores information about imported, namespaced declarations with names which are also in use by PHP.
+     *
+     * When those declarations are used, they do not point to the PHP internal declarations, but to the
+     * namespaced, imported declarations and those usages should be ignored by the sniff.
+     *
+     * The array is indexed by unqualified declarations names in lower case. The value is always true.
+     * It is structured this way to utilize the isset() function for faster lookups.
+     *
+     * @since 10.0.0
+     *
+     * @var array<string,true>
+     */
+    private $importedDeclaration = [];
+
+    /**
      * Returns an array of tokens this test wants to listen for.
      *
      * @since 7.0.3
      *
-     * @return array
+     * @return array<int|string>
      */
     public function register()
     {
@@ -157,6 +212,7 @@ class NewInterfacesSniff extends Sniff
         $this->unsupportedMethods = \array_change_key_case($this->unsupportedMethods, \CASE_LOWER);
 
         $targets = [
+            \T_USE,
             \T_INTERFACE,
             \T_VARIABLE,
             \T_CATCH,
@@ -182,9 +238,20 @@ class NewInterfacesSniff extends Sniff
      */
     public function process(File $phpcsFile, $stackPtr)
     {
+        $fileName = $phpcsFile->getFilename();
+        if ($this->currentFile !== $fileName) {
+            // Reset the properties for each new file.
+            $this->currentFile         = $fileName;
+            $this->importedDeclaration = [];
+        }
+
         $tokens = $phpcsFile->getTokens();
 
         switch ($tokens[$stackPtr]['code']) {
+            case \T_USE:
+                $this->processUseToken($phpcsFile, $stackPtr);
+                break;
+
             case \T_INTERFACE:
                 $this->processInterfaceToken($phpcsFile, $stackPtr);
                 break;
@@ -411,7 +478,7 @@ class NewInterfacesSniff extends Sniff
     {
         // Strip off potential nullable indication.
         $typeHint = \ltrim($typeHint, '?');
-        $types    = \preg_split('`[|&]`', $typeHint, -1, \PREG_SPLIT_NO_EMPTY);
+        $types    = \preg_split('`[|&()]`', $typeHint, -1, \PREG_SPLIT_NO_EMPTY);
 
         if (empty($types) === true) {
             return;
@@ -422,12 +489,12 @@ class NewInterfacesSniff extends Sniff
             $type = \ltrim($type, '\\');
 
             if ($type === '') {
-                return;
+                continue;
             }
 
             $typeLc = \strtolower($type);
             if (isset($this->newInterfaces[$typeLc]) === false) {
-                return;
+                continue;
             }
 
             $itemInfo = [
@@ -480,6 +547,38 @@ class NewInterfacesSniff extends Sniff
         }
     }
 
+    /**
+     * Processes this test for when a use token is encountered.
+     *
+     * - Save imported declarations for later use.
+     *
+     * @since 10.0.0
+     *
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param int                         $stackPtr  The position of the current token in
+     *                                               the stack passed in $tokens.
+     *
+     * @return void
+     */
+    private function processUseToken(File $phpcsFile, $stackPtr)
+    {
+        if (!UseStatements::isImportUse($phpcsFile, $stackPtr)) {
+            return;
+        }
+
+        $splitUseStatement = UseStatements::splitImportUseStatement($phpcsFile, $stackPtr);
+
+        foreach ($splitUseStatement['name'] as $name => $fullyQualifiedName) {
+            $lowerFullyQualifiedName = \strtolower($fullyQualifiedName);
+
+            // If the imported declaration is imported from the internal namespace it will not be excluded.
+            if (isset($this->newInterfaces[$lowerFullyQualifiedName])) {
+                continue;
+            }
+
+            $this->importedDeclaration[\strtolower($name)] = true;
+        }
+    }
 
     /**
      * Handle the retrieval of relevant information and - if necessary - throwing of an
@@ -496,6 +595,10 @@ class NewInterfacesSniff extends Sniff
      */
     protected function handleFeature(File $phpcsFile, $stackPtr, array $itemInfo)
     {
+        if (isset($this->importedDeclaration[$itemInfo['nameLc']])) {
+            return;
+        }
+
         $itemArray   = $this->newInterfaces[$itemInfo['nameLc']];
         $versionInfo = $this->getVersionInfo($itemArray);
 

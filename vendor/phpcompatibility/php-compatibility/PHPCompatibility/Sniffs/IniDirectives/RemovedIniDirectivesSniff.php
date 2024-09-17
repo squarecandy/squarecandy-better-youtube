@@ -49,7 +49,7 @@ class RemovedIniDirectivesSniff extends AbstractFunctionCallParameterSniff
      * @since 10.0.0 Moved from the base `Sniff` class to this sniff and renamed from
      *               `$iniFunctions` to `$targetFunctions`.
      *
-     * @var array
+     * @var array<string, array<string, int|string>>
      */
     protected $targetFunctions = [
         'ini_get' => [
@@ -71,7 +71,7 @@ class RemovedIniDirectivesSniff extends AbstractFunctionCallParameterSniff
      * @since 5.5
      * @since 7.0.3 Support for 'alternative' has been added.
      *
-     * @var array(string)
+     * @var array<string, array<string, bool|string>>
      */
     protected $deprecatedIniDirectives = [
         'crack.default_dictionary' => [
@@ -294,9 +294,11 @@ class RemovedIniDirectivesSniff extends AbstractFunctionCallParameterSniff
         'mbstring.script_encoding' => [
             '5.4'         => true,
             'alternative' => 'zend.script_encoding',
+            'extension'   => 'mbstring',
         ],
         'phar.extract_list' => [
-            '5.4' => true,
+            '5.4'       => true,
+            'extension' => 'phar',
         ],
         'register_globals' => [
             '5.3' => false,
@@ -331,12 +333,14 @@ class RemovedIniDirectivesSniff extends AbstractFunctionCallParameterSniff
             '5.4' => true,
         ],
         'session.bug_compat_42' => [
-            '5.3' => false,
-            '5.4' => true,
+            '5.3'       => false,
+            '5.4'       => true,
+            'extension' => 'session',
         ],
         'session.bug_compat_warn' => [
-            '5.3' => false,
-            '5.4' => true,
+            '5.3'       => false,
+            '5.4'       => true,
+            'extension' => 'session',
         ],
         'y2k_compliance' => [
             '5.3' => false,
@@ -353,22 +357,28 @@ class RemovedIniDirectivesSniff extends AbstractFunctionCallParameterSniff
             '7.0' => true,
         ],
         'iconv.input_encoding' => [
-            '5.6' => false,
+            '5.6'       => false,
+            'extension' => 'iconv',
         ],
         'iconv.output_encoding' => [
-            '5.6' => false,
+            '5.6'       => false,
+            'extension' => 'iconv',
         ],
         'iconv.internal_encoding' => [
-            '5.6' => false,
+            '5.6'       => false,
+            'extension' => 'iconv',
         ],
         'mbstring.http_input' => [
-            '5.6' => false,
+            '5.6'       => false,
+            'extension' => 'mbstring',
         ],
         'mbstring.http_output' => [
-            '5.6' => false,
+            '5.6'       => false,
+            'extension' => 'mbstring',
         ],
         'mbstring.internal_encoding' => [
-            '5.6' => false,
+            '5.6'       => false,
+            'extension' => 'mbstring',
         ],
 
         'asp_tags' => [
@@ -378,7 +388,8 @@ class RemovedIniDirectivesSniff extends AbstractFunctionCallParameterSniff
             '7.0' => true,
         ],
         'opcache.load_comments' => [
-            '7.0' => true,
+            '7.0'       => true,
+            'extension' => 'opcache',
         ],
         'mssql.allow_persistent' => [
             '7.0'       => true,
@@ -524,21 +535,26 @@ class RemovedIniDirectivesSniff extends AbstractFunctionCallParameterSniff
             'extension' => 'mcrypt',
         ],
         'session.entropy_file' => [
-            '7.1' => true,
+            '7.1'       => true,
+            'extension' => 'session',
         ],
         'session.entropy_length' => [
-            '7.1' => true,
+            '7.1'       => true,
+            'extension' => 'session',
         ],
         'session.hash_function' => [
-            '7.1' => true,
+            '7.1'       => true,
+            'extension' => 'session',
         ],
         'session.hash_bits_per_character' => [
-            '7.1' => true,
+            '7.1'       => true,
+            'extension' => 'session',
         ],
 
         'mbstring.func_overload' => [
-            '7.2' => false,
-            '8.0' => true,
+            '7.2'       => false,
+            '8.0'       => true,
+            'extension' => 'mbstring',
         ],
         'sql.safe_mode' => [
             '7.2' => true,
@@ -548,19 +564,22 @@ class RemovedIniDirectivesSniff extends AbstractFunctionCallParameterSniff
             '8.0' => true,
         ],
         'opcache.fast_shutdown' => [
-            '7.2' => true,
+            '7.2'       => true,
+            'extension' => 'opcache',
         ],
 
         'birdstep.max_links' => [
             '7.3' => true,
         ],
         'opcache.inherited_hack' => [
-            '5.3' => false, // Soft deprecated, i.e. ignored.
-            '7.3' => true,
+            '5.3'       => false, // Soft deprecated, i.e. ignored.
+            '7.3'       => true,
+            'extension' => 'opcache',
         ],
         'pdo_odbc.db2_instance_name' => [
-            '7.3' => false, // Has been marked as deprecated in the manual from before this time. Now hard-deprecated.
-            '8.0' => true,
+            '7.3'       => false, // Has been marked as deprecated in the manual from before this time. Now hard-deprecated.
+            '8.0'       => true,
+            'extension' => 'pdo_odbc',
         ],
 
         'allow_url_include' => [
@@ -637,9 +656,93 @@ class RemovedIniDirectivesSniff extends AbstractFunctionCallParameterSniff
             '8.1'       => false,
             'extension' => 'filter',
         ],
+        'mysqlnd.fetch_data_copy' => [
+            '8.1'       => true,
+            'extension' => 'mysqlnd',
+        ],
         'oci8.old_oci_close_semantics' => [
             '8.1'       => false,
+            '8.4'       => true,
             'extension' => 'oci8',
+        ],
+
+        'mysqli.reconnect' => [
+            '8.2'       => true,
+            'extension' => 'mysqli',
+        ],
+
+        'assert.active' => [
+            '8.3'         => false,
+            'alternative' => 'zend.assertions',
+        ],
+        'assert.bail' => [
+            '8.3'         => false,
+            'alternative' => 'zend.assertions',
+        ],
+        'assert.callback' => [
+            '8.3'         => false,
+            'alternative' => 'zend.assertions',
+        ],
+        'assert.exception' => [
+            '8.3'         => false,
+            'alternative' => 'zend.assertions',
+        ],
+        'assert.warning' => [
+            '8.3'         => false,
+            'alternative' => 'zend.assertions',
+        ],
+        'opcache.consistency_checks' => [
+            '8.3'       => true,
+            'extension' => 'opcache',
+        ],
+
+        'imap.enable_insecure_rsh' => [
+            '8.4'       => true,
+            'extension' => 'imap',
+        ],
+        'oci8.connection_class' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci8.default_prefetch' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci8.events' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci8.max_persistent' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci8.persistent_timeout' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci8.ping_interval' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci8.prefetch_lob_size' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci8.privileged_connect' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'oci8.statement_cache_size' => [
+            '8.4'       => true,
+            'extension' => 'oci8',
+        ],
+        'session.sid_length' => [
+            '8.4'       => false,
+            'extension' => 'session',
+        ],
+        'session.sid_bits_per_character' => [
+            '8.4'       => false,
+            'extension' => 'session',
         ],
     ];
 

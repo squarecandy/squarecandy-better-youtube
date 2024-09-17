@@ -48,7 +48,7 @@ class RequiredToOptionalFunctionParametersSniff extends AbstractFunctionCallPara
      *                 compatibility with the `AbstractFunctionCallParameterSniff` class.
      *               - The parameter offsets were changed from 0-based to 1-based.
      *
-     * @var array
+     * @var array<string, array<int, array<string, bool|string>>>
      */
     protected $targetFunctions = [
         'array_diff_assoc' => [
@@ -310,6 +310,13 @@ class RequiredToOptionalFunctionParametersSniff extends AbstractFunctionCallPara
                 '8.0'  => false,
             ],
         ],
+        'pg_select' => [
+            3 => [
+                'name' => 'conditions',
+                '8.3'  => true,
+                '8.4'  => false,
+            ],
+        ],
         'preg_match_all' => [
             3 => [
                 'name' => 'matches',
@@ -410,7 +417,7 @@ class RequiredToOptionalFunctionParametersSniff extends AbstractFunctionCallPara
      *
      * @param array $itemArray Version and other information about the item.
      *
-     * @return array
+     * @return array<string, string>
      */
     protected function getVersionInfo(array $itemArray)
     {

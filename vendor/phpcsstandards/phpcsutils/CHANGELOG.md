@@ -9,6 +9,151 @@ This projects adheres to [Keep a CHANGELOG](https://keepachangelog.com/) and use
 
 _Nothing yet._
 
+## [1.0.12] - 2024-05-20
+
+### Added
+
+#### PHPCS BackCompat
+
+* `BCFile::getMemberProperties()`: sync with PHPCS 3.10.0 - support for PHP 8.2 DNF types. [#604]
+* `BCFile::getMethodProperties()`: sync with PHPCS 3.10.0 - support for PHP 8.2 DNF types. [#604]
+* `BCFile::getMethodParameters()`: sync with PHPCS 3.10.0 - support for PHP 8.2 DNF types. [#604]
+
+#### Utils
+
+* `FunctionDeclarations::getParameters()`: support for PHP 8.2 DNF types. [#604]
+* `FunctionDeclarations::getProperties()`: support for PHP 8.2 DNF types. [#604]
+* `Variables::getMemberProperties()`: support for PHP 8.2 DNF types. [#604]
+
+### Changed
+
+#### Tokens
+
+* `Collections::parameterTypeTokens()`, `Collections::propertyTypeTokens()` and `Collections::returnTypeTokens()`: now include the new `T_TYPE_OPEN_PARENTHESIS` and `T_TYPE_CLOSE_PARENTHESIS` tokens for PHP 8.2 DNF type support. [#604]
+
+#### Utils
+
+* `ControlStructures::getCaughtExceptions()`: will now silently ignore parse errors in the code under scan which prevent the method from analyzing a `catch` statement. [#594]
+    The method will now return an empty array instead of throwing a `PHP_CodeSniffer\Exceptions\RuntimeException`.
+
+#### Other
+
+* Dropped support for [PHP_CodeSniffer] < 3.10.0. [#603]
+    Please ensure you run `composer update phpcsstandards/phpcsutils --with-dependencies` to benefit from this.
+* Various housekeeping and documentation improvements.
+
+### Fixed
+
+#### Utils
+
+* `UseStatements::splitImportUseStatement()`: the values in the return array will now never include a leading backslash. [#590]
+    Previously the behaviour around import `use` statements declared with a leading backslash was undefined and the backslash would be included in the return value.
+
+[#590]: https://github.com/PHPCSStandards/PHPCSUtils/pull/590
+[#594]: https://github.com/PHPCSStandards/PHPCSUtils/pull/594
+[#603]: https://github.com/PHPCSStandards/PHPCSUtils/pull/603
+[#604]: https://github.com/PHPCSStandards/PHPCSUtils/pull/604
+
+
+## [1.0.11] - 2024-04-24
+
+### Changed
+
+#### Other
+
+* Various housekeeping and documentation improvements. Includes a contribution from [@fredden].
+
+### Fixed
+
+#### PHPCS BackCompat
+
+* `BCFile::getMethodProperties()`: small performance improvement & more defensive coding, in line with same fix in PHPCS 3.9.2. [#573]
+
+#### Utils
+
+* `FunctionDeclarations::getProperties()`: small performance improvement & more defensive coding, in line with same fix in PHPCS 3.9.2. [#573]
+
+[#573]: https://github.com/PHPCSStandards/PHPCSUtils/pull/573
+
+
+## [1.0.10] - 2024-03-18
+
+### Changed
+
+#### Other
+
+* Dropped support for [PHP_CodeSniffer] < 3.9.0. [#561]
+    Please ensure you run `composer update phpcsstandards/phpcsutils --with-dependencies` to benefit from this.
+* Various housekeeping and documentation improvements.
+
+### Deprecated
+
+#### Utils
+
+* `NamingConventions::AZ_UPPER` constant. [#563]
+* `NamingConventions::AZ_LOWER` constant. [#563]
+
+### Fixed
+
+#### PHPCS BackCompat
+
+* `BackCompat\Helper::getEncoding()`: PHP 8.4 deprecation notice. [#568]
+* `BackCompat\Helper::ignoreAnnotations()`: PHP 8.4 deprecation notice. [#568]
+
+[#561]: https://github.com/PHPCSStandards/PHPCSUtils/pull/561
+[#563]: https://github.com/PHPCSStandards/PHPCSUtils/pull/563
+[#568]: https://github.com/PHPCSStandards/PHPCSUtils/pull/568
+
+
+## [1.0.9] - 2023-12-08
+
+### Added
+
+#### PHPCS BackCompat
+
+* `BCFile::getMemberProperties()`: sync with PHPCS 3.8.0 - support for PHP 8.2 `true` type. [#524]
+* `BCFile::getMethodProperties()`: sync with PHPCS 3.8.0 - support for PHP 8.2 `true` type. [#524]
+* `BCFile::getMethodParameters()`: sync with PHPCS 3.8.0 - support for PHP 8.2 `true` type. [#524]
+
+### Changed
+
+#### TestUtils
+
+* Significant performance improvement for the [`UtilityMethodTestCase`]. [#525]
+
+#### Other
+
+* Dropped support for [PHP_CodeSniffer] < 3.8.0. [#523]
+    Please ensure you run `composer update phpcsstandards/phpcsutils --with-dependencies` to benefit from this.
+* Small improvements to the documentation website generation. Includes a contribution from [@fredden].
+* Various housekeeping and documentation improvements. Includes a contribution from [@fredden].
+
+[#523]: https://github.com/PHPCSStandards/PHPCSUtils/pull/523
+[#524]: https://github.com/PHPCSStandards/PHPCSUtils/pull/524
+[#525]: https://github.com/PHPCSStandards/PHPCSUtils/pull/525
+
+
+## [1.0.8] - 2023-07-17
+
+### Changed
+
+#### PHPCS BackCompat
+
+* `BCFile::getDeclarationName()`: sync with PHPCS 3.8.0 - support for functions called `self`, `parent` or `static` which return by reference. [#494]
+
+#### Other
+
+* Various housekeeping and minor documentation improvements.
+
+### Fixed
+
+#### Fixers
+
+* The [`SpacesFixer`] will no longer throw an (incorrect) exception when the second pointer passed is a comment token and this comment token is the last content in a file. [#493]
+
+[#493]: https://github.com/PHPCSStandards/PHPCSUtils/pull/493
+[#494]: https://github.com/PHPCSStandards/PHPCSUtils/pull/494
+
 
 ## [1.0.7] - 2023-07-10
 
@@ -22,7 +167,7 @@ _Nothing yet._
 
 #### Utils
 
-* The `Arrays::getDoubleArrowPtr()` method could previously get confused over a double arrow in a keyed lists used as an array value. [#485]
+* The `Arrays::getDoubleArrowPtr()` method could previously get confused over a double arrow in a keyed list used as an array value. [#485]
 
 [#485]: https://github.com/PHPCSStandards/PHPCSUtils/pull/485
 
@@ -399,7 +544,7 @@ Please report any bugs/oversights you encounter!
 All properties have a replacement which should be used instead, in most cases this will be a method with the same name as the previously used property,
 
 | Deprecated                                                    | Replacement                                                                                          | PR             | Remarks                                  |
-|---------------------------------------------------------------|------------------------------------------------------------------------------------------------------|----------------|------------------------------------------|
+| ------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | -------------- | ---------------------------------------- |
 | `Collections::$alternativeControlStructureSyntaxTokens`       | `Collections::alternativeControlStructureSyntaxes()`                                                 | [#311]         | Mind the change in the name!             |
 | `Collections::$alternativeControlStructureSyntaxCloserTokens` | `Collections::alternativeControlStructureSyntaxClosers()`                                            | [#311]         | Mind the change in the name!             |
 | `Collections::$arrayTokens`                                   | `Collections::arrayTokens()`                                                                         | [#311]         |                                          |
@@ -432,7 +577,7 @@ All properties have a replacement which should be used instead, in most cases th
 Additionally, the following methods in the `Collections` class have been deprecated:
 
 | Deprecated                                   | Replacement                                | PR     |
-|----------------------------------------------|--------------------------------------------|--------|
+| -------------------------------------------- | ------------------------------------------ | ------ |
 | `Collections::arrowFunctionTokensBC()`       | Use the `T_FN` token instead.              | [#347] |
 | `Collections::functionDeclarationTokensBC()` | `Collections::functionDeclarationTokens()` | [#347] |
 | `Collections::parameterTypeTokensBC()`       | `Collections::parameterTypeTokens()`       | [#347] |
@@ -906,6 +1051,11 @@ This initial alpha release contains the following utility classes:
 
 
 [Unreleased]:   https://github.com/PHPCSStandards/PHPCSUtils/compare/stable...HEAD
+[1.0.12]:       https://github.com/PHPCSStandards/PHPCSUtils/compare/1.0.11...1.0.12
+[1.0.11]:       https://github.com/PHPCSStandards/PHPCSUtils/compare/1.0.10...1.0.11
+[1.0.10]:       https://github.com/PHPCSStandards/PHPCSUtils/compare/1.0.9...1.0.10
+[1.0.9]:        https://github.com/PHPCSStandards/PHPCSUtils/compare/1.0.8...1.0.9
+[1.0.8]:        https://github.com/PHPCSStandards/PHPCSUtils/compare/1.0.7...1.0.8
 [1.0.7]:        https://github.com/PHPCSStandards/PHPCSUtils/compare/1.0.6...1.0.7
 [1.0.6]:        https://github.com/PHPCSStandards/PHPCSUtils/compare/1.0.5...1.0.6
 [1.0.5]:        https://github.com/PHPCSStandards/PHPCSUtils/compare/1.0.4...1.0.5
@@ -920,6 +1070,7 @@ This initial alpha release contains the following utility classes:
 [1.0.0-alpha2]: https://github.com/PHPCSStandards/PHPCSUtils/compare/1.0.0-alpha1...1.0.0-alpha2
 
 [Composer PHPCS plugin]: https://github.com/PHPCSStandards/composer-installer
+[PHP_CodeSniffer]:       https://github.com/PHPCSStandards/PHP_CodeSniffer
 
 [`AbstractArrayDeclarationSniff`]: https://phpcsutils.com/phpdoc/classes/PHPCSUtils-AbstractSniffs-AbstractArrayDeclarationSniff.html
 [`BCFile`]:                        https://phpcsutils.com/phpdoc/classes/PHPCSUtils-BackCompat-BCFile.html
@@ -950,5 +1101,6 @@ This initial alpha release contains the following utility classes:
 [`UseStatements`]:                 https://phpcsutils.com/phpdoc/classes/PHPCSUtils-Utils-UseStatements.html
 [`Variables`]:                     https://phpcsutils.com/phpdoc/classes/PHPCSUtils-Utils-Variables.html
 
+[@fredden]:     https://github.com/fredden
 [@GaryJones]:   https://github.com/GaryJones
 [@szepeviktor]: https://github.com/szepeviktor

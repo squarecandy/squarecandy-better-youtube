@@ -20,6 +20,7 @@ use PHPCSUtils\Utils\PassedParameters;
  * Check for the use of newly added regex modifiers for PCRE functions.
  *
  * Initially just checks for the PHP 7.2 new `J` modifier.
+ * As of PHPCompatibility 10.0.0 also check for the PHP 8.2 `n` and the PHP 8.4 `r` modifiers.
  *
  * PHP version 7.2+
  *
@@ -40,8 +41,8 @@ class NewPCREModifiersSniff extends AbstractFunctionCallParameterSniff
      * @since 8.2.0
      * @since 10.0.0 Value changed from an irrelevant value to an array.
      *
-     * @var array Key is the function name, value an array containing the 1-based parameter position
-     *            and the official name of the parameter.
+     * @var array<string, array<string, int|string>> Key is the function name, value an array containing
+     *                                               the 1-based parameter position and the official name of the parameter.
      */
     protected $targetFunctions = [
         'preg_filter' => [
@@ -86,12 +87,20 @@ class NewPCREModifiersSniff extends AbstractFunctionCallParameterSniff
      *
      * @since 8.2.0
      *
-     * @var array
+     * @var array<string, array<string, bool>>
      */
     protected $newModifiers = [
         'J' => [
             '7.1' => false,
             '7.2' => true,
+        ],
+        'n' => [
+            '8.1' => false,
+            '8.2' => true,
+        ],
+        'r' => [
+            '8.3' => false,
+            '8.4' => true,
         ],
     ];
 
@@ -107,7 +116,7 @@ class NewPCREModifiersSniff extends AbstractFunctionCallParameterSniff
     {
         // Version used here should be the highest version from the `$newModifiers` array,
         // i.e. the last PHP version in which a new modifier was introduced.
-        return (ScannedCode::shouldRunOnOrBelow('7.2') === false);
+        return (ScannedCode::shouldRunOnOrBelow('8.4') === false);
     }
 
     /**

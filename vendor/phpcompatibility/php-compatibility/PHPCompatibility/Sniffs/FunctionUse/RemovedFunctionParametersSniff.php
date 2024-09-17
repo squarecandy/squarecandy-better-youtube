@@ -51,7 +51,7 @@ class RemovedFunctionParametersSniff extends AbstractFunctionCallParameterSniff
      * @since 10.0.0 - The parameter offsets were changed from 0-based to 1-based.
      *               - The property was renamed from `$removedFunctionParameters` to `$targetFunctions`.
      *
-     * @var array
+     * @var array<string, array<int, array<string, bool|string>>>
      */
     protected $targetFunctions = [
         'curl_version' => [
@@ -75,19 +75,13 @@ class RemovedFunctionParametersSniff extends AbstractFunctionCallParameterSniff
                 '7.0'  => true,
             ],
         ],
-        'imap_headerinfo' => [
-            5 => [
-                'name' => 'defaulthost',
-                '8.0'  => true,
-            ],
-        ],
         /*
          * For the below three functions, it's actually the 3rd parameter which has been deprecated.
          * However with positional arguments, this can only be detected by checking for the "old last" argument.
          * Note: this function explicitly does NOT support named parameters for the function
          * signature without this parameter, but that's not the concern of this sniff.
          */
-        'imagepolygon' => [
+        'imagefilledpolygon' => [
             4 => [
                 'name' => 'num_points',
                 '8.1'  => false,
@@ -99,10 +93,34 @@ class RemovedFunctionParametersSniff extends AbstractFunctionCallParameterSniff
                 '8.1'  => false,
             ],
         ],
-        'imagefilledpolygon' => [
+        'imagepolygon' => [
             4 => [
                 'name' => 'num_points',
                 '8.1'  => false,
+            ],
+        ],
+        'imagerotate' => [
+            4 => [
+                'name' => 'ignore_transparent',
+                '8.3'  => true,
+            ],
+        ],
+        'imap_headerinfo' => [
+            5 => [
+                'name' => 'defaulthost',
+                '8.0'  => true,
+            ],
+        ],
+        'ldap_exop' => [
+            5 => [
+                'name'        => 'response_data',
+                '8.4'         => false,
+                'alternative' => 'the PHP 8.3+ ldap_exop_sync() function',
+            ],
+            6 => [
+                'name'        => 'response_oid',
+                '8.4'         => false,
+                'alternative' => 'the PHP 8.3+ ldap_exop_sync() function',
             ],
         ],
         'ldap_first_attribute' => [
@@ -136,6 +154,12 @@ class RemovedFunctionParametersSniff extends AbstractFunctionCallParameterSniff
                 '8.1'  => false,
             ],
         ],
+        'mysqli_store_result' => [
+            2 => [
+                'name' => 'mode',
+                '8.4'  => false,
+            ],
+        ],
         'odbc_do' => [
             3 => [
                 'name' => 'flags',
@@ -161,6 +185,43 @@ class RemovedFunctionParametersSniff extends AbstractFunctionCallParameterSniff
             5 => [
                 'name' => 'dbname',
                 '8.0'  => true,
+            ],
+        ],
+        'session_set_save_handler' => [
+            3 => [
+                'name'        => 'read',
+                '8.4'         => false,
+                'alternative' => 'a SessionHandlerInterface implementation for the callbacks instead',
+            ],
+            4 => [
+                'name'        => 'write',
+                '8.4'         => false,
+                'alternative' => 'a SessionHandlerInterface implementation for the callbacks instead',
+            ],
+            5 => [
+                'name'        => 'destroy',
+                '8.4'         => false,
+                'alternative' => 'a SessionHandlerInterface implementation for the callbacks instead',
+            ],
+            6 => [
+                'name'        => 'gc',
+                '8.4'         => false,
+                'alternative' => 'a SessionHandlerInterface implementation for the callbacks instead',
+            ],
+            7 => [
+                'name'        => 'create_sid',
+                '8.4'         => false,
+                'alternative' => 'a SessionHandlerInterface implementation for the callbacks instead',
+            ],
+            8 => [
+                'name'        => 'validate_sid',
+                '8.4'         => false,
+                'alternative' => 'a SessionHandlerInterface implementation for the callbacks instead',
+            ],
+            9 => [
+                'name'        => 'update_timestamp',
+                '8.4'         => false,
+                'alternative' => 'a SessionHandlerInterface implementation for the callbacks instead',
             ],
         ],
     ];
