@@ -44,6 +44,23 @@ module.exports = function( grunt ) {
 						src: '**/*',
 						dest: '',
 						dot: true,
+						rename( dest, matchedSrcPath ) {
+							// the exact file name .gitignore is reserved by npm
+							// so we track it as /common/gitignore (no dot) and rename on copy
+							if ( matchedSrcPath === 'gitignore' ) {
+								return dest + '.gitignore';
+							}
+							// default for all other files
+							return dest + matchedSrcPath;
+						},
+					},
+					// plugin
+					{
+						expand: true,
+						cwd: 'node_modules/squarecandy-common/plugin',
+						src: '**/*',
+						dest: '',
+						dot: true,
 					},
 					{
 						expand: true,
@@ -107,6 +124,10 @@ module.exports = function( grunt ) {
 				cmd: 'npm',
 				args: [ 'run', 'release', '--', '--prerelease', 'dev', '--skip.tag', '--skip.changelog' ],
 			},
+			ding: {
+				cmd: 'tput',
+				args: [ 'bel' ],
+			},
 		},
 		eslint: {
 			gruntfile: {
@@ -119,11 +140,11 @@ module.exports = function( grunt ) {
 		watch: {
 			css: {
 				files: [ 'css/*.scss' ],
-				tasks: [ 'run:stylelintfix', 'sass', 'postcss', 'string-replace' ],
+				tasks: [ 'run:stylelintfix', 'sass', 'postcss', 'string-replace', 'run:ding' ],
 			},
 			js: {
 				files: [ 'js/*.js' ],
-				tasks: [ 'run:eslintfix', 'terser' ],
+				tasks: [ 'run:eslintfix', 'terser', 'run:ding' ],
 			},
 		},
 		'string-replace': {
@@ -165,5 +186,5 @@ module.exports = function( grunt ) {
 	grunt.registerTask( 'compile', [ 'sass', 'postcss', 'copy:preflight', 'terser', 'string-replace' ] );
 	grunt.registerTask( 'lint', [ 'stylelint', 'eslint', 'phpcs' ] );
 	grunt.registerTask( 'bump', [ 'run:bump' ] );
-	grunt.registerTask( 'preflight', [ 'compile', 'lint', 'bump' ] );
+	grunt.registerTask( 'preflight', [ 'compile', 'lint', 'bump', 'run:ding' ] );
 };

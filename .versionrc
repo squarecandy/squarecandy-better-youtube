@@ -9,7 +9,7 @@
 			"type": "json"
 		},
 		{
-			"filename": "squarecandy-better-youtube.php",
+			"filename": "plugin.php",
 			"updater": "version-updater.js"
 		},
 		{
