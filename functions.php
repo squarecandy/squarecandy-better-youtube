@@ -4,6 +4,10 @@ define( 'SQUARECANDY_BYT_PATH', plugin_dir_path( __FILE__ ) );
 define( 'SQUARECANDY_BYT_URL', plugin_dir_url( __FILE__ ) );
 define( 'SQUARECANDY_BYT_VERSION', 'version-1.3.0-dev.0' );
 
+// Square Candy Common files
+require_once SQUARECANDY_BYT_PATH . '/inc/sqcdy-common.php';
+require_once SQUARECANDY_BYT_PATH . '/inc/sqcdy-plugin.php';
+
 // Enqueue scripts required
 if ( ! function_exists( 'squarecandy_video_scripts' ) ) :
 	function squarecandy_video_scripts() {
