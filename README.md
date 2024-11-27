@@ -15,61 +15,32 @@ We filter `oembed_result` & `embed_oembed_html` to:
 - wrap youtube iframes in fitvid divs & add extra parameters, or 
 - wrap vimeo iframes in .fitvid divs
 
-We also filter `get_the_excerpt` to wrap *all iframes* in fitvid divs.
+We filter `get_the_excerpt` to wrap *all iframes* in fitvid divs.
+
+We filter `the_content` to replace `<p></a></li>`  with `</a></li>`
 
 Then we have js to:
 - run fitvids (responsive size) on .fitvid divs
 - make .custom-playlist a magnific popup
 - control display/interaction of playlists
 
+
+To locate content to test for this plugin:
+- Many sites have a page like 'page-for-testing' that often contains youtube/vimeo videos
+- Mysql query for youtube/vimeo embeds not already wrapped in an inframe or `<a>`
+```
+SELECT ID, post_date, post_content, post_name, post_type FROM posts WHERE post_content REGEXP '(youtube|vimeo)[^[:space:]]+\?[^[:space:]]+' AND post_content NOT REGEXP '(src|href)=.*(youtube|vimeo)' AND post_status = 'publish' AND post_type NOT IN ('oembed_cache') ORDER BY post_date DESC;
+```
+- Mysql query for youtube playlists:
+```
+SELECT ID, post_date, post_content, post_name, post_type FROM 1Vb8MV_posts WHERE post_content REGEXP 'youtu[^[:space:]]+\?[^[:space:]]+list=[^[:space:]]' AND post_status = 'publish' AND post_type NOT IN ('oembed_cache') ORDER BY post_date DESC;
+```
+
 ## Playlist Option
 
 To enable the nice visual playlist generator, you must [obtain a google API key](https://console.cloud.google.com/cloud-resource-manager) that has the YouTube Data API v3 enabled and place it in your wp-config.php file:
 
 `define('YOUTUBE_API_KEY', 'yourAPIkey-XX0XX0XX0XX0-000-XXXXXXXXX-00)`
-
-
-## History
-
-### v1.1.7
-
-* fix: apply fitvids to the_excerpt
-
-### v1.1.6
-
-* fix: improve youtube/vimeo fitvids display in TinyMCE
-
-### v1.1.5
-
-* avoid double fitvids wrapper
-
-### v1.1.4
-
-* Fix css conflict with magnific popup image mode
-
-### v1.1.3
-
-* Fix missing fitvids wrapper issue
-
-### v1.1.2
-
-* Bugfix: correct the magnific popup urls
-* Depreciated features such as showinfo=0 and theme=dark finally stopped working. Bummer! Removed these from the code.
-* Added default spacing for fitvids div
-* Remove the updater script (use [GitHub Updater](https://github.com/afragen/github-updater) instead)
-
-### v1.1.1
-
-* [skip] was used for testing...
-
-### v1.1.0
-
-* Add the playlist functionality
-* Add updating via WP updater
-
-### v1.0.0
-
-* Initial Plugin build
 
 ## Roadmap
 
