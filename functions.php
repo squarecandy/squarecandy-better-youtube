@@ -104,9 +104,9 @@ function better_youtube_get_large_youtube_thumbnail( $thumbnails ) {
  * Output embed url parameters as string or array
  * @param $as_array bool opt default false
  * @param $autoplay bool opt default true
- * 
+ *
  * @return string|array
- */ 
+ */
 function better_youtube_url_parameters( $as_array = false, $autoplay = true ) {
 	//previus parameters: '?feature=oembed&rel=0&controls=1&modestbranding=1&hd=1&autoplay=1'
 	$parameters  = '?&mute=0&controls=1&playsinline=1&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1';
@@ -355,10 +355,10 @@ add_filter( 'the_content', 'better_youtube_the_content', 110 );
 function better_youtube_the_content( $content ) {
 	// shortcode_fix / fix wpautop crap
 	// https://wordpress.stackexchange.com/a/217304/41488
-	$content =  str_replace( '<p></a></li>', '</a></li>', $content );
+	$content = str_replace( '<p></a></li>', '</a></li>', $content );
 	// wrap video iframes in fitvids div
 	// fetches iframes already wrapped in a <p> by WP - strips the containing <p> and adds our <div> instead
 	// this happens after the oembed filter but this ignore the embeds bc they aren't wrapped in <p>
-	$content = preg_replace('/<p.*>(<iframe.*src=\S.*(?:youtu|vimeo).*\/iframe>)<\/p>/', '<div class="fitvids">$1</div>', $content);
+	$content = preg_replace( '/<p.*>(<iframe.*src=\S.*(?:youtu|vimeo).*\/iframe>)<\/p>/', '<div class="fitvids">$1</div>', $content );
 	return $content;
 }
