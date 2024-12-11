@@ -100,6 +100,13 @@ function better_youtube_get_large_youtube_thumbnail( $thumbnails ) {
 }
 
 
+/**
+ * Output embed url parameters as string or array
+ * @param $as_array bool opt default false
+ * @param $autoplay bool opt default true
+ * 
+ * @return string|array
+ */ 
 function better_youtube_url_parameters( $as_array = false, $autoplay = true ) {
 	//previus parameters: '?feature=oembed&rel=0&controls=1&modestbranding=1&hd=1&autoplay=1'
 	$parameters  = '?&mute=0&controls=1&playsinline=1&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1';
@@ -296,8 +303,8 @@ if ( ! function_exists( 'better_youtube_iframe' ) ) :
 			return shortcode_unautop( $output );
 		} else {
 			// add extra params to iframe src
-			$params  = better_youtube_url_parameters( true, false );
-			$new_src = add_query_arg( $params, $src );
+			$params  = better_youtube_url_parameters( true, false ); // should return an array
+			$new_src = add_query_arg( $params, $src ); // returns a string
 			$new_src = esc_url( $new_src );
 			$iframe  = str_replace( $src, $new_src, $iframe );
 			$iframe  = str_replace( 'allow="autoplay; encrypted-media"', '', $iframe );

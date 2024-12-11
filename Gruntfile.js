@@ -119,7 +119,7 @@ module.exports = function( grunt ) {
 			},
 			eslintfix: {
 				cmd: 'eslint',
-				args: [ 'js/*.js', '--fix' ],
+				args: [ 'js/*.js', 'Gruntfile.js', '--fix' ],
 			},
 			bump: {
 				cmd: 'npm',
@@ -160,7 +160,7 @@ module.exports = function( grunt ) {
 				],
 				options: {
 					replacements: [
-						// crazy workaround to remediate map files with absolute localhost paths
+						// place files inline example
 						{
 							pattern: /(file:\/\/\/([^,]*)\/wp-content)+/g,
 							replacement: '/wp-content',
@@ -182,7 +182,6 @@ module.exports = function( grunt ) {
 	grunt.loadNpmTasks( 'grunt-run' );
 	grunt.loadNpmTasks( 'grunt-string-replace' );
 
-	grunt.registerTask( 'init', [ 'sass', 'postcss', 'copy', 'terser', 'string-replace' ] );
 	grunt.registerTask( 'default', [ 'run:stylelintfix', 'run:eslintfix', 'sass', 'postcss', 'terser', 'string-replace', 'watch' ] );
 	grunt.registerTask( 'compile', [ 'sass', 'postcss', 'copy:preflight', 'terser', 'string-replace' ] );
 	grunt.registerTask( 'lint', [ 'stylelint', 'eslint', 'phpcs' ] );
