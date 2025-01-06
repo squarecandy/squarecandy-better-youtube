@@ -327,6 +327,8 @@ if ( ! function_exists( 'squarecandy_custom_youtube_querystring' ) ) :
 	function squarecandy_custom_youtube_querystring( $html, $url, $args ) {
 		if ( strpos( $html, 'youtube' ) || strpos( $html, 'youtu.be' ) ) {
 			$html = better_youtube_iframe( $html );
+			// use the no-cookie domain for better privacy
+			$html = str_replace( 'www.youtube.com/embed', 'www.youtube-nocookie.com/embed', $html );
 		}
 		// apply fitvids container to vimeo
 		if ( strpos( $html, 'vimeo' ) && ! strpos( $html, 'fitvids' ) ) {
