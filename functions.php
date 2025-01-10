@@ -322,6 +322,7 @@ if ( ! function_exists( 'better_youtube_iframe' ) ) :
 
 endif;
 
+
 // apply the better_youtube_iframe improvements to the automatic WordPress oembed
 if ( ! function_exists( 'squarecandy_custom_youtube_querystring' ) ) :
 	function squarecandy_custom_youtube_querystring( $html, $url, $args ) {
@@ -338,15 +339,14 @@ if ( ! function_exists( 'squarecandy_custom_youtube_querystring' ) ) :
 	add_filter( 'embed_oembed_html', 'squarecandy_custom_youtube_querystring', 99, 3 );
 endif;
 
+
 // Apply fitvids to the_excerpt
 // Not sure why oembed_result is not being applied here already. Is there a better way to do this?
-// str_replace for iframe is a bit broad and could cause issues with non-video iframe content
 add_filter( 'get_the_excerpt', 'squarecandy_custom_youtube_excerpt', 999 );
 function squarecandy_custom_youtube_excerpt( $content ) {
 	$content = str_replace( '<p><iframe', '<iframe', $content );
 	$content = str_replace( '</iframe></p>', '</iframe>', $content );
-	$content = str_replace( '<iframe', '<div class="fitvids"><iframe', $content );
-	$content = str_replace( '</iframe>', '</iframe></div>', $content );
+	$content = preg_replace( '/(<iframe.*src=\S.*(?:youtu|vimeo).*\/iframe>)/', '<div class="fitvids">$1</div>', $content );
 	return $content;
 }
 
