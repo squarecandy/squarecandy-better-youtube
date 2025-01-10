@@ -453,3 +453,10 @@ body.videos .elements {
 .fitvids:first-child {
 	margin-top: 0;
 }
+
+.fitvids .uc-embedding-container {
+	width: 100%;
+	height: auto;
+	aspect-ratio: 16 / 9;
+	overflow: hidden;
+}

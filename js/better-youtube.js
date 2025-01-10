@@ -6,6 +6,14 @@
 		// Apply fitvids (responsive YouTube videos) across site
 		fitvids( '.fitvids' );
 
+		$( document ).on( 'click', '.uc-embedding-accept', function() {
+			// run fitvids on youtube/vimeo content after the user accepts the Usercentrics consent
+			// after 1 second run fitvids
+			setTimeout( function() {
+				fitvids( '.fitvids' );
+			}, 1000 );
+		} );
+
 		$( '.custom-playlist' ).each( function() {
 			// the containers for all your galleries
 			$( this ).magnificPopup( {
