@@ -93,3 +93,64 @@ if ( ! function_exists( 'sqcdy_is_blog_home' ) ) :
 		return is_home();
 	}
 endif;
+
+/** Output html to display slides of header images - theoryone theme & plugins
+ *
+ * @param array  $header_images  acf image repeater.
+ * @param bool   $views2 optional. default false
+ * @param bool   $short optional. whether to include 'short-header-images' in the container div classes. default true
+ * @param string $size optional.  wp image size. default 'huge'
+ */
+if ( ! function_exists( 'squarecandy_slide_header_images' ) ) :
+	function squarecandy_slide_header_images( $header_images, $views2 = false, $short = true, $size = 'huge' ) {
+
+		$count_images = $header_images && is_array( $header_images ) && ! empty( $header_images[0]['image'] ) ? count( $header_images ) : 0;
+		$multi_image  = count( $header_images ) > 1;
+
+		if ( $count_images ) :
+			$images_classes  = 'template-header-images';
+			$images_classes .= $short ? ' short-header-images' : '';
+			$images_classes .= $multi_image ? ' template-header-slideshow' : '';
+			?>
+
+		<div class="<?php echo $images_classes; ?>">
+
+			<?php
+			foreach ( $header_images as $slide_image ) :
+				if ( function_exists( 'squarecandy_acf_srcset_image' ) ) :
+					$background_position = isset( $slide_image['background_position'] ) ? $slide_image['background_position'] : false;
+					$slide               = get_squarecandy_acf_srcset_image( $slide_image['image'], $size, '100vw', false, false, $background_position );
+					$slide               = str_replace( 'loading="lazy"', '', $slide );
+					echo $slide;
+
+				else :
+					$image = isset( $slide_image['image']['sizes'][ $size ] ) ? $slide_image['image']['sizes'][ $size ] : '';
+					$alt   = isset( $slide_image['image']['alt'] ) ? $slide_image['image']['alt'] : '';
+					?>
+					<figure>
+						<img src="<?php echo esc_url( $image ); ?>" alt="<?php echo esc_attr( $alt ); ?>">
+					</figure><!-- .slide-image -->
+					<?php
+				endif;
+			endforeach;
+
+			if ( $multi_image ) :
+				if ( ! $views2 ) :
+					?>
+					<span class="prev-control cycle-prevnext"></span>
+					<span class="next-control cycle-prevnext"></span>
+				<?php endif; ?>
+					<div class="cycle-pager"></div>
+				<?php if ( $views2 ) : ?>
+					<div class="slideshow-nav">
+						<button class="prev-control views2-cycle-prevnext cycle-prev"><span class="screen-reader-text">previous</span></button>
+						<button class="cycle-playpause playing"><span class="screen-reader-text">pause</span></button>
+						<button class="next-control views2-cycle-prevnext cycle-next"><span class="screen-reader-text">next</span></button>
+					</div>
+				<?php endif; ?>
+			<?php endif; ?>
+		</div><!-- .template-header-images -->
+			<?php
+	endif;
+	}
+endif;
