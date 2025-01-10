@@ -6,13 +6,15 @@
 		// Apply fitvids (responsive YouTube videos) across site
 		fitvids( '.fitvids' );
 
-		$( document ).on( 'click', '.uc-embedding-accept', function() {
-			// run fitvids on youtube/vimeo content after the user accepts the Usercentrics consent
-			// after 1 second run fitvids
-			setTimeout( function() {
+		// run again after 1 second, to account for Usercentrics consent
+		setTimeout( function() {
+			fitvids( '.fitvids' );
+
+			$( '.uc-embedding-accept' ).on( 'click', function() {
+				// run fitvids on youtube/vimeo content after the user accepts the Usercentrics consent
 				fitvids( '.fitvids' );
-			}, 1000 );
-		} );
+			} );
+		}, 1 * 1000 );
 
 		$( '.custom-playlist' ).each( function() {
 			// the containers for all your galleries

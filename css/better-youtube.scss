@@ -454,7 +454,8 @@ body.videos .elements {
 	margin-top: 0;
 }
 
-.fitvids .uc-embedding-container {
+.fitvids .uc-embedding-container,
+.fitvids iframe {
 	width: 100%;
 	height: auto;
 	aspect-ratio: 16 / 9;
