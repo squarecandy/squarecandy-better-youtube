@@ -2,7 +2,7 @@
 
 define( 'SQUARECANDY_BYT_PATH', plugin_dir_path( __FILE__ ) );
 define( 'SQUARECANDY_BYT_URL', plugin_dir_url( __FILE__ ) );
-define( 'SQUARECANDY_BYT_VERSION', 'version-1.3.1-dev.3' );
+define( 'SQUARECANDY_BYT_VERSION', 'version-1.3.1-dev.4' );
 
 // Square Candy Common files
 require_once SQUARECANDY_BYT_PATH . '/inc/sqcdy-common.php';
