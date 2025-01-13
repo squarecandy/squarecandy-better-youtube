@@ -105,9 +105,9 @@ if ( ! function_exists( 'squarecandy_slide_header_images' ) ) :
 	function squarecandy_slide_header_images( $header_images, $views2 = false, $short = true, $size = 'huge' ) {
 
 		$count_images = $header_images && is_array( $header_images ) && ! empty( $header_images[0]['image'] ) ? count( $header_images ) : 0;
-		$multi_image  = count( $header_images ) > 1;
 
 		if ( $count_images ) :
+			$multi_image     = $count_images > 1;
 			$images_classes  = 'template-header-images';
 			$images_classes .= $short ? ' short-header-images' : '';
 			$images_classes .= $multi_image ? ' template-header-slideshow' : '';
