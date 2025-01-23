@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.1](https://github.com/squarecandy/squarecandy-better-youtube/compare/v1.3.0...v1.3.1) (2025-01-23)
+
+
+### Bug Fixes
+
+* add squarecandy-common files ([6af6f15](https://github.com/squarecandy/squarecandy-better-youtube/commit/6af6f155d77de856f987e028e304f072740d2bc9))
+* also wrap non-embed videos in fitvids ([d784bbe](https://github.com/squarecandy/squarecandy-better-youtube/commit/d784bbe3b3eb40780bf4ac22c7e07e1df442aad7))
+* better Termageddon / Usercentrics compat w/ fitvids ([c729264](https://github.com/squarecandy/squarecandy-better-youtube/commit/c729264e7cd07e6a99cb55c0460d73d6f4f76002))
+* more Termageddon/Usercentrics fixes ([67e52df](https://github.com/squarecandy/squarecandy-better-youtube/commit/67e52dff50be10d75ad014b7eea6c6cd3ded48f1))
+* only apply fitvids to excerpt iframes if youtube or vimeo ([62cf817](https://github.com/squarecandy/squarecandy-better-youtube/commit/62cf817cb8e2a835899783738f74cad9636382cd))
+
 ## [1.3.0](https://github.com/squarecandy/squarecandy-better-youtube/compare/v1.2.0-rc1...v1.3.0) (2024-09-19)
 
 
