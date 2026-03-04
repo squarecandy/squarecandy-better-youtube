@@ -73,7 +73,7 @@ function better_youtube_get_youtube_iframe_from_embed( $embed ) {
 
 
 function better_youtube_get_youtube_playlist_from_src( $src ) {
-	$playlist = explode( 'list=', $src );
+	$playlist = $src ? explode( 'list=', $src ) : '';
 	if ( ! isset( $playlist[1] ) ) {
 		$playlist = false;
 	} else {
@@ -302,13 +302,15 @@ if ( ! function_exists( 'better_youtube_iframe' ) ) :
 			}
 			return shortcode_unautop( $output );
 		} else {
-			// add extra params to iframe src
-			$params  = better_youtube_url_parameters( true, false ); // should return an array
-			$new_src = add_query_arg( $params, $src ); // returns a string
-			$new_src = esc_url( $new_src );
-			$iframe  = str_replace( $src, $new_src, $iframe );
-			$iframe  = str_replace( 'allow="autoplay; encrypted-media"', '', $iframe );
-			$iframe  = str_replace( 'frameborder="0"', '', $iframe );
+			if ( $src ) {
+				// add extra params to iframe src
+				$params  = better_youtube_url_parameters( true, false ); // should return an array
+				$new_src = add_query_arg( $params, $src ); // returns a string
+				$new_src = esc_url( $new_src );
+				$iframe  = str_replace( $src, $new_src, $iframe );
+			}
+			$iframe = str_replace( 'allow="autoplay; encrypted-media"', '', $iframe );
+			$iframe = str_replace( 'frameborder="0"', '', $iframe );
 			if ( ! strpos( $iframe, 'loading=' ) ) {
 				$iframe = str_replace( '<iframe ', '<iframe loading="lazy" ', $iframe );
 			}
