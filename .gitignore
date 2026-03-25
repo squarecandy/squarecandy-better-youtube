@@ -2,15 +2,8 @@
 .sass-cache
 /node_modules
 /node_modules/*
-/vendor/bin
-/vendor/dealerdirect
-/vendor/squizlabs
-/vendor/wp-coding-standards
-/vendor/slevomat/coding-standard
-/vendor/phpstan/phpdoc-parser
-/vendor/phpcsstandards/phpcsutils
-/vendor/phpcompatibility/php-compatibility
-/vendor/isaac/php-code-sniffer-standard
+/vendor
+/vendor/*
 phpcs.phar
 /sync-remote-config.sh
 /sync-remote-*

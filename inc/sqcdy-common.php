@@ -1,5 +1,8 @@
 <?php
-// PHP code that should be distributed to all themes & plugins goes here.
+/**
+ * PHP code that should be distributed to all themes & plugins goes here.
+ * Version: 2.0.3
+ */
 
 // for debugging
 
@@ -16,10 +19,10 @@ if ( ! function_exists( 'sqcdy_is_debug' ) ) :
 endif;
 
 if ( ! function_exists( 'pre_r' ) ) :
-	function pre_r( $array ) {
+	function pre_r( $debug_array ) {
 		if ( sqcdy_is_debug() ) {
 			print '<pre class="squarecandy-pre-r">';
-			print_r( $array ); // phpcs:ignore
+			print_r( $debug_array ); // phpcs:ignore
 			print '</pre>';
 		}
 	}
@@ -28,26 +31,26 @@ endif;
 //utility log function to handle arrays, objects etc.
 //phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_error_log, WordPress.PHP.DevelopmentFunctions.error_log_print_r
 if ( ! function_exists( 'sqcdy_log' ) ) :
-	function sqcdy_log( $object, $message = '', $override_debug = false ) {
+	function sqcdy_log( $log_object, $message = '', $override_debug = false ) {
 		$debug_mode = sqcdy_is_debug();
-		$is_string  = is_string( $object );
-		$is_numeric = is_numeric( $object );
+		$is_string  = is_string( $log_object );
+		$is_numeric = is_numeric( $log_object );
 
 		if ( $debug_mode || $override_debug ) :
 			if ( ! is_string( $message ) ) {
 				$message = '';
 			}
 			if ( $message && ( $is_string || $is_numeric ) ) {
-				error_log( trim( $message ) . ': ' . trim( $object ) );
+				error_log( trim( $message ) . ': ' . trim( $log_object ) );
 				return;
 			}
 			if ( $message ) {
 				error_log( $message . ':' );
 			}
 			if ( $is_string || $is_numeric ) {
-				error_log( $object );
+				error_log( $log_object );
 			} else {
-				error_log( print_r( $object, true ) );
+				error_log( print_r( $log_object, true ) );
 			}
 		endif;
 	}
@@ -154,3 +157,119 @@ if ( ! function_exists( 'squarecandy_slide_header_images' ) ) :
 	endif;
 	}
 endif;
+
+
+// universal pagination function
+if ( ! function_exists( 'squarecandy_pagination' ) ) :
+
+	/**
+	 * Output pagination links
+	 *
+	 * @param WP_Query $custom_query optional. custom query object. default false. if not provided, uses the global $wp_query.
+	 * @param bool     $compatibility_mode optional. default false. changes the URL structre to use use ?page= instead of /page/.
+	 */
+	function squarecandy_pagination( $custom_query = false, $compatibility_mode = false ) {
+
+		$arrow_left  = function_exists( 'get_squarecandy_icon' ) ? get_squarecandy_icon( 'arrow-left' ) : '←';
+		$arrow_left  = apply_filters( 'squarecandy_pagination_arrow_left', $arrow_left );
+		$arrow_right = function_exists( 'get_squarecandy_icon' ) ? get_squarecandy_icon( 'arrow-right' ) : '→';
+		$arrow_right = apply_filters( 'squarecandy_pagination_arrow_right', $arrow_right );
+
+		$prev_text  = '<span class="pagination-arrow pagination-arrow-prev">';
+		$prev_text .= $arrow_left;
+		$prev_text .= '</span>';
+		$prev_text .= '<span class="screen-reader-text">Previous page</span>';
+
+		$next_text  = '<span class="screen-reader-text">Next page</span>';
+		$next_text .= '<span class="pagination-arrow pagination-arrow-next">';
+		$next_text .= $arrow_right;
+		$next_text .= '</span>';
+
+		$pagination_args = array(
+			'prev_text'          => $prev_text,
+			'next_text'          => $next_text,
+			'before_page_number' => '<span>',
+			'after_page_number'  => '</span>',
+		);
+
+		global $wp_query;
+
+		// save the original query
+		$temp_query = $wp_query;
+		// use the custom query if provided
+		$wp_query = $custom_query ? $custom_query : $wp_query; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+		// using global $wp_query this is required here, and we're sure to restore it later
+
+		// use ?page= instead of /page/ for compatibility on search and other places it is needed
+		if ( is_search() || $compatibility_mode ) {
+			$pagination_args['format']  = '?page=%#%';
+			$pagination_args['current'] = max( 1, get_query_var( 'page' ), get_query_var( 'paged' ) );
+			$pagination_args['total']   = $wp_query->max_num_pages;
+		}
+
+		// use the tax query to get the base URL for the pagination when appropriate
+		if ( $custom_query && ! empty( $custom_query->query['tax_query'][0]['terms'] ) && ! empty( $custom_query->query['tax_query'][0]['taxonomy'] ) ) {
+			// get the new base URL from the tax query
+			$term                    = get_term_by( 'slug', $custom_query->query['tax_query'][0]['terms'], $custom_query->query['tax_query'][0]['taxonomy'] );
+			$pagination_args['base'] = get_term_link( $term ) . 'page/%#%/';
+		}
+
+		$pagination_args = apply_filters( 'squarecandy_pagination_args', $pagination_args );
+
+		// generate the pagination
+		$page_links = paginate_links( $pagination_args );
+		// restore the original query
+		$wp_query = $temp_query; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+
+		// bail if no pagination is needed
+		if ( empty( $page_links ) ) {
+			return;
+		}
+
+		// add prev/next placeholders if they are missing - this keeps the layout/structure consistent
+		if ( ! str_contains( $page_links, 'class="prev' ) ) { // phpcs:ignore PHPCompatibility.FunctionUse.NewFunctions.str_containsFound
+			$page_links = '<span class="prev page-numbers placeholder-prevnext">' . $prev_text . '</span>' . $page_links;
+		}
+		if ( ! str_contains( $page_links, 'class="next' ) ) { // phpcs:ignore PHPCompatibility.FunctionUse.NewFunctions.str_containsFound
+			$page_links .= '<span class="next page-numbers placeholder-prevnext">' . $next_text . '</span>';
+		}
+
+		echo $page_links;
+	}
+endif;
+
+// wrapper for acf_add_options_page
+if ( ! function_exists( 'squarecandy_add_options_page' ) ) :
+	function squarecandy_add_options_page( $option_page, $is_subpage = false ) {
+		$acf_present = function_exists( 'acf_add_options_page' );
+		if ( ! $acf_present ) {
+			return;
+		}
+		add_action(
+			'init',
+			function () use ( $option_page, $is_subpage ) {
+				if ( $is_subpage ) {
+					acf_add_options_sub_page( $option_page );
+				} else {
+					acf_add_options_page( $option_page );
+				}
+			}
+		);
+	}
+endif;
+
+if ( ! function_exists( 'is_acf_fontawesome_plugin_active' ) ) {
+	function is_acf_fontawesome_plugin_active() {
+		if (
+			class_exists( 'acf_field_font_awesome' ) ||
+			in_array(
+				'advanced-custom-fields-font-awesome/acf-font-awesome.php',
+				(array) get_option( 'active_plugins', array() ),
+				true
+			)
+		) {
+			return true;
+		}
+		return false;
+	}
+}
