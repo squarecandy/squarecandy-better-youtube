@@ -1,0 +1,21 @@
+{
+	"sassFiles": { "dist/css/better-youtube.min.css": "css/better-youtube.scss" },
+	"copyType": "plugin",
+	"phpFiles": [ "*.php", "inc/*.php" ],
+	"additionalCopyFiles": [
+		{
+			"expand": true,
+			"cwd": "node_modules/fitvids/dist",
+			"src": "fitvids.min.js",
+			"dest": "dist/js/vendor"
+		}
+	],
+	"copyCycle2": false,
+	"copyMagnific": true,
+	"copyMixitup": false,
+	"customGruntfile": false,
+	"customPackageJson": true,
+	"customComposerJson": false,
+	"doModernizr": false,
+	"doSvgStore": false
+}
