@@ -138,9 +138,9 @@ function better_youtube_url_parameters( $as_array = false, $autoplay = true ) {
 /**
  * Construct a playlist element to be used with our YT js player
  * @param string $input
- * 
+ *
  * @return bool|string playlist html or false if error
- */ 
+ */
 function better_youtube_api_playlist( $input ) {
 
 	$playlist = better_youtube_get_youtube_playlist_from_src( $input );
@@ -230,9 +230,9 @@ function better_youtube_api_playlist( $input ) {
 /**
  * Construct a playlist element that uses built in embed players
  * @param string $src
- * 
+ *
  * @return bool|string playlist html or false if error
- */ 
+ */
 function better_youtube_legacy_playlist( $src ) {
 
 	$playlist = better_youtube_get_youtube_playlist_from_src( $src );
@@ -252,12 +252,12 @@ function better_youtube_legacy_playlist( $src ) {
 			$service = new Google_Service_YouTube( $client );
 
 			//get all items in the playlist via API
-			$params      = array(
+			$params   = array(
 				'maxResults' => 49,
 				'playlistId' => $playlist,
 			);
-			$params      = array_filter( $params );
-			$response    = $service->playlistItems->listPlaylistItems( 'snippet', $params );
+			$params   = array_filter( $params );
+			$response = $service->playlistItems->listPlaylistItems( 'snippet', $params );
 
 			$large_thumb = better_youtube_get_large_youtube_thumbnail( $response->items[0]->snippet->thumbnails );
 
@@ -332,7 +332,7 @@ if ( ! function_exists( 'better_youtube_iframe' ) ) :
 		if ( $playlist ) {
 
 			return $playlist;
-						
+
 		} else {
 
 			if ( $src ) {
