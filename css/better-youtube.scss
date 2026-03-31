@@ -126,7 +126,8 @@ body.videos .elements {
 /* single popup layout */
 
 .single-popup.player-popup {
-	position: relative;
+
+	/*position: relative;*/
 	max-width: 900px;
 	margin: 0 auto;
 	text-align: center;
@@ -237,6 +238,7 @@ body.videos .elements {
 	}
 }
 
+/*
 .single-popup {
 
 	.nav-button {
@@ -308,7 +310,7 @@ body.videos .elements {
 		display: none;
 	}
 }
-
+*/
 
 .cover-popup .video-caption {
 	float: none;
