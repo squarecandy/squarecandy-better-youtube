@@ -127,7 +127,7 @@
 				this.autoplay = autoplay;
 				this.autoload = autoload;
 				this.popup = popup;
-				this.debug = debug;
+				this.debug = window.betterYoutubeData ? window.betterYoutubeData.debug : debug;
 				this.layout = layout;
 				this.loop = loop;
 				this.firstPlay = true;

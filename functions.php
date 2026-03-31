@@ -20,6 +20,17 @@ if ( ! function_exists( 'squarecandy_video_scripts' ) ) :
 		wp_enqueue_style( 'squarecandy-magnific-popup-style', SQUARECANDY_BYT_URL . 'dist/css/vendor/magnific-popup.css', array(), SQUARECANDY_BYT_VERSION );
 
 		wp_enqueue_style( 'squarecandy-better-youtube-css', SQUARECANDY_BYT_URL . 'dist/css/better-youtube.min.css', array(), SQUARECANDY_BYT_VERSION );
+
+		$js_data = array(
+			'debug' => sqcdy_is_debug(),
+		);
+
+		// Pass the data as an inline script
+		wp_add_inline_script(
+			'squarecandy-better-youtube',
+			'window.betterYoutubeData = ' . wp_json_encode( $js_data ) . ';',
+			'before' // or 'after'
+		);
 	}
 	add_action( 'wp_enqueue_scripts', 'squarecandy_video_scripts' );
 endif;
