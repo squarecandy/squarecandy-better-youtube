@@ -51,6 +51,7 @@
 			} );
 		} );
 
+		// used only in Onebeat?
 		$( '.api-playlist-anchor' ).each( function() {
 			// cover pictures for playlist popups
 			$( this ).magnificPopup( {
@@ -62,8 +63,6 @@
 						}
 					},
 					close() {
-						// eslint-disable-next-line no-console
-						console.log( this.content.data( 'post-id' ), window.players[ this.content.data( 'post-id' ) ] );
 						if ( window.players[ this.content.data( 'post-id' ) ] ) {
 							window.players[ this.content.data( 'post-id' ) ].close();
 						}
@@ -84,6 +83,7 @@
 
 	/* new api playlists */
 	if ( $( '.custom-api-playlist' ).length ) {
+
 		class SCPlayer {
 			playerId;
 			playlistId;
@@ -115,10 +115,10 @@
 				videoContainer,
 				{ autoplay = false, autoload = true, debug = false, popup = false, loop = true, layout = 'single-popup' }
 			) {
-				this.videoContainer = $( videoContainer );
-				this.playlistId = this.videoContainer.data( 'playlist-id' );
-				this.playerId = this.playlistId ? 'player-' + this.videoContainer.data( 'playlist-id' ) : 'player';
-				this.videoIframe = this.videoContainer.find( '#' + this.playerId );
+				this.videoContainer = $( videoContainer ); // e.g. <div id="playlist-PLv0ix..."				
+				this.playlistId = this.videoContainer.data( 'playlist-id' ); // e.g. "PLv0ix..."
+				this.playerId = this.playlistId ? 'player-' + this.playlistId : 'player'; // e.g. "player-PLv0ix..." potentially not unique
+				this.videoIframe = this.videoContainer.find( '#' + this.playerId ); // e.g. <div id="player-PLv0ix..."
 				this.navButtons = this.videoContainer.find( '.nav-button' );
 				this.previousButton = this.videoContainer.find( '.previous' );
 				this.nextButton = this.videoContainer.find( '.next' );
@@ -131,10 +131,16 @@
 				this.layout = layout;
 				this.loop = loop;
 				this.firstPlay = true;
+				// this.postId used for displaying single videos or archives of simgle videos, not unique when using in post content!
+				// better_youtube_api_playlist() is now printing the playlist id here instead.
+				// should probably refactor this to just pull this.playlistId instead of data.post-id,
+				// but not sure how that affects .api-playlist-anchor in Onebeat?
 				this.postId = this.videoContainer.data( 'post-id' );
 				this.videoContainer.addClass( layout );
 				this.getVideoIds();
 
+				this.consoleDebug( 'SCPlayer initiating videoContainer', videoContainer );
+				this.consoleDebug( 'SCPlayer created', this );
 				//if autoloading, instantiate player, otherwise bind action that will trigger player
 				if ( this.autoload ) {
 					this.init();
@@ -214,6 +220,7 @@
 				this.previews.on( 'click', function( e ) {
 					e.preventDefault();
 					_this.startVideo = $( this ).data( 'video-index' );
+					_this.consoleDebug( 'clicked popupId', '#' + popupId, 'startVideo ' + _this.startVideo );
 					$.magnificPopup.open( {
 						items: {
 							src: '#' + popupId,
@@ -246,8 +253,7 @@
 			}
 
 			instantiatePlayer() {
-				this.consoleDebug( 'instantiatePlayer' );
-				this.consoleDebug( this );
+				this.consoleDebug( 'instantiatePlayer', this.playerId );
 				this.player = new YT.Player( this.playerId, {
 					height: '506.25',
 					width: '900',
@@ -262,7 +268,7 @@
 						playsinline: 1,
 						showinfo: 0,
 						rel: 0,
-						iv_load_policy: 3,
+						iv_load_policy: 3, // eslint-disable-line camelcase
 						modestbranding: 1,
 					},
 				} );
@@ -378,8 +384,7 @@
 
 			//play a video
 			cueVideo( index ) {
-				this.consoleDebug( 'cueVideo' );
-				this.consoleDebug( this.player );
+				this.consoleDebug( 'cueVideo', this.player );
 				this.isActivePlayer = true;
 				index = parseInt( index );
 				this.consoleDebug( 'cuevideo ' + index );
@@ -418,9 +423,8 @@
 			//for non popup players that aren't autoloaded
 			lazyLoadInstantiate( event ) {
 				const _this = event.data.SCPlayer;
-				_this.consoleDebug( 'lazyLoadInstantiate' );
 				const index = parseInt( $( this ).data( 'video-index' ) );
-				_this.consoleDebug( 'set start video to: ' + index );
+				this.consoleDebug( 'lazyLoadInstantiate', 'set start video to: ' + index );
 				if ( ! isNaN( index ) ) {
 					_this.startVideo = index;
 					_this.bindActions();
@@ -435,7 +439,7 @@
 			}
 
 			bindInstantiateAction() {
-				// const _this = this;
+				this.consoleDebug( 'bindInstantiateAction' );
 				this.previews.on( 'click', { SCPlayer: this }, this.lazyLoadInstantiate );
 				this.navButtons.on( 'click', { SCPlayer: this }, this.lazyLoadInstantiate );
 			}
@@ -446,10 +450,10 @@
 				this.instantiated = false;
 			}
 
-			consoleDebug( message ) {
+			consoleDebug( ...args ) {
 				if ( this.debug ) {
 					// eslint-disable-next-line no-console
-					console.log( message );
+					console.log( ...args );
 				}
 			}
 		}
@@ -460,10 +464,13 @@
 			defaultLayoutType = 'single-popup';
 			layoutTypes = [ 'single-popup', 'cover-popup', 'load-all', 'load-first', 'load-none' ];
 			layoutParameterSettings = {
+				// Single Popup (page shows playlists, popup shows single video with navigation arrows)
 				'single-popup': { popup: 'single', autoplay: true, autoload: false },
+				// Cover Popup (page shows covers, popup shows playlist)
 				'cover-popup': { popup: 'full', autoplay: true, autoload: false },
 				'load-all': { popup: false, autoplay: false, autoload: 'all' },
 				'load-first': { popup: false, autoplay: false, autoload: 'first' },
+				// Play in place (page shows playlists, play in place)
 				'load-none': { popup: false, autoplay: false, autoload: false },
 			};
 			layoutParameters;
