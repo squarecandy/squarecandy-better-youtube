@@ -149,8 +149,6 @@ function better_youtube_api_playlist( $input ) {
 		return false;
 	}
 
-	$post_id = get_the_id();
-
 	// Google API for building custom YouTube Playlists
 	require_once SQUARECANDY_BYT_PATH . 'vendor/autoload.php';
 	try {
@@ -171,14 +169,12 @@ function better_youtube_api_playlist( $input ) {
 		$params = array_filter( $params );
 
 		// phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-		$response = $service->playlistItems->listPlaylistItems( 'snippet', $params );
-
+		$response    = $service->playlistItems->listPlaylistItems( 'snippet', $params );
 		$large_thumb = better_youtube_get_large_youtube_thumbnail( $response->items[0]->snippet->thumbnails );
 
-		//set up the html for the first item (large display)
-		$first_id = $response->items[0]->snippet->resourceId->videoId;
-
-		$output = '<div id="playlist-' . $playlist . '" class="custom-api-playlist" data-playlist-id="' . $playlist . '" data-post-id="' . $post_id . '">';
+		// data-post-id previously contained postid, but for embed in content that doesn't create unique data
+		// switching to playlist id here. will still get weird of they embed the same playlist twice...
+		$output = '<div id="playlist-' . $playlist . '" class="custom-api-playlist" data-playlist-id="' . $playlist . '" data-post-id="' . $playlist . '">';
 
 		$output .= '<div class="playlist-preview-first"><div id="player-' . $playlist . '" class="playlist-preview" data-video-index="0">
 			<div class="playlist-thumb" style="background-image:url(' .
