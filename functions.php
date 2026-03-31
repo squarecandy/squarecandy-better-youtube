@@ -330,9 +330,8 @@ if ( ! function_exists( 'squarecandy_custom_youtube_querystring' ) ) :
 	function squarecandy_custom_youtube_querystring( $html, $url, $args ) {
 		if ( strpos( $html, 'youtube' ) || strpos( $html, 'youtu.be' ) ) {
 			$html = better_youtube_iframe( $html );
-		}
-		// apply fitvids container to vimeo
-		if ( strpos( $html, 'vimeo' ) && ! strpos( $html, 'fitvids' ) ) {
+		} elseif ( strpos( $html, 'vimeo' ) && ! strpos( $html, 'fitvids' ) ) {
+			// apply fitvids container to vimeo
 			$html = '<div class="fitvids">' . $html . '</div>';
 		}
 		return $html;
