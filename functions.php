@@ -161,7 +161,7 @@ function better_youtube_api_playlist( $input ) {
 	}
 
 	// Google API for building custom YouTube Playlists
-	require_once SQUARECANDY_BYT_PATH . 'vendor/autoload.php';
+	require_once SQUARECANDY_BYT_PATH . 'inc/vendor/autoload.php';
 	try {
 		$client = new Google_Client();
 		$client->setDeveloperKey( YOUTUBE_API_KEY );
@@ -247,7 +247,7 @@ function better_youtube_legacy_playlist( $src ) {
 	if ( $playlist && defined( 'YOUTUBE_API_KEY' ) ) {
 
 		// Google API for building custom YouTube Playlists
-		require_once SQUARECANDY_BYT_PATH . 'vendor/autoload.php';
+		require_once SQUARECANDY_BYT_PATH . 'inc/vendor/autoload.php';
 		try {
 			$client = new Google_Client();
 			$client->setDeveloperKey( YOUTUBE_API_KEY );

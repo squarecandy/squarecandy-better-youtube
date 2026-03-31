@@ -8,6 +8,66 @@
 			"cwd": "node_modules/fitvids/dist",
 			"src": "fitvids.min.js",
 			"dest": "dist/js/vendor"
+		},
+		{
+			"expand": true,
+			"cwd": "vendor",
+			"src": "autoload.php",
+			"dest": "inc/vendor"
+		},
+		{
+			"expand": true,
+			"cwd": "vendor/composer",
+			"src": "**/*",
+			"dest": "inc/vendor/composer"
+		},
+		{
+			"expand": true,
+			"cwd": "vendor/google",
+			"src": "**/*",
+			"dest": "inc/vendor/google"
+		},
+		{
+			"expand": true,
+			"cwd": "vendor/guzzlehttp",
+			"src": "**/*",
+			"dest": "inc/vendor/guzzlehttp"
+		},
+		{
+			"expand": true,
+			"cwd": "vendor/monolog",
+			"src": "**/*",
+			"dest": "inc/vendor/monolog"
+		},
+		{
+			"expand": true,
+			"cwd": "vendor/paragonie",
+			"src": "**/*",
+			"dest": "inc/vendor/paragonie"
+		},
+		{
+			"expand": true,
+			"cwd": "vendor/phpseclib",
+			"src": "**/*",
+			"dest": "inc/vendor/phpseclib"
+		},
+		{
+			"expand": true,
+			"cwd": "vendor/psr",
+			"src": "**/*",
+			"dest": "inc/vendor/psr"
+		},
+		{
+			"expand": true,
+			"cwd": "vendor/ralouphie",
+			"src": "**/*",
+			"dest": "inc/vendor/ralouphie"
+		},
+		{
+			"expand": true,
+			"cwd": "vendor/symfony",
+			"src": "**/*",
+			"dest": "inc/vendor/symfony"
 		}
 	],
 	"copyCycle2": false,
