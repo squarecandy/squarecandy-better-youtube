@@ -502,7 +502,7 @@
 			setupPlayers() {
 				const _this = this;
 				window.onYouTubePlayerAPIReady = function() {
-					window.players = [];
+					window.players = {};
 					let $i = 0;
 					_this.containers.each( function() {
 						if ( $i > 0 && this.layoutType !== 'load-all' ) {
@@ -517,7 +517,8 @@
 
 			//utility function to stop other videos on the page
 			static pauseOtherVideos( playerId ) {
-				window.players.forEach( function( element ) {
+				Object.keys( window.players ).forEach( key => {
+					const element = window.players[ key ];
 					if ( element.playerId !== playerId ) {
 						element.isActivePlayer = false;
 						if ( element.player && element.player.getPlayerState() === 1 ) {
