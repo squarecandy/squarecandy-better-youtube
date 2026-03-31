@@ -15,7 +15,7 @@
 	"copyMixitup": false,
 	"customGruntfile": false,
 	"customPackageJson": true,
-	"customComposerJson": false,
+	"customComposerJson": true,
 	"doModernizr": false,
 	"doSvgStore": false
 }
