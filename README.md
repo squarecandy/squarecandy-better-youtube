@@ -42,6 +42,18 @@ To enable the nice visual playlist generator, you must [obtain a google API key]
 
 `define('YOUTUBE_API_KEY', 'yourAPIkey-XX0XX0XX0XX0-000-XXXXXXXXX-00)`
 
+Previously we used basic oembed functionality, with custom-api-playlist we use YT js to instantiate players so that we can do things like autoplay, or stop other videos when we start a new one.
+
+Possibly not fully implemented, but the possible layouts are:
+- single-popup: (Default) Single Popup (page shows playlists, popup shows single video with navigation arrows)
+- load-none: "Play in place (page shows playlists, play in place)
+- cover-popup: "Cover Popup (page shows covers, popup shows playlist)
+- load-first
+- load-none
+
+For examples of how to use in a template, see `onebeat` theme `template-parts/content-video.php`
+
+
 ## Roadmap
 
 * Add options screen to enable/disable playlist feature, choose options for player display, etc.
