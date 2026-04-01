@@ -54,6 +54,13 @@ Possibly not fully implemented, but the possible layouts are:
 For examples of how to use in a template, see `onebeat` theme `template-parts/content-video.php`
 
 
+## Composer deps maintenance
+
+This repo has production composer deps - the directories of these that are listed in `additionalCopyFiles` in `grunt-options.json` and copied into `/inc` during `copy:preflight`.
+Since deps may change over time we'll need to periodiocally check whether the directories listed in `additionalCopyFiles` need to be updated.
+You can check the required directory list by running `composer show --name-only --no-dev | sed 's!/.*!!' | uniq`
+
+
 ## Roadmap
 
 * Add options screen to enable/disable playlist feature, choose options for player display, etc.
