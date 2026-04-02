@@ -57,6 +57,7 @@ For examples of how to use in a template, see `onebeat` theme `template-parts/co
 ## Composer deps maintenance
 
 This repo has production composer deps - the directories of these that are listed in `additionalCopyFiles` in `grunt-options.json` and copied into `/inc` during `copy:preflight`.
+Because we're using autoloader you'll need to run `composer install --no-dev` before doing the copy, so that only the classes from the production deps will be included in the generated autoloader. (and then run `composer install` again when done)
 Since deps may change over time we'll need to periodiocally check whether the directories listed in `additionalCopyFiles` need to be updated.
 You can check the required directory list by running `composer show --name-only --no-dev | sed 's!/.*!!' | uniq`
 
