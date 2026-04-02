@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.2](https://github.com/squarecandy/squarecandy-better-youtube/compare/v1.3.1...v1.3.2) (2026-04-02)
+
+
+### Bug Fixes
+
+* add note on composer deps ([f51f5ba](https://github.com/squarecandy/squarecandy-better-youtube/commit/f51f5baa1e558ba458110ffeef630aecb0fb2ece))
+* avoid php error ([d7d638f](https://github.com/squarecandy/squarecandy-better-youtube/commit/d7d638f9b330b1cb471b36c6a050ecd6fd3be28c))
+* fix php explode errors ([22d2e97](https://github.com/squarecandy/squarecandy-better-youtube/commit/22d2e97903aeb2433161bb25b34d8a892129d624))
+* major squarecandy-common update ([13a9989](https://github.com/squarecandy/squarecandy-better-youtube/commit/13a99899a2447d6850e21ef8f5da2d4126fcb98f))
+* make window.players an object, adding large non-consecutive numeric indexes to an array causes memory issues ([014d503](https://github.com/squarecandy/squarecandy-better-youtube/commit/014d503959b156cd78aaf9120e3568a7d0e6d0bd))
+* match current arrow styling ([686c0c3](https://github.com/squarecandy/squarecandy-better-youtube/commit/686c0c388fde8cc006272e4f73e77ef6a98aaa00))
+* pass more unique id for player indexing, remove unused variables ([dff1451](https://github.com/squarecandy/squarecandy-better-youtube/commit/dff1451a759d4d41265feed8fd2d2939f91f13b1))
+* pass WP_DEBUG in to js ([37acffb](https://github.com/squarecandy/squarecandy-better-youtube/commit/37acffbcf15b883ff612d895969dd11ab9fcf90a))
+* refactor logging, add comments ([e505c2c](https://github.com/squarecandy/squarecandy-better-youtube/commit/e505c2c342bae8e2d421976f0ef513ba37fa40bb))
+* reinstate Google API ([f24f40e](https://github.com/squarecandy/squarecandy-better-youtube/commit/f24f40e33095c784adc94d5da5dc205582c46187))
+* split out api and legacy playlist output / allow use of api output in content managed playlists ([4c9f597](https://github.com/squarecandy/squarecandy-better-youtube/commit/4c9f597bef3293ecb90ba08687ecb436af048e30))
+* update readme ([c942f7f](https://github.com/squarecandy/squarecandy-better-youtube/commit/c942f7f5acc1605d444d056c6ac29e074a8f4d51))
+
 ### [1.3.1](https://github.com/squarecandy/squarecandy-better-youtube/compare/v1.3.0...v1.3.1) (2025-01-23)
 
 
